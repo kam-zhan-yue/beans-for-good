@@ -2,6 +2,7 @@ import { useRef, useState } from 'react';
 
 import Phaser from 'phaser';
 import { PhaserGame } from './game/PhaserGame';
+import { ReactOverlay } from './game/ReactOverlay';
 
 function App ()
 {
@@ -73,6 +74,7 @@ function App ()
     return (
         <div id="app">
             <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
+            <ReactOverlay/>
             <div>
                 <div>
                     <button className="button" onClick={changeScene}>Change Scene</button>

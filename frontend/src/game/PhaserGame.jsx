@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import StartGame from './main';
 import { EventBus } from './EventBus';
 
@@ -52,7 +52,8 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }
     }, [currentActiveScene, ref])
 
     return (
-        <div id="game-container"></div>
+        <div id="game-container">
+        </div>
     );
 
 });
