@@ -10,11 +10,29 @@ const PORT = process.env.PORT || 8080;
 
 app.use(express.json()); // Middleware to parse JSON bodies
 
-// MongoDB connection using environment variables
-mongoose.connect(process.env.MONGODB_URI)
-  .then(() => console.log('Connected to MongoDB.'))
-  .catch(err => console.error('Could not connect to MongoDB.', err));
-
+const { MongoClient, ServerApiVersion } = require('mongodb');
+const uri = "mongodb+srv://toby_guan:ilovebeans@codebrew-2024.gexpvgd.mongodb.net/?retryWrites=true&w=majority&appName=codebrew-2024";
+// Create a MongoClient with a MongoClientOptions object to set the Stable API version
+const client = new MongoClient(uri, {
+  serverApi: {
+    version: ServerApiVersion.v1,
+    strict: true,
+    deprecationErrors: true,
+  }
+});
+async function run() {
+  try {
+    // Connect the client to the server	(optional starting in v4.7)
+    await client.connect();
+    // Send a ping to confirm a successful connection
+    await client.db("admin").command({ ping: 1 });
+    console.log("Pinged your deployment. You successfully connected to MongoDB!");
+  } finally {
+    // Ensures that the client will close when you finish/error
+    await client.close();
+  }
+}
+run().catch(console.dir);
 // Home route
 app.get('/', (req, res) => {
   res.send('Hello World!');

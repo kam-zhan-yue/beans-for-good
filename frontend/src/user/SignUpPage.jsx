@@ -23,31 +23,31 @@ function SignUpPage() {
             return;
         }
 
-        try {
-            const response = await fetch('/users', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    name: userData.username,
-                    password: userData.password, // In a real app, ensure secure handling of passwords
-                }),
-            });
-
-            if (response.ok) {
-                // Handle success
-                const result = await response.json();
-                console.log('Success:', result);
-                // Redirect the user or clear the form, etc.
-            } else {
-                // Handle server-side validation errors or other issues
-                setError('Failed to sign up. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            setError('An error occurred. Please try again.');
-        }
+        fetch('/users', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+              name: userData.username,
+              password: userData.password,
+          }),
+      })
+      .then(response => {
+          if (!response.ok) {
+              // If server response wasn't ok, throw an error with the status
+              throw new Error(`Server responded with ${response.status}`);
+          }
+          return response.json();
+      })
+      .then(data => {
+          console.log('Success:', data);
+          // Handle success, such as redirecting the user or clearing the form
+      })
+      .catch(error => {
+          console.error('Error during sign up:', error);
+          setError('Failed to sign up. Please try again.');
+      });
     };
 
     return (
