@@ -6,7 +6,7 @@ const asyncHandler = require('express-async-handler');
 const User = require('./models/User'); // Make sure this path is correct
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 8080;
 
 app.use(express.json()); // Middleware to parse JSON bodies
 
