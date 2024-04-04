@@ -5,6 +5,7 @@ import debugDraw from '../utilities/DebugDraw';
 import createCharacterAnims from '../utilities/CharacterAnims.js';
 import { Align } from '../utilities/align.js';
 
+
 const LastFacingDirection = {
     UP: 'UP',
     DOWN: 'DOWN',
@@ -33,13 +34,12 @@ export class Game extends Scene
     {
         //Init the map
         const map = this.make.tilemap({key: 'main_tiles'});
-        
         var tilesets = [];
         constants.TilemapImages.forEach((imageName) => {
             tilesets.push(map.addTilesetImage(imageName, imageName));
         });
-        // Create layers for all images on the tileset
 
+        // Create layers for all images on the tileset
         var tileLayers = [];
         constants.TilemapLayers.forEach((layerName) => {
             var layer = map.createLayer(layerName, tilesets, 0, 0);
@@ -61,8 +61,6 @@ export class Game extends Scene
         this.player.setSize(this.player.width * 0.8, this.player.height);
 
         this.cameras.main.startFollow(this.player, true);
-
-        // Align.scaleToGameW(this.player, 0.2);
     }
     
     create ()
@@ -127,20 +125,18 @@ export class Game extends Scene
             this.player.anims.play('player-run-right', true);
         if(x === 0 && y === 0)
         {
-            this.player.anims.play('player-idle-down')
-        
             switch (this.lastFacingDirection) {
                 case LastFacingDirection.UP:
-                    this.player.anims.play('player-idle-up');
+                    this.player.anims.play('player-idle-up', true);
                     break;
                 case LastFacingDirection.DOWN:
-                    this.player.anims.play('player-idle-down');
+                    this.player.anims.play('player-idle-down', true);
                     break;
                 case LastFacingDirection.LEFT:
-                    this.player.anims.play('player-idle-left');
+                    this.player.anims.play('player-idle-left', true);
                     break;
                 case LastFacingDirection.RIGHT:
-                    this.player.anims.play('player-idle-right');
+                    this.player.anims.play('player-idle-right', true);
                     break;
             }
         }
