@@ -1,6 +1,14 @@
 import { EventBus } from '../EventBus';
 import { Scene, Tilemaps } from 'phaser';
 import constants from '../GameConstants';
+import debugDraw from '../Utils';
+
+const LastFacingDirection = {
+    UP: 'UP',
+    DOWN: 'DOWN',
+    LEFT: 'LEFT',
+    RIGHT: 'RIGHT',
+};
 
 export class Game extends Scene
 {
@@ -11,6 +19,7 @@ export class Game extends Scene
         //Define a player and cursors as a class property
         this.player = null;
         this.cursors = null;
+        this.lastFacingDirection = LastFacingDirection.DOWN;
     }
 
     preload()
@@ -18,8 +27,9 @@ export class Game extends Scene
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
-    createMap ()
+    init ()
     {
+        //Init the map
         const map = this.make.tilemap({key: 'main_tiles'});
         
         var tilesets = [];
@@ -35,18 +45,9 @@ export class Game extends Scene
             tileLayers.push(layer);
         });
 
-        const debugGraphics = this.add.graphics().setAlpha(1);
-        tileLayers.forEach((tileLayer) => {
-            tileLayer.renderDebug(debugGraphics, {
-            tileColor: null,
-            collidingTileColor: new Phaser.Display.Color(243, 243, 234, 48),
-            faceColor: new Phaser.Display.Color(40, 39, 37, 255)
-            });
-        });
-    }
+        debugDraw(tileLayers, this);
 
-    createCharacter ()
-    {
+        // Init the player
         this.cameras.main.zoom = 3;
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
@@ -55,7 +56,7 @@ export class Game extends Scene
             key: 'player-idle-down',
             frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'down_idle_', suffix: '.png'}),
             repeat: -1,
-            frameRate: 15
+            frameRate: 8
         });
         this.anims.create({
             key: 'player-idle-up',
@@ -100,10 +101,15 @@ export class Game extends Scene
             frameRate: 8
         });
 
-        this.player.anims.play('player-idle-down');
-        // this.player.add.collider(this.player, )
-    }
+        console.log(this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'right_run_', suffix: '.png'}));
 
+        this.player.anims.play('player-idle-down');
+        this.physics.add.collider(this.player, tileLayers);
+        this.player.setSize(this.player.width * 0.8, this.player.height);
+
+        this.cameras.main.startFollow(this.player, true);
+    }
+    
     create ()
     {
 
@@ -117,8 +123,7 @@ export class Game extends Scene
         //     align: 'center'
         // }).setOrigin(0.5).setDepth(100);
 
-        this.createMap();
-        this.createCharacter();
+        this.init();
     
         EventBus.emit('current-scene-ready', this);
     }
@@ -128,36 +133,77 @@ export class Game extends Scene
         this.scene.start('GameOver');
     }
 
-    update ()
+    checkInputs ()
     {
         if(!this.cursors || !this.player)
             return;
 
         const speed = 100;
+
+        var x = 0;
+        var y = 0;
+
+        //Handle speed
         if(this.cursors.left.isDown)
         {   
-            this.player.anims.play('player-run-left', true);
+            x = -speed;
             this.player.setVelocity(-speed, 0);
+            this.facingRight = false;
+            this.lastFacingDirection = LastFacingDirection.LEFT;
         }
         else if(this.cursors.right.isDown)
         {
-            this.player.anims.play('player-run-right', true);
+            x = speed;
             this.player.setVelocity(speed, 0);
+            this.lastFacingDirection = LastFacingDirection.RIGHT;
         }
-        else if(this.cursors.up.isDown)
+        if(this.cursors.up.isDown)
         {
-            this.player.anims.play('player-run-up', true);
+            y = -speed;
             this.player.setVelocity(0, -speed);
+            this.lastFacingDirection = LastFacingDirection.UP;
         }
         else if(this.cursors.down.isDown)
         {
-            this.player.anims.play('player-run-down', true);
+            y = speed;
             this.player.setVelocity(0, speed);
+            this.lastFacingDirection = LastFacingDirection.DOWN;
         }
-        else
+
+        //Handle animations
+        if(y < 0)
+            this.player.anims.play('player-run-up', true);
+        else if(y > 0)
+            this.player.anims.play('player-run-down', true);
+        else if(x < 0)
+            this.player.anims.play('player-run-left', true);
+        else if(x > 0)
+            this.player.anims.play('player-run-right', true);
+        if(x === 0 && y === 0)
         {
+            console.log('idle')
             this.player.anims.play('player-idle-down')
-            this.player.setVelocity(0);
+        
+            switch (this.lastFacingDirection) {
+                case LastFacingDirection.UP:
+                    this.player.anims.play('player-idle-up');
+                    break;
+                case LastFacingDirection.DOWN:
+                    this.player.anims.play('player-idle-down');
+                    break;
+                case LastFacingDirection.LEFT:
+                    this.player.anims.play('player-idle-left');
+                    break;
+                case LastFacingDirection.RIGHT:
+                    this.player.anims.play('player-idle-right');
+                    break;
+            }
         }
+        this.player.setVelocity(x, y);
+    }
+
+    update ()
+    {
+        this.checkInputs();
     }
 }

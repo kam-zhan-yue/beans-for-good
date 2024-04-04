@@ -16,7 +16,7 @@ const config = {
     scale: {
         mode: Phaser.Scale.FIT, // Fit the game inside the window
         autoCenter: Phaser.Scale.CENTER_BOTH, // Center the game horizontally and vertically
-        zoom: 2
+        zoom: 3
     },
     scene: [
         Boot,
