@@ -55,7 +55,7 @@ function App() {
                     <SignUpPage />}
             {mode === 1 && <>
                     <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
-                    <ReactOverlay ref={phaserRef}/>
+                    {/* <ReactOverlay ref={phaserRef}/> */}
                     </>
             }
         </div>

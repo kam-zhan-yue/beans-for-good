@@ -2,6 +2,7 @@ import { EventBus } from '../EventBus';
 import { Scene, Tilemaps } from 'phaser';
 import constants from '../GameConstants';
 import debugDraw from '../utilities/DebugDraw';
+import createCharacterAnims from '../utilities/CharacterAnims.js';
 import { Align } from '../utilities/align.js';
 
 const LastFacingDirection = {
@@ -53,56 +54,7 @@ export class Game extends Scene
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
         this.player = this.physics.add.sprite(centerX, centerY, 'player', 'down_idle_1.png');
-        this.anims.create({
-            key: 'player-idle-down',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'down_idle_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'player-idle-up',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'up_idle_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'player-idle-left',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'left_idle_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'player-idle-right',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'right_idle_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'player-run-down',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'down_run_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'player-run-up',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'up_run_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'player-run-left',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'left_run_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-        this.anims.create({
-            key: 'player-run-right',
-            frames: this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'right_run_', suffix: '.png'}),
-            repeat: -1,
-            frameRate: 8
-        });
-
-        console.log(this.anims.generateFrameNames('player', {start: 1, end: 2, prefix: 'right_run_', suffix: '.png'}));
+        createCharacterAnims(this.anims);
 
         this.player.anims.play('player-idle-down');
         this.physics.add.collider(this.player, tileLayers);
