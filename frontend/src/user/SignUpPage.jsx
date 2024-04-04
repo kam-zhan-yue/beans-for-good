@@ -1,73 +1,64 @@
 import React, { useState } from 'react';
 
 function SignUpPage() {
-  const [userData, setUserData] = useState({
-    username: '',
-    password: '',
-    confirmPassword: '',
-  });
-  const [error, setError] = useState('');
+    const [userData, setUserData] = useState({
+        username: '',
+        password: '',
+        confirmPassword: '',
+    });
+    const [error, setError] = useState('');
 
-  const handleChange = (event) => {
-    const { name, value } = event.target;
-    setUserData({ ...userData, [name]: value });
-    // Reset error state upon change
-    setError('');
-  };
+    const handleChange = (event) => {
+        const { name, value } = event.target;
+        setUserData({ ...userData, [name]: value });
+        // Reset any previous error
+        setError('');
+    };
 
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    if (userData.password !== userData.confirmPassword) {
-      setError('Passwords do not match.');
-      return;
-    }
-    // Further validation can be added here
-    console.log('Submitting:', userData);
-    // Assume a function submitUserData exists to handle the API call
-    // submitUserData(userData).then(response => { ... });
-  };
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+        // Basic client-side validation
+        if (userData.password !== userData.confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
 
-  return (
-    <div className="signup-container">
-      <form onSubmit={handleSubmit} className="signup-form">
-        <div>
-          <label htmlFor="username">Username:</label>
-          <input
-            type="text"
-            id="username"
-            name="username"
-            value={userData.username}
-            onChange={handleChange}
-            required
-          />
+        try {
+            const response = await fetch('/users', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    name: userData.username,
+                    password: userData.password, // In a real app, ensure secure handling of passwords
+                }),
+            });
+
+            if (response.ok) {
+                // Handle success
+                const result = await response.json();
+                console.log('Success:', result);
+                // Redirect the user or clear the form, etc.
+            } else {
+                // Handle server-side validation errors or other issues
+                setError('Failed to sign up. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            setError('An error occurred. Please try again.');
+        }
+    };
+
+    return (
+        <div className="signup-container">
+            <form onSubmit={handleSubmit} className="signup-form">
+                {/* Form fields */}
+                {error && <div className="error">{error}</div>}
+                <button type="submit" className="signup-button">Sign Up</button>
+            </form>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            id="password"
-            name="password"
-            value={userData.password}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="confirmPassword">Confirm Password:</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            value={userData.confirmPassword}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        {error && <p className="error">{error}</p>}
-        <button type="submit" className="signup-button">Sign Up</button>
-      </form>
-    </div>
-  );
+    );
 }
 
 export default SignUpPage;
