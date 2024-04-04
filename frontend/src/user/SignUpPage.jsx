@@ -1,64 +1,60 @@
 import React, { useState } from 'react';
 
-function SignUpPage() {
-    const [userData, setUserData] = useState({
-        username: '',
-        password: '',
-        confirmPassword: '',
-    });
-    const [error, setError] = useState('');
+const SignUpPage = () => {
+  const [name, setName] = useState('');
+  const [password, setPassword] = useState('');
+  const [message, setMessage] = useState('');
 
-    const handleChange = (event) => {
-        const { name, value } = event.target;
-        setUserData({ ...userData, [name]: value });
-        // Reset any previous error
-        setError('');
-    };
-
-    const handleSubmit = async (event) => {
-        event.preventDefault();
-        // Basic client-side validation
-        if (userData.password !== userData.confirmPassword) {
-            setError('Passwords do not match.');
-            return;
-        }
-
-        fetch('/users', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-              name: userData.username,
-              password: userData.password,
-          }),
-      })
-      .then(response => {
-          if (!response.ok) {
-              // If server response wasn't ok, throw an error with the status
-              throw new Error(`Server responded with ${response.status}`);
-          }
-          return response.json();
-      })
-      .then(data => {
-          console.log('Success:', data);
-          // Handle success, such as redirecting the user or clearing the form
-      })
-      .catch(error => {
-          console.error('Error during sign up:', error);
-          setError('Failed to sign up. Please try again.');
+  const handleSignUp = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch('http://localhost:3000/users', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ name, password }),
       });
-    };
 
-    return (
-        <div className="signup-container">
-            <form onSubmit={handleSubmit} className="signup-form">
-                {/* Form fields */}
-                {error && <div className="error">{error}</div>}
-                <button type="submit" className="signup-button">Sign Up</button>
-            </form>
-        </div>
-    );
-}
+      if (!response.ok) {
+        throw new Error('Failed to sign up. User might already exist or there was a server error.');
+      }
+
+      const data = await response.json();
+      setMessage(`Signup successful! Welcome, ${data.name}.`);
+      // Reset form or redirect user as needed
+    } catch (error) {
+      setMessage(error.message);
+    }
+  };
+
+  return (
+    <div>
+      <h2>Sign Up</h2>
+      <form onSubmit={handleSignUp}>
+        <label htmlFor="name">Name:</label>
+        <input
+          type="text"
+          id="name"
+          value={name}
+          onChange={(e) => setName(e.target.value)}
+          required
+        />
+        <br />
+        <label htmlFor="password">Password:</label>
+        <input
+          type="password"
+          id="password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          required
+        />
+        <br />
+        <button type="submit">Sign Up</button>
+      </form>
+      {message && <output>{message}</output>}
+    </div>
+  );
+};
 
 export default SignUpPage;
