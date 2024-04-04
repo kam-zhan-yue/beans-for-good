@@ -13,11 +13,14 @@ const config = {
     height: 600,
     parent: 'game-container',
     backgroundColor: '#028af8',
-    scale: {
-        mode: Phaser.Scale.FIT, // Fit the game inside the window
-        autoCenter: Phaser.Scale.CENTER_BOTH, // Center the game horizontally and vertically
-        zoom: 3
-    },
+  // Allows Phaser canvas to be responsive to browser sizing
+  scale: {
+    mode: Phaser.Scale.ENVELOP,
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    width: 1920,
+    height: 1080,
+    zoom: 3
+  },
     scene: [
         Boot,
         Preloader,

@@ -1,7 +1,8 @@
 import { EventBus } from '../EventBus';
 import { Scene, Tilemaps } from 'phaser';
 import constants from '../GameConstants';
-import debugDraw from '../Utils';
+import debugDraw from '../utilities/DebugDraw';
+import { Align } from '../utilities/align.js';
 
 const LastFacingDirection = {
     UP: 'UP',
@@ -48,7 +49,7 @@ export class Game extends Scene
         debugDraw(tileLayers, this);
 
         // Init the player
-        this.cameras.main.zoom = 3;
+        this.cameras.main.zoom = 4;
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
         this.player = this.physics.add.sprite(centerX, centerY, 'player', 'down_idle_1.png');
@@ -108,20 +109,13 @@ export class Game extends Scene
         this.player.setSize(this.player.width * 0.8, this.player.height);
 
         this.cameras.main.startFollow(this.player, true);
+
+        // Align.scaleToGameW(this.player, 0.2);
     }
     
     create ()
     {
-
         this.cameras.main.setBackgroundColor(0x00ff00);
-
-        // this.add.image(512, 384, 'background').setAlpha(0.5);
-
-        // this.add.text(512, 384, 'Make something fun!\nand share it with us:\nsupport@phaser.io', {
-        //     fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
-        //     stroke: '#000000', strokeThickness: 8,
-        //     align: 'center'
-        // }).setOrigin(0.5).setDepth(100);
 
         this.init();
     
@@ -181,7 +175,6 @@ export class Game extends Scene
             this.player.anims.play('player-run-right', true);
         if(x === 0 && y === 0)
         {
-            console.log('idle')
             this.player.anims.play('player-idle-down')
         
             switch (this.lastFacingDirection) {

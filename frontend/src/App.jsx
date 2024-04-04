@@ -47,21 +47,31 @@ function App() {
         setCanMoveSprite(scene.scene.key !== 'MainMenu');
     };
 
+    const mode = 1;
+
+    // Define a content function to populate the content dynamically
+    const content = () => {
+        switch (mode) {
+            case 0:
+                return <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />;
+            case '1':
+                return <SignUpPage />;
+            case '2':
+                return <ReactOverlay ref={phaserRef} />;
+            default:
+                return null; // Default content when mode is not recognized
+        }
+    };
+
     return (
         <div id="app">
-            <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
-            <SignUpPage />
-            <ReactOverlay ref={phaserRef}/>
-            {/* <div>
-                <button className="button" onClick={changeScene}>Change Scene</button>
-                <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
-                <div className="spritePosition">Sprite Position:
-                    <pre>{`{\n  x: ${spritePosition.x},\n  y: ${spritePosition.y}\n}`}</pre>
-                </div>
-                <div>
-                    <button className="button" onClick={addSprite}>Add New Sprite</button>
-                </div>
-            </div> */}
+            {mode === 0 && 
+                    <SignUpPage />}
+            {mode === 1 && <>
+                    <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
+                    <ReactOverlay ref={phaserRef}/>
+                    </>
+            }
         </div>
     );
 }
