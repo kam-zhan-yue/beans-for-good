@@ -11,10 +11,10 @@ const config = {
     type: Phaser.AUTO,
     width: 1024,
     height: 768,
-    parent: 'game-container',
+    parent: 'phaser-container',
     backgroundColor: '#028af8',
     scale: {
-        mode: Phaser.Scale.FIT,
+        mode: Phaser.Scale.AUTO,
         autoCenter: Phaser.Scale.CENTER_BOTH
     },
     scene: [
