@@ -3,7 +3,10 @@ import { Scene, Tilemaps } from 'phaser';
 import constants from '../GameConstants';
 import debugDraw from '../utilities/DebugDraw';
 import createCharacterAnims from '../utilities/CharacterAnims.js';
+import createTileMapAnims from '../utilities/TileMapAnims.js';
 import { Align } from '../utilities/align.js';
+import Interaction from '../classes/Interaction.js'
+import Player from '../classes/Player.js'
 
 
 const LastFacingDirection = {
@@ -22,6 +25,7 @@ export class Game extends Scene
         //Define a player and cursors as a class property
         this.player = null;
         this.cursors = null;
+        this.interactions = [];
         this.lastFacingDirection = LastFacingDirection.DOWN;
     }
 
@@ -34,17 +38,29 @@ export class Game extends Scene
     {
         //Init the map
         const map = this.make.tilemap({key: 'main_tiles'});
-        var tilesets = [];
+        const tilesets = [];
         constants.TilemapImages.forEach((imageName) => {
             tilesets.push(map.addTilesetImage(imageName, imageName));
         });
 
         // Create layers for all images on the tileset
-        var tileLayers = [];
+        const tileLayers = [];
         constants.TilemapLayers.forEach((layerName) => {
             var layer = map.createLayer(layerName, tilesets, 0, 0);
             layer.setCollisionByProperty({collides: true});
             tileLayers.push(layer);
+        });
+
+        const interactionLayer = map.getObjectLayer('Interactions');
+        console.log(interactionLayer);
+        interactionLayer.objects.forEach(interaction => {
+            if(interaction.properties.length >= 2)
+            {
+                const facilityID = interaction.properties[0].value;
+                const facilityType = interaction.properties[1].value;
+                const interactionObject = new Interaction(this, interaction, facilityID, facilityType);
+                this.interactions.push(interactionObject);
+            }
         });
 
         debugDraw(tileLayers, this);
@@ -54,6 +70,7 @@ export class Game extends Scene
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
         this.player = this.physics.add.sprite(centerX, centerY, 'player', 'down_idle_1.png');
+        // this.player = new Player(this.physics, centerX, centerY, 'player');
         createCharacterAnims(this.anims);
 
         this.player.anims.play('player-idle-down');
@@ -92,7 +109,6 @@ export class Game extends Scene
         {   
             x = -speed;
             this.player.setVelocity(-speed, 0);
-            this.facingRight = false;
             this.lastFacingDirection = LastFacingDirection.LEFT;
         }
         else if(this.cursors.right.isDown)
