@@ -50,16 +50,18 @@ function App() {
     return (
         <div id="app">
             <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
-            <ReactOverlay />
             <SignUpPage />
-            <div>
+            <ReactOverlay ref={phaserRef}/>
+            {/* <div>
                 <button className="button" onClick={changeScene}>Change Scene</button>
                 <button disabled={canMoveSprite} className="button" onClick={moveSprite}>Toggle Movement</button>
                 <div className="spritePosition">Sprite Position:
                     <pre>{`{\n  x: ${spritePosition.x},\n  y: ${spritePosition.y}\n}`}</pre>
                 </div>
-                <button className="button" onClick={addSprite}>Add New Sprite</button>
-            </div>
+                <div>
+                    <button className="button" onClick={addSprite}>Add New Sprite</button>
+                </div>
+            </div> */}
         </div>
     );
 }
