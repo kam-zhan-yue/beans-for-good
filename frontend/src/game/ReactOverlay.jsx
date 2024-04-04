@@ -18,7 +18,7 @@ export const ReactOverlay = forwardRef(function ReactOverlay ({ currentActiveSce
       <div style={overlayStyle}>
           <div>
               <div>
-                  <button className="button" onClick={changeScene}>Change Scene</button>
+                  {/* <button className="button" onClick={changeScene}>Change Scene</button> */}
               </div>
           </div>
       </div>

@@ -3,7 +3,7 @@ import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
 import StartGame from './main';
 import { EventBus } from './EventBus';
 
-export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }, ref)
+export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene, interactionStarted}, ref)
 {
     const game = useRef();
 
@@ -12,6 +12,7 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }
         
         if (game.current === undefined)
         {
+            console.log("start");
             game.current = StartGame("game-container");
             
             if (ref !== null)
@@ -33,8 +34,17 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene }
 
     useEffect(() => {
 
-        EventBus.on('current-scene-ready', (currentScene) => {
+        EventBus.on('interaction-started', (interaction) => {
+            console.log(interaction.facilityID);
+            if (interactionStarted instanceof Function)
+            {
+                interactionStarted(interaction);
+            }
+            
+        });
 
+        EventBus.on('current-scene-ready', (currentScene) => {
+            console.log("current-scene-ready");
             if (currentActiveScene instanceof Function)
             {
                 currentActiveScene(currentScene);

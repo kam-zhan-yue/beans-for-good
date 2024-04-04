@@ -47,6 +47,10 @@ function App() {
         setCanMoveSprite(scene.scene.key !== 'MainMenu');
     };
 
+    const interactionStarted = (interaction) => {
+        console.log(`Frontend Detected Interaction Started with ${interaction.facilityID} of type ${interaction.facilityType}`);
+    };
+
     const mode = 1;
 
     return (
@@ -54,8 +58,11 @@ function App() {
             {mode === 0 && 
                     <SignUpPage />}
             {mode === 1 && <>
-                    <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
-                    {/* <ReactOverlay ref={phaserRef}/> */}
+                    <PhaserGame 
+                        ref={phaserRef} 
+                        currentActiveScene={currentScene}
+                        interactionStarted={interactionStarted}/>
+                    {<ReactOverlay ref={phaserRef}/>}
                     </>
             }
         </div>

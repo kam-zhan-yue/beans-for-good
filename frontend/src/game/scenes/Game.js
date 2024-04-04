@@ -9,11 +9,9 @@ import Interaction from '../classes/Interaction.js'
 import Player from '../classes/Player.js'
 
 
-const LastFacingDirection = {
-    UP: 'UP',
-    DOWN: 'DOWN',
-    LEFT: 'LEFT',
-    RIGHT: 'RIGHT',
+const State = {
+    IDLE: 'IDLE',
+    INTERACTING: 'INTERACTING',
 };
 
 export class Game extends Scene
@@ -25,8 +23,9 @@ export class Game extends Scene
         //Define a player and cursors as a class property
         this.player = null;
         this.cursors = null;
+        this.state = State.IDLE;
         this.interactions = [];
-        this.lastFacingDirection = LastFacingDirection.DOWN;
+        this.currentInteraction = null
     }
 
     preload()
@@ -52,7 +51,6 @@ export class Game extends Scene
         });
 
         const interactionLayer = map.getObjectLayer('Interactions');
-        console.log(interactionLayer);
         interactionLayer.objects.forEach(interaction => {
             if(interaction.properties.length >= 2)
             {
@@ -92,14 +90,35 @@ export class Game extends Scene
 
     checkInputs ()
     {
-        if(!this.cursors || !this.player.body)
-            return;
+        switch(this.state)
+        {
+            case State.IDLE:
+                this.player.checkInputs(this.cursors);
+                if(this.currentInteraction != null && this.cursors.space.isDown)
+                {
+                    EventBus.emit('interaction-started', this.currentInteraction);
+                    this.state = State.INTERACTING;
+                }
+                break;
+            case State.INTERACTING:
+                this.player.idle();
+                break;
+        }
+    }
 
-        this.player.checkInputs(this.cursors);
+    checkColliders ()
+    {
+        this.interactions.forEach(interaction => {
+            if(interaction.containsPoint(this.player.body.x, this.player.body.y))
+            {
+                this.currentInteraction = interaction;
+            }
+        });
     }
 
     update ()
     {
+        this.checkColliders();
         this.checkInputs();
     }
 }

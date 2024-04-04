@@ -67,21 +67,27 @@ export default class Player {
             this.body.anims.play('player-run-right', true);
         if(x === 0 && y === 0)
         {
-            switch (this.lastFacingDirection) {
-                case LastFacingDirection.UP:
-                    this.body.anims.play('player-idle-up', true);
-                    break;
-                case LastFacingDirection.DOWN:
-                    this.body.anims.play('player-idle-down', true);
-                    break;
-                case LastFacingDirection.LEFT:
-                    this.body.anims.play('player-idle-left', true);
-                    break;
-                case LastFacingDirection.RIGHT:
-                    this.body.anims.play('player-idle-right', true);
-                    break;
-            }
+            this.idle();
         }
         this.body.setVelocity(x, y);
+    }
+
+    idle () 
+    {
+        this.body.setVelocity(0, 0);
+        switch (this.lastFacingDirection) {
+            case LastFacingDirection.UP:
+                this.body.anims.play('player-idle-up', true);
+                break;
+            case LastFacingDirection.DOWN:
+                this.body.anims.play('player-idle-down', true);
+                break;
+            case LastFacingDirection.LEFT:
+                this.body.anims.play('player-idle-left', true);
+                break;
+            case LastFacingDirection.RIGHT:
+                this.body.anims.play('player-idle-right', true);
+                break;
+        }
     }
 }
