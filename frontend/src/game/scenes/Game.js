@@ -1,3 +1,4 @@
+import { EventBus } from '../EventBus';
 import { Scene } from 'phaser';
 
 export class Game extends Scene
@@ -17,12 +18,13 @@ export class Game extends Scene
             fontFamily: 'Arial Black', fontSize: 38, color: '#ffffff',
             stroke: '#000000', strokeThickness: 8,
             align: 'center'
-        }).setOrigin(0.5);
+        }).setOrigin(0.5).setDepth(100);
 
-        this.input.once('pointerdown', () => {
+        EventBus.emit('current-scene-ready', this);
+    }
 
-            this.scene.start('GameOver');
-
-        });
+    changeScene ()
+    {
+        this.scene.start('GameOver');
     }
 }
