@@ -49,20 +49,6 @@ function App() {
 
     const mode = 1;
 
-    // Define a content function to populate the content dynamically
-    const content = () => {
-        switch (mode) {
-            case 0:
-                return <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />;
-            case '1':
-                return <SignUpPage />;
-            case '2':
-                return <ReactOverlay ref={phaserRef} />;
-            default:
-                return null; // Default content when mode is not recognized
-        }
-    };
-
     return (
         <div id="app">
             {mode === 0 && 
