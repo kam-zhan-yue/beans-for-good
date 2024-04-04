@@ -69,15 +69,11 @@ export class Game extends Scene
         this.cameras.main.zoom = 4;
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
-        this.player = this.physics.add.sprite(centerX, centerY, 'player', 'down_idle_1.png');
-        // this.player = new Player(this.physics, centerX, centerY, 'player');
+        // this.player.body = this.physics.add.sprite(centerX, centerY, 'player', 'down_idle_1.png');
+        this.player = new Player(this.physics, centerX, centerY, 'player');
         createCharacterAnims(this.anims);
-
-        this.player.anims.play('player-idle-down');
-        this.physics.add.collider(this.player, tileLayers);
-        this.player.setSize(this.player.width * 0.8, this.player.height);
-
-        this.cameras.main.startFollow(this.player, true);
+        this.physics.add.collider(this.player.body, tileLayers);
+        this.cameras.main.startFollow(this.player.body, true);
     }
     
     create ()
@@ -96,67 +92,10 @@ export class Game extends Scene
 
     checkInputs ()
     {
-        if(!this.cursors || !this.player)
+        if(!this.cursors || !this.player.body)
             return;
 
-        const speed = 100;
-
-        var x = 0;
-        var y = 0;
-
-        //Handle speed
-        if(this.cursors.left.isDown)
-        {   
-            x = -speed;
-            this.player.setVelocity(-speed, 0);
-            this.lastFacingDirection = LastFacingDirection.LEFT;
-        }
-        else if(this.cursors.right.isDown)
-        {
-            x = speed;
-            this.player.setVelocity(speed, 0);
-            this.lastFacingDirection = LastFacingDirection.RIGHT;
-        }
-        if(this.cursors.up.isDown)
-        {
-            y = -speed;
-            this.player.setVelocity(0, -speed);
-            this.lastFacingDirection = LastFacingDirection.UP;
-        }
-        else if(this.cursors.down.isDown)
-        {
-            y = speed;
-            this.player.setVelocity(0, speed);
-            this.lastFacingDirection = LastFacingDirection.DOWN;
-        }
-
-        //Handle animations
-        if(y < 0)
-            this.player.anims.play('player-run-up', true);
-        else if(y > 0)
-            this.player.anims.play('player-run-down', true);
-        else if(x < 0)
-            this.player.anims.play('player-run-left', true);
-        else if(x > 0)
-            this.player.anims.play('player-run-right', true);
-        if(x === 0 && y === 0)
-        {
-            switch (this.lastFacingDirection) {
-                case LastFacingDirection.UP:
-                    this.player.anims.play('player-idle-up', true);
-                    break;
-                case LastFacingDirection.DOWN:
-                    this.player.anims.play('player-idle-down', true);
-                    break;
-                case LastFacingDirection.LEFT:
-                    this.player.anims.play('player-idle-left', true);
-                    break;
-                case LastFacingDirection.RIGHT:
-                    this.player.anims.play('player-idle-right', true);
-                    break;
-            }
-        }
-        this.player.setVelocity(x, y);
+        this.player.checkInputs(this.cursors);
     }
 
     update ()
