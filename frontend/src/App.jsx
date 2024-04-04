@@ -4,6 +4,8 @@ import Phaser from 'phaser';
 import { PhaserGame } from './game/PhaserGame';
 import { ReactOverlay } from './game/ReactOverlay';
 
+import SignUpPage from './user/SignUpPage';
+
 function App ()
 {
     // The sprite can only be moved in the MainMenu Scene
@@ -73,8 +75,13 @@ function App ()
 
     return (
         <div id="app">
+<<<<<<< Updated upstream
             <PhaserGame ref={phaserRef} currentActiveScene={currentScene} />
             <ReactOverlay/>
+=======
+            {/* <PhaserGame ref={phaserRef} currentActiveScene={currentScene} /> */}
+            <SignUpPage />
+>>>>>>> Stashed changes
             <div>
                 <div>
                     <button className="button" onClick={changeScene}>Change Scene</button>
