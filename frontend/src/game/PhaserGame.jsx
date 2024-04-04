@@ -1,18 +1,18 @@
 import PropTypes from 'prop-types';
-import React, { forwardRef, useEffect, useLayoutEffect, useRef } from 'react';
+import React, { forwardRef, useState, useEffect, useLayoutEffect, useRef } from 'react';
 import StartGame from './main';
 import { EventBus } from './EventBus';
 
-export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene, interactionStarted}, ref)
+export const PhaserGame = forwardRef(function PhaserGame ({interactionStarted}, ref)
 {
     const game = useRef();
+    const instanceId = useRef(Math.random().toString(36).substring(7)); // Generate a random ID for the instance
+
 
     // Create the game inside a useLayoutEffect hook to avoid the game being created outside the DOM
     useLayoutEffect(() => {
-        
         if (game.current === undefined)
         {
-            console.log("start");
             game.current = StartGame("game-container");
             
             if (ref !== null)
@@ -22,44 +22,24 @@ export const PhaserGame = forwardRef(function PhaserGame ({ currentActiveScene, 
         }
 
         return () => {
-
             if (game.current)
             {
                 game.current.destroy(true);
                 game.current = undefined;
             }
-
         }
     }, [ref]);
 
     useEffect(() => {
-
         EventBus.on('interaction-started', (interaction) => {
             console.log(interaction.facilityID);
             if (interactionStarted instanceof Function)
             {
                 interactionStarted(interaction);
             }
-            
         });
-
-        EventBus.on('current-scene-ready', (currentScene) => {
-            console.log("current-scene-ready");
-            if (currentActiveScene instanceof Function)
-            {
-                currentActiveScene(currentScene);
-            }
-            ref.current.scene = currentScene;
-            
-        });
-
-        return () => {
-
-            EventBus.removeListener('current-scene-ready');
-
-        }
         
-    }, [currentActiveScene, ref])
+    }, [ref])
 
     return (
         <div id="game-container">
