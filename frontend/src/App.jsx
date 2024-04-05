@@ -18,12 +18,13 @@ const AppState = {
 
 function App() {
     const phaserRef = useRef();
-    const facilityPanelRef = useRef();
     const [state, setState] = useState(AppState.GAME);
+    const [interaction, setInteraction] = useState(null);
 
     const interactionStarted = (interaction) => {
         setState(AppState.FACILITY);
-        facilityPanelRef.current.handleInteractionStart(interaction);
+        setInteraction(interaction);
+        // facilityPanelRef.current.handleInteractionStart(interaction);
     };
     
     const interactionOver = () => {
@@ -67,8 +68,9 @@ function App() {
                             <GamePanel
                             inventoryClicked={inventoryClicked}
                         />}
-                        {<FacilityPanel 
-                            ref={facilityPanelRef}
+                        {state === AppState.FACILITY &&
+                            <FacilityPanel 
+                            facility={interaction}
                             interactionOver={interactionOver}/>}
                     </>
                 }

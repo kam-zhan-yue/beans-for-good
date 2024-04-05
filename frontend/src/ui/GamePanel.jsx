@@ -24,11 +24,10 @@ const Backpack = styled.img`
   }
 `
 
-export const GamePanel = forwardRef(function GamePanel ({ inventoryClicked, currencyClicked }, ref)
-{
+export const GamePanel = ({ inventoryClicked }) => {
   return (
-      <Overlay>
-          <Backpack src='./assets/ui/backpack.png' onClick={()=>inventoryClicked()}></Backpack>
-      </Overlay>
-    );
-  });
+    <Overlay>
+        <Backpack src='./assets/ui/backpack.png' onClick={()=>inventoryClicked()}></Backpack>
+    </Overlay>
+  );
+};

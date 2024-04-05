@@ -16,22 +16,10 @@ const Header = styled.h1`
 
 `
 
-export const FacilityPanel = forwardRef(function FacilityPanel ({ interactionOver }, ref)
-{
-  const [currentInteraction, setCurrentInteraction] = useState(null);
+export const FacilityPanel = ({ facility, interactionOver }) => {
 
-  const handleInteractionStart = (interaction) => {
-      // Your logic to handle interaction start
-      console.log(`Interaction started in FacilityPanel with ${interaction.facilityID} of type ${interaction.facilityType}`);
-      setCurrentInteraction(interaction);
-  };
-
-  useImperativeHandle(ref, () => ({
-    handleInteractionStart
-  }));
-
-  const handleInteraction = () => {
-    setCurrentInteraction(null);
+  const closeButtonClicked = () => {
+    // setCurrentFacility(null);
     if(interactionOver instanceof(Function))
     {
       interactionOver();
@@ -40,10 +28,10 @@ export const FacilityPanel = forwardRef(function FacilityPanel ({ interactionOve
 
   return (
       <Overlay>
-        {currentInteraction && <div>
-          <Header>{currentInteraction.facilityType} - {currentInteraction.facilityID}</Header>
-          <button className="button" onClick={handleInteraction}>Close Panel</button>
+        {facility && <div>
+          <Header>{facility.facilityType} - {facility.facilityID}</Header>
+          <button className="button" onClick={closeButtonClicked}>Close Panel</button>
           </div>}
       </Overlay>
     );
-  });
+};
