@@ -17,10 +17,10 @@ export class GameUI extends Scene {
     create()
     {
         // Add arrow images as sprites
-        this.upArrow = this.add.image(0, 0, `${constants.ArrowKeys[0]}-active`);
-        this.downArrow = this.add.image(0, 0, `${constants.ArrowKeys[1]}-active`);
-        this.leftArrow = this.add.image(0, 0, `${constants.ArrowKeys[2]}-active`);
-        this.rightArrow = this.add.image(0, 0, `${constants.ArrowKeys[3]}-active`);
+        this.upArrow = this.add.image(0, 0, `${constants.ArrowKeys[0]}-inactive`);
+        this.downArrow = this.add.image(0, 0, `${constants.ArrowKeys[1]}-inactive`);
+        this.leftArrow = this.add.image(0, 0, `${constants.ArrowKeys[2]}-inactive`);
+        this.rightArrow = this.add.image(0, 0, `${constants.ArrowKeys[3]}-inactive`);
 
         // Set scale for arrow keys
         const scale = 4; // Adjust scale factor as needed
