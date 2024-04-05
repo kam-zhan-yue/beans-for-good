@@ -8,7 +8,6 @@ import { Align } from '../utilities/align.js';
 import Interaction from '../classes/Interaction.js'
 import Player from '../classes/Player.js'
 
-
 const State = {
     IDLE: 'IDLE',
     INTERACTING: 'INTERACTING',
@@ -77,6 +76,11 @@ export class Game extends Scene
     changeScene ()
     {
         this.scene.start('GameOver');
+    }
+
+    interactionStarted ()
+    {
+        this.state = State.INTERACTING;
     }
 
     interactionOver ()
