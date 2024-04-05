@@ -11,12 +11,14 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './user/Home';
 import SignUpPage from './user/SignUpPage';
 import LogInPage from './user/LogInPage';
+import { CurrencyPanel } from './ui/CurrencyPanel';
 
 // State Machine
 const AppState = {
     GAME: 'GAME',
     INVENTORY: 'INVENTORY',
     FACILITY: 'FACILITY',
+    CURRENCY: 'CURRENCY',
 };
 
 function App() {
@@ -36,6 +38,11 @@ function App() {
 
     const inventoryClicked = () => {
         setState(AppState.INVENTORY);
+        pauseGame();
+    }
+
+    const currencyClicked = () => {
+        setState(AppState.CURRENCY);
         pauseGame();
     }
 
@@ -76,6 +83,7 @@ function App() {
                         {state === AppState.GAME &&
                             <GamePanel
                             inventoryClicked={inventoryClicked}
+                            currencyClicked={currencyClicked}
                         />}
                         {state === AppState.FACILITY &&
                             <FacilityPanel 
@@ -83,6 +91,9 @@ function App() {
                             interactionOver={interactionOver}/>}
                         {state === AppState.INVENTORY &&
                             <InventoryPanel 
+                            interactionOver={interactionOver}/>}
+                        {state === AppState.CURRENCY &&
+                            <CurrencyPanel 
                             interactionOver={interactionOver}/>}
                     </>
                 }
@@ -92,3 +103,4 @@ function App() {
 }
 
 export default App;
+
