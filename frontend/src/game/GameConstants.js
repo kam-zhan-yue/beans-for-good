@@ -1,4 +1,4 @@
-const constants = {
+const gameConstants = {
     Debug: false,
     TilemapImages: [
         "alice",
@@ -37,7 +37,7 @@ const constants = {
         "right-arrow",
     ],
 
-    SpawnPoint: "housing"
+    SpawnPoint: "garage"
 }
 
-export default { ...constants };
+export default { ...gameConstants };
