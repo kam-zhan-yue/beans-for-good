@@ -4,6 +4,7 @@
   import Col from 'react-bootstrap/Col';
   import Container from "react-bootstrap/Container";
   import 'bootstrap/dist/css/bootstrap.css';
+  import constants from '../Constants';
 
   const ItemBackground = styled(Container)`
     display: flex;
@@ -40,7 +41,7 @@
     font-weight: 400;
     margin: 0; /* Remove default margin */
     text-align: left; /* Align text to the right */
-    color: rgb(219, 219, 219);
+    color: ${constants.primary}
   `
 
 
@@ -50,7 +51,7 @@
     font-weight: 400;
     margin: 0; /* Remove default margin */
     text-align: right; /* Align text to the right */
-    color: rgb(219, 219, 219);
+    color: ${constants.primary}
   `
 
   const Coin = styled.img`
