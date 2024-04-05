@@ -35,6 +35,20 @@ const InventoryContainer = styled.div`
   margin-top: 10px;
 `
 
+const CloseButton = styled.img`
+  width: 80px;
+  height: 80px;
+
+  image-rendering: pixelated; /* Preserve image quality when scaled up */
+
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+  }
+`
 
 
 export const InventoryPanel = ({ interactionOver }) => {
@@ -95,7 +109,7 @@ export const InventoryPanel = ({ interactionOver }) => {
                     </Grid>
                 </Grid>
             </Inventory>
-            <button className="button" onClick={closeButtonClicked}>Close Panel</button>
+            <CloseButton src='./assets/ui/close-button.png' onClick={()=>closeButtonClicked()}></CloseButton>
         </Overlay>
     );
 };
