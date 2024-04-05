@@ -4,16 +4,6 @@ import React, { forwardRef } from 'react';
 
 export const ReactOverlay = forwardRef(function ReactOverlay ({ currentActiveScene }, ref)
 {
-    const changeScene = () => {
-      console.log("Change scene")
-      const scene = ref.current.scene;
-
-      if (scene)
-      {
-          scene.changeScene();
-      }
-    }
-
     return (
       <div style={overlayStyle}>
           <div>

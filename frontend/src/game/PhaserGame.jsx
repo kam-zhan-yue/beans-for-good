@@ -6,8 +6,6 @@ import { EventBus } from './EventBus';
 export const PhaserGame = forwardRef(function PhaserGame ({interactionStarted}, ref)
 {
     const game = useRef();
-    const instanceId = useRef(Math.random().toString(36).substring(7)); // Generate a random ID for the instance
-
 
     // Create the game inside a useLayoutEffect hook to avoid the game being created outside the DOM
     useLayoutEffect(() => {
@@ -32,11 +30,8 @@ export const PhaserGame = forwardRef(function PhaserGame ({interactionStarted}, 
 
     useEffect(() => {
         EventBus.on('interaction-started', (interaction) => {
-            console.log(interaction.facilityID);
             if (interactionStarted instanceof Function)
-            {
                 interactionStarted(interaction);
-            }
         });
         
     }, [ref])
