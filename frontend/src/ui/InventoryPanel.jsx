@@ -11,6 +11,12 @@ const Overlay = styled.div`
 `
 
 const Inventory = styled.div`
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px; // Adjust gap between items here
+    padding: 10px;
+
     background-color: rgba(0, 0, 0, 0); 
 
     box-sizing: border-box;
@@ -23,8 +29,8 @@ const Inventory = styled.div`
 
     z-index: 0;
 
-    max-width: 500px;
-    min-height: 330px;
+    // max-width: 500px;
+    // min-height: 330px;
     margin: 7px;
 
     position: relative;
@@ -36,20 +42,23 @@ const Inventory = styled.div`
 export const InventoryPanel = ({ interactionOver }) => {
 
     const closeButtonClicked = () => {
-      if(interactionOver instanceof(Function))
-      {
+        if(interactionOver instanceof(Function))
+        {
         interactionOver();
-      }
+        }
     }
   
-  return (
+    // Generate InventoryItem components
+    const inventoryItems = Array.from({ length: 15 }, (_, index) => (
+        <InventoryItem/>
+    ));
+
+    return (
     <Overlay>
         <Inventory>
-            <InventoryItem></InventoryItem>
-            <InventoryItem></InventoryItem>
-            <InventoryItem></InventoryItem>
+            {inventoryItems}
         </Inventory>
         <button className="button" onClick={closeButtonClicked}>Close Panel</button>
     </Overlay>
-  );
+    );
 };
