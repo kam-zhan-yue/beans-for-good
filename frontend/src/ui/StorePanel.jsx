@@ -52,8 +52,8 @@ const ItemDisplay = styled.img`
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
     margin-top:10%;
-    width: 80%;
-    height: 80%;
+    width: 60%;
+    height: auto;
     max-width: 300px;
     max-height: 300px;
 `
