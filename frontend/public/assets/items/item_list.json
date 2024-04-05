@@ -1,66 +1,62 @@
 {
     "0": {
+        "name": "Apple",
+        "sprite": "apple.png"
+    },
+    "1": {
+        "name": "Avocado",
+        "sprite": "avocado.png"
+    },
+    "2": {
         "name": "Bread",
         "sprite": "bread.png"
     },
-    "1": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
-    },
-    "2": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
-    },
     "3": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Cookie",
+        "sprite": "cookie.png"
     },
     "4": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Honey",
+        "sprite": "honey.png"
     },
     "5": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Bowl",
+        "sprite": "bowl.png"
     },
     "6": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Jam",
+        "sprite": "jam.png"
     },
     "7": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Pretzel",
+        "sprite": "pretzel.png"
     },
     "8": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Sushi",
+        "sprite": "sushi.png"
     },
     "9": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Thing",
+        "sprite": "thing.png"
     },
     "10": {
         "name": "Trinket",
         "sprite": "trinket.png"
     },
     "11": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Turkey",
+        "sprite": "turkey.png"
     },
     "12": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Vase",
+        "sprite": "vase.png"
     },
     "13": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Watermelon",
+        "sprite": "watermelon.png"
     },
     "14": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
-    },
-    "15": {
-        "name": "Trinket",
-        "sprite": "trinket.png"
+        "name": "Yellow Jar",
+        "sprite": "yellow-jar.png"
     }
 }
