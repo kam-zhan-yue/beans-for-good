@@ -17,8 +17,12 @@ border: 16px solid transparent;
 border-image: url(./assets/ui/inventory-item-background.png) 7.5 fill repeat;
 `;
 
-export const InventoryItem = ({ itemData }) => {  
+const assetURL = './assets/items/'
+
+export const InventoryItem = ({ itemData }) => {
   return (
-    <ItemBackground></ItemBackground>
+    <ItemBackground>
+      <img src={assetURL + itemData.sprite} />
+    </ItemBackground>
   );
 };

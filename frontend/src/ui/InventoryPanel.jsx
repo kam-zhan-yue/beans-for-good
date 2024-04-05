@@ -1,4 +1,4 @@
-import React, { forwardRef, useState, useImperativeHandle } from 'react';
+import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem';
 
@@ -40,26 +40,49 @@ const Inventory = styled.div`
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
 `
 
+const assetsURL = './assets/'
+
+
+
 export const InventoryPanel = ({ interactionOver }) => {
+    const [inventoryData, setInventoryData] = useState([]);
+    const [itemList, setItemList] = useState({})
+    const [isLoading, setIsLoading] = useState(true);
 
     const closeButtonClicked = () => {
-        if(interactionOver instanceof(Function))
-        {
-        interactionOver();
+        if (interactionOver instanceof (Function)) {
+            interactionOver();
         }
     }
-  
-    // Generate InventoryItem components
-    const inventoryItems = Array.from({ length: 15 }, (_, index) => (
-        <InventoryItem/>
-    ));
+
+    useEffect(() => {
+        const fetchInventory = async (setInventory) => {
+            const items = await fetch(assetsURL + 'dummy_inventory.json')
+            const response = await items.json();
+            setInventory(response.items);
+        }
+
+        const fetchItemList = async (setItemList) => {
+            const response = await fetch('./assets/items/item_list.json');
+            const itemList = await response.json();
+            setItemList(itemList);
+        }
+
+
+        fetchItemList(setItemList);
+        fetchInventory(setInventoryData);
+    }, []);
+
+    const inventoryItems = inventoryData.map(item => itemList[item.id]);
+    const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} />);
+    console.log(itemList);
 
     return (
-    <Overlay>
-        <Inventory>
-            {inventoryItems}
-        </Inventory>
-        <button className="button" onClick={closeButtonClicked}>Close Panel</button>
-    </Overlay>
+        <Overlay>
+            <Inventory>
+                {inventoryComponents}
+            </Inventory>
+            <button className="button" onClick={closeButtonClicked}>Close Panel</button>
+        </Overlay>
     );
 };
