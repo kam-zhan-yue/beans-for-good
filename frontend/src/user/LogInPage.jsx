@@ -21,10 +21,9 @@ const LoginPage = () => {
       });
 
       if (response.ok) {
-        // Assuming your server responds with a JSON { message: "Login successful!" }
+    
         const data = await response.json();
-        console.log(data.message); // Optionally log the success message
-        navigate('/dashboard'); // Redirect to the dashboard or another target page on successful login
+        console.log(data.message); 
       } else {
         // Handle different error statuses from the server with more specific messages
         const errorData = await response.json(); // Assuming the server responds with JSON error messages
@@ -33,7 +32,7 @@ const LoginPage = () => {
         } else if (response.status === 404) {
           setErrorMessage('User not found.');
         } else {
-          setErrorMessage(errorData.message || 'An error occurred. Please try again later.');
+          setErrorMessage(errorData.message);
         }
       }
     } catch (error) {
