@@ -1,8 +1,8 @@
 import { useRef, useState } from 'react';
 
 import { PhaserGame } from './game/PhaserGame';
-import { FacilityPanel } from './game/ui/FacilityPanel';
-import { ReactOverlay } from './game/ReactOverlay'; // Assuming this import is correct
+import { FacilityPanel } from './ui/FacilityPanel';
+import { ReactOverlay } from './ui/ReactOverlay'; // Assuming this import is correct
 
 
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -18,6 +18,19 @@ function App() {
         console.log(`Frontend Detected Interaction Started with ${interaction.facilityID} of type ${interaction.facilityType}`);
         facilityPanelRef.current.handleInteractionStart(interaction);
     };
+    
+    const interactionOver = () => {
+        // phaserRef.current.interactionOver();
+
+        console.log("interaction over");
+        console.log(`phaserRef: ${phaserRef} current: ${phaserRef.current} scene: ${phaserRef.current.scene}`);
+        const scene = phaserRef.current.scene;
+
+        if (scene)
+        {
+            scene.changeScene();
+        }
+    }
 
     const mode = 1; // Change this to 0 to see the login/signup pages
     
@@ -37,7 +50,9 @@ function App() {
                         <PhaserGame 
                             ref={phaserRef}
                             interactionStarted={interactionStarted}/>
-                        <FacilityPanel ref={facilityPanelRef}/>
+                        <FacilityPanel 
+                            ref={facilityPanelRef}
+                            interactionOver={interactionOver}/>
                     </>
                 }
             </div>
