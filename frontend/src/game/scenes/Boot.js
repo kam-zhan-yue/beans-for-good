@@ -22,6 +22,14 @@ export class Boot extends Scene
         
         this.load.image('background', 'assets/bg.png');
         this.load.image('spacebar', 'assets/ui/spacebar.png');
+
+        constants.ArrowKeys.forEach((arrowKey) => {
+            const activeKey = `${arrowKey}-active`;
+            const inactiveKey = `${arrowKey}-inactive`;
+            console.log(`loading ${activeKey}`)
+            this.load.image(activeKey, `assets/ui/${activeKey}.png`);
+            this.load.image(inactiveKey, `assets/ui/${inactiveKey}.png`);
+        });
     }
 
     create ()

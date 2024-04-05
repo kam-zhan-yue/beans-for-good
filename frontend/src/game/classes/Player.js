@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 const LastFacingDirection = {
     UP: 'UP',
     DOWN: 'DOWN',

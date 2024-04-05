@@ -4,6 +4,7 @@ import { GameOver } from './scenes/GameOver';
 import { MainMenu } from './scenes/MainMenu';
 import Phaser from 'phaser';
 import { Preloader } from './scenes/Preloader';
+import { GameUI } from './scenes/GameUI';
 
 // Find out more information about the Game Config at:
 // https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -15,7 +16,7 @@ const config = {
     backgroundColor: '#028af8',
   // Allows Phaser canvas to be responsive to browser sizing
   scale: {
-    mode: Phaser.Scale.ENVELOP,
+    mode: Phaser.Scale.RESIZE,
     autoCenter: Phaser.Scale.CENTER_BOTH,
     width: 1920,
     height: 1080,
@@ -26,7 +27,8 @@ const config = {
         Preloader,
         MainMenu,
         Game,
-        GameOver
+        GameOver,
+        GameUI
     ],
 
     physics: {

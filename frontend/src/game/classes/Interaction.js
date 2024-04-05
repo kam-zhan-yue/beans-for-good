@@ -1,5 +1,4 @@
-// Define a class to represent rectangles
-class Interaction {
+export default class Interaction {
     constructor(scene, interaction, facilityID, facilityType) {
         this.scene = scene;
         this.x = interaction.x;
@@ -55,5 +54,3 @@ class Interaction {
         this.tooltip.setVisible(false);
     }
 }
-
-export default Interaction;

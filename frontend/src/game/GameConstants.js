@@ -18,6 +18,13 @@ const constants = {
         "Foreground",
         "Foreground 2",
         "Top",
+    ],
+
+    ArrowKeys: [
+        "up-arrow",
+        "down-arrow",
+        "left-arrow",
+        "right-arrow",
     ]
 }
 

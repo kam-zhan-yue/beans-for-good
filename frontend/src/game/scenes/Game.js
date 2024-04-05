@@ -3,10 +3,9 @@ import { Scene, Tilemaps } from 'phaser';
 import constants from '../GameConstants';
 import debugDraw from '../utilities/DebugDraw';
 import createCharacterAnims from '../utilities/CharacterAnims.js';
-import createTileMapAnims from '../utilities/TileMapAnims.js';
-import { Align } from '../utilities/align.js';
 import Interaction from '../classes/Interaction.js'
 import Player from '../classes/Player.js'
+import eventsCenter from '../events/EventsCenter.js';
 
 const State = {
     IDLE: 'IDLE',
@@ -80,6 +79,7 @@ export class Game extends Scene
 
     interactionStarted ()
     {
+        eventsCenter.emit('interacting');
         this.state = State.INTERACTING;
         this.interactions.forEach(interaction => {
             interaction.setActive(false);
@@ -88,6 +88,7 @@ export class Game extends Scene
 
     interactionOver ()
     {
+        eventsCenter.emit('idle');
         this.state = State.IDLE;
         this.interactions.forEach(interaction => {
             interaction.setActive(true);
@@ -96,6 +97,8 @@ export class Game extends Scene
 
     create ()
     {
+        this.scene.run('GameUI');
+
         this.cameras.main.setBackgroundColor(0x00ff00);
 
         this.setupGame();
@@ -124,6 +127,7 @@ export class Game extends Scene
                 this.player.idle();
                 break;
         }
+        eventsCenter.emit('cursors', this.cursors);
     }
 
     checkColliders ()
