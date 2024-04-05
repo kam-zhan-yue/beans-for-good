@@ -1,7 +1,11 @@
   import React, { forwardRef, useState, useImperativeHandle } from 'react';
   import styled from 'styled-components';
+  import Row from 'react-bootstrap/Row';
+  import Col from 'react-bootstrap/Col';
+  import Container from "react-bootstrap/Container";
+  import 'bootstrap/dist/css/bootstrap.css';
 
-  const ItemBackground = styled.div`
+  const ItemBackground = styled(Container)`
     display: flex;
     flex-direction: column;
     // align-items: center;
@@ -28,7 +32,8 @@
   `
 
   const ItemImage = styled.img`
-
+    max-width: 10%;
+    max-height: 100%;
   `
 
   const ItemPrice = styled.div`
@@ -48,6 +53,13 @@
     color: rgb(219, 219, 219);
   `
 
+  const Coin = styled.img`
+  width: 80px;
+  height: 80px;
+
+  image-rendering: pixelated; /* Preserve image quality when scaled up */
+`
+
   const assetURL = './assets/items/'
 
   export const StoreItem = ({ onItemClicked, itemData }) => {
@@ -57,10 +69,20 @@
         }
     };
       return (
-          <ItemBackground onClick={handleClick}>
-              {/* <ItemImage src={assetURL + itemData.sprite} /> */}
-              {/* <span>{itemData.name}</span>
-              <span>{itemData.price}</span> */}
+        <ItemBackground onClick={handleClick}>
+          <Row>
+            <Col>
+              <ItemImage src={assetURL + itemData.sprite} />
+            </Col>
+
+            <Col>
+            
+            </Col>
+
+            <Col>
+              <Coin src='./assets/ui/coin.png'></Coin>
+            </Col>
+          </Row>
           </ItemBackground>
       );
   };

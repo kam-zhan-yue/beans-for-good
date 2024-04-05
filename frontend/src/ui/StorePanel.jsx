@@ -48,6 +48,14 @@ const ItemDisplayContainer = styled.div`
 `
 
 const ItemDisplay = styled.img`
+    image-rendering: pixelated;
+    image-rendering: -moz-crisp-edges;
+    image-rendering: crisp-edges;
+    margin-top:10%;
+    width: 80%;
+    height: 80%;
+    max-width: 300px;
+    max-height: 300px;
 `
 
 const PurchaseButton = styled.div`
@@ -63,6 +71,10 @@ const PurchaseButton = styled.div`
       }
 `
 
+const Price = styled.h1`
+
+`
+
 const CloseButton = styled.img`
     width: 80px;
     height: 80px;
@@ -71,7 +83,6 @@ const CloseButton = styled.img`
 
     transition: 0.3s;
     -webkit-transition: 0.3s;
-
     &:hover {
     cursor: pointer;
     transform: translateY(-5px);
@@ -89,7 +100,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         const fetchStoreItems = async () => {
             const items = await fetch(`./assets/dummy_${data.facilityID}.json`);
             const response = await items.json();
-            console.log(response);
+            // console.log(response);
             setStoreData(response.items);
         }
 
@@ -115,7 +126,9 @@ export const StorePanel = ({ data, interactionOver }) => {
     }
     
     const handlePurchase = () => {
-
+        if(currentItem == null)
+            return;
+        console.log(`try purchase ${currentItem}`);
     }
 
     const storeItems = storeData.map(item => {
@@ -124,7 +137,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         return itemData;
     });
     const storeComponents = storeItems.map(item => <StoreItem onItemClicked={onItemClicked} itemData={item} />);
-    console.log(storeItems);
+    // console.log(storeItems);
 
 
     return (
@@ -143,7 +156,9 @@ export const StorePanel = ({ data, interactionOver }) => {
                                     <ItemDisplay src={assetURL + currentItem.sprite}/>}
                             </ItemDisplayContainer>
                             <PurchaseButton onClick={handlePurchase}>
+
                                 {currentItem && currentItem.price}
+                                {currentItem === null && 0}
                             </PurchaseButton>
                         </Col>
                     </Row>
