@@ -1,6 +1,11 @@
 import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
 import { StoreItem } from './StoreItem';
+import { Grid } from "@material-ui/core";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/Container";
+import 'bootstrap/dist/css/bootstrap.css';
 
 const Overlay = styled.div`
     position: fixed;
@@ -10,34 +15,50 @@ const Overlay = styled.div`
     text-align: center;
 `
 
+const StoreGrid = styled(Grid)`
+
+`
+
 const Store = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 2vw; // Adjust gap between items here
-  
-    padding: 10px;
-
-    background-color: rgba(0, 0, 0, 0); 
-
-    box-sizing: border-box;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-
-    -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition:         all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-
-    z-index: 0;
-
-    // max-width: 500px;
-    // min-height: 330px;
-    margin: 7px;
-
-    position: relative;
-
+    padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
+    height: 50vh;
+    min-width: 60vw;
+    max-width: 60vw; // Adjust max width here
+    max-height: 500px; // Adjust max height here
+`
+
+const StoreListingContainer = styled.div`
+    width: 100%;
+    max-height: 400px;
+    overflow: auto; // Add overflow for scrolling if needed
+
+    border: 16px solid transparent;
+    border-image: url(./assets/ui/panel-background.png) 3 fill repeat;
+`
+
+const ItemDisplay = styled.div`
+    width: 100%;
+    height: 60%;
+    min-height: 200px;
+    border: 16px solid transparent;
+    border-image: url(./assets/ui/inventory-item-background.png) 3 fill repeat;
+`
+
+const CloseButton = styled.img`
+    width: 80px;
+    height: 80px;
+
+    image-rendering: pixelated; /* Preserve image quality when scaled up */
+
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+
+    &:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    }
 `
 
 export const StorePanel = ({ data, interactionOver }) => {
@@ -82,9 +103,29 @@ export const StorePanel = ({ data, interactionOver }) => {
     return (
         <Overlay>
             <Store>
-                {storeComponents}
+                <Container>
+                    <Row>
+                        <Col xs={8} lg={8}>
+                            <StoreListingContainer>
+                                {storeComponents}
+                            </StoreListingContainer>
+                        </Col>
+                        <Col xs={4} lg={4}>
+                            <ItemDisplay>
+
+                            </ItemDisplay>
+                        </Col>
+                    </Row>
+                </Container>
+                    {/* <StoreListingContainer>
+                        {storeComponents}
+                    </StoreListingContainer>
+                    <ItemDisplay>
+
+                    </ItemDisplay> */}
+                {/* </StoreGrid> */}
             </Store>
-            <button className="button" onClick={closeButtonClicked}>Close Panel</button>
+            <CloseButton src='./assets/ui/close-button.png' onClick={()=>closeButtonClicked()}></CloseButton>
         </Overlay>
     );
 };

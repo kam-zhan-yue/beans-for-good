@@ -1,9 +1,6 @@
 import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
-import { InventoryItem } from './InventoryItem';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
+import { InventoryItem } from './InventoryItem'
 import {Grid} from "@material-ui/core";
 
 const Overlay = styled.div`
