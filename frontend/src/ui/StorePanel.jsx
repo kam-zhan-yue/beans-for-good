@@ -31,12 +31,16 @@ const StoreListingContainer = styled.div`
     height: 40vh;
     max-height: 400px;
     overflow: auto; // Add overflow for scrolling if needed
+    min-height: 230px;
 
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel-background.png) 3 fill repeat;
 `
 
 const ItemDisplayContainer = styled.div`
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
     width: 100%;
     height: 30vh;
     min-height: 150px;
@@ -49,11 +53,12 @@ const ItemDisplay = styled.img`
     image-rendering: pixelated;
     image-rendering: -moz-crisp-edges;
     image-rendering: crisp-edges;
-    margin-top:10%;
-    width: 60%;
+    width: auto; /* Adjust width to maintain aspect ratio */
+    height: auto; /* Adjust height to maintain aspect ratio */
+    width: 25vw;
     height: auto;
-    max-width: 300px;
-    max-height: 300px;
+    max-width: 80%; /* Ensure the image doesn't exceed its container's width */
+    max-height: 80%; /* Ensure the image doesn't exceed its container's height */
 `
 
 const PurchaseButton = styled.div`
@@ -147,8 +152,6 @@ export const StorePanel = ({ data, interactionOver }) => {
         return itemData;
     });
     const storeComponents = storeItems.map(item => <StoreItem onItemClicked={onItemClicked} itemData={item} />);
-    // console.log(storeItems);
-
 
     return (
         <Overlay>
