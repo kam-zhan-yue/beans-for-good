@@ -19,11 +19,30 @@ const Store = styled.div`
     padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
-    height: 50vh;
+    height: 57vh;
     min-width: 60vw;
     max-width: 60vw; // Adjust max width here
-    max-height: 500px; // Adjust max height here
-    min-height: 300px;
+    max-height: 600px; // Adjust max height here
+    min-height: 450px;
+`
+
+const StoreNameContainer = styled.div`
+    border: 16px solid transparent;
+    border-image: url(./assets/ui/name-panel.png) 7.5 fill repeat;
+    margin-bottom: 10px;
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+      }
+`
+
+const StoreName = styled.h1`
+    font-family: "VT323", monospace;
+    font-size: 50px; /* Adjust font size as needed */
+    font-weight: 400;
+    margin: 0; /* Remove default margin */
+    text-align: center; /* Align text to the right */
+    color: ${constants.primary};
 `
 
 const StoreListingContainer = styled.div`
@@ -84,10 +103,10 @@ const Price = styled.h1`
 `
 
 const Coin = styled.img`
-width: 80%; /* Adjust width to make it a square */
-height: auto; /* Maintain aspect ratio */
+    width: 80%; /* Adjust width to make it a square */
+    height: auto; /* Maintain aspect ratio */
 
-image-rendering: pixelated; /* Preserve image quality when scaled up */
+    image-rendering: pixelated; /* Preserve image quality when scaled up */
 `
 
 const CloseButton = styled.img`
@@ -107,7 +126,8 @@ const assetURL = './assets/items/';
 
 export const StorePanel = ({ data, interactionOver }) => {
     const [storeData, setStoreData] = useState([]);
-    const [itemList, setItemList] = useState({})
+    const [itemList, setItemList] = useState({});
+    const [facilityData, setFacilityData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
     const [currentItem, setCurrentItem] = useState(null);
 
@@ -125,10 +145,17 @@ export const StorePanel = ({ data, interactionOver }) => {
             setItemList(itemList);
         }
 
+        const fetchFacilityList = async () => {
+            const response = await fetch('./assets/config/facility_list.json');
+            const facilityList = await response.json();
+            const facilityData = facilityList[data.facilityID];
+            setFacilityData(facilityData);
+        }
 
         fetchItemList();
+        fetchFacilityList();
         fetchStoreItems();
-    }, []);
+    }, [data.facilityID]);
 
     const closeButtonClicked = () => {
         if (interactionOver instanceof (Function)) {
@@ -146,6 +173,13 @@ export const StorePanel = ({ data, interactionOver }) => {
         console.log(`try purchase ${currentItem}`);
     }
 
+    const handleStoreClicked = () => {
+        if(facilityData)
+        {
+            window.open(facilityData.url, '_blank');
+        }
+    }
+
     const storeItems = storeData.map(item => {
         const itemData = itemList[item.id];
         itemData.price = item.price;
@@ -157,6 +191,13 @@ export const StorePanel = ({ data, interactionOver }) => {
         <Overlay>
             <Store>
                 <Container>
+                    <Row>
+                        <Col>
+                            <StoreNameContainer onClick={handleStoreClicked}>
+                                <StoreName>{facilityData && facilityData.name}</StoreName>
+                            </StoreNameContainer>
+                        </Col>
+                    </Row>
                     <Row>
                         <Col xs={8} lg={8}>
                             <StoreListingContainer>
@@ -182,7 +223,7 @@ export const StorePanel = ({ data, interactionOver }) => {
                                     </Price>
                                 </Col>
                                 <Col xs={2}>
-                                    <Coin src='./assets/ui/coin.png' />
+                                    <Coin src='./assets/ui/coin.png'/>
                                 </Col>
                             </Row>
                             </PurchaseButton>
