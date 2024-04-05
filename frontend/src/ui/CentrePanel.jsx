@@ -3,6 +3,11 @@ import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem';
 import { RequestPanel } from './RequestPanel';
 import { Grid } from "@material-ui/core";
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/Container";
+import 'bootstrap/dist/css/bootstrap.css';
+import constants from '../Constants';
 
 
 const Overlay = styled.div`
@@ -14,33 +19,14 @@ const Overlay = styled.div`
 `
 
 const Store = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 2vw; // Adjust gap between items here
-  
-    padding: 10px;
-
-    background-color: rgba(0, 0, 0, 0); 
-
-    box-sizing: border-box;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-
-    -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition:         all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-
-    z-index: 0;
-
-    // max-width: 500px;
-    // min-height: 330px;
-    margin: 7px;
-
-    position: relative;
-
+    padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
+    height: 50vh;
+    min-width: 60vw;
+    max-width: 60vw; // Adjust max width here
+    max-height: 500px; // Adjust max height here
+    min-height: 300px;
 `
 
 const Inventory = styled.div`
@@ -60,6 +46,7 @@ const InventoryContainer = styled.div`
   flex-wrap: wrap;
   justify-content: center;
   margin-top: 10px;
+  overflow: auto;
 `
 
 export const CentrePanel = ({ data, interactionOver }) => {
@@ -100,20 +87,36 @@ export const CentrePanel = ({ data, interactionOver }) => {
     return (
         <Overlay>
             <Store>
-                <Inventory>
-                    <Grid
-                        container
-                        direction="column"
-                        alignItems="center"
-                    >
-                        <Grid item lg={12} md={12} sm={12} xs={12}>
-                            <InventoryContainer>
-                                {inventoryComponents}
-                            </InventoryContainer>
-                        </Grid>
-                    </Grid>
-                </Inventory>
-                <RequestPanel data={data} />
+                <Container>
+                    <Row>
+                        <Col xs={6} lg={6}>
+                            <Grid
+                                container
+                                direction="column"
+                                alignItems="center"
+                            >
+                                <Grid item lg={12} md={12} sm={12} xs={12}>
+                                    <InventoryContainer>
+                                        {inventoryComponents}
+                                    </InventoryContainer>
+                                </Grid>
+                            </Grid>
+                        </Col>
+                        <Col xs={6} lg={6}>
+                            <Grid
+                                container
+                                direction="column"
+                                alignItems="center"
+                            >
+                                <Grid item lg={12} md={12} sm={12} xs={12}>
+                                    <InventoryContainer>
+                                        <RequestPanel data={data} />
+                                    </InventoryContainer>
+                                </Grid>
+                            </Grid>
+                        </Col>
+                    </Row>
+                </Container>
             </Store>
             <button className="button" onClick={closeButtonClicked}>Close Panel</button>
         </Overlay>
