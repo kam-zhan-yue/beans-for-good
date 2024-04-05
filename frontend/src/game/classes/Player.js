@@ -1,5 +1,3 @@
-import Phaser from 'phaser';
-
 const LastFacingDirection = {
     UP: 'UP',
     DOWN: 'DOWN',
@@ -16,12 +14,8 @@ export default class Player {
 
         // Create the player sprite
         this.body = this.physics.add.sprite(x, y, textureKey, 'down_idle_1.png');
-
-        this.body.anims.play('player-idle-down');
         this.body.setSize(this.body.width * 0.75, this.body.height * 0.25);
         this.body.setOffset(2, 12);
-        // Set up player animations, physics, etc.
-        // Add more initialization code as needed
     }
     
     checkInputs (cursors) 

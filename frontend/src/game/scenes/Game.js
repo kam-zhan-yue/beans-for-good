@@ -3,10 +3,9 @@ import { Scene, Tilemaps } from 'phaser';
 import constants from '../GameConstants';
 import debugDraw from '../utilities/DebugDraw';
 import createCharacterAnims from '../utilities/CharacterAnims.js';
-import createTileMapAnims from '../utilities/TileMapAnims.js';
-import { Align } from '../utilities/align.js';
 import Interaction from '../classes/Interaction.js'
 import Player from '../classes/Player.js'
+import eventsCenter from '../events/EventsCenter.js';
 
 const State = {
     IDLE: 'IDLE',
@@ -24,7 +23,9 @@ export class Game extends Scene
         this.cursors = null;
         this.state = State.IDLE;
         this.interactions = [];
-        this.currentInteraction = null
+        this.currentInteraction = null;
+        this.startedUI = false;
+        this.inputStarted = false;
     }
 
     preload()
@@ -32,7 +33,7 @@ export class Game extends Scene
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
-    init ()
+    setupGame ()
     {
         //Init the map
         const map = this.make.tilemap({key: 'main_tiles'});
@@ -80,19 +81,30 @@ export class Game extends Scene
 
     interactionStarted ()
     {
+        eventsCenter.emit('interacting');
         this.state = State.INTERACTING;
+        this.interactions.forEach(interaction => {
+            interaction.setActive(false);
+        });
     }
 
     interactionOver ()
     {
+        eventsCenter.emit('idle');
         this.state = State.IDLE;
+        this.interactions.forEach(interaction => {
+            interaction.setActive(true);
+        });
     }
 
     create ()
     {
+        this.scene.run('GameUI');
+        this.startedUI = true;
+
         this.cameras.main.setBackgroundColor(0x00ff00);
 
-        this.init();
+        this.setupGame();
     
         EventBus.emit('current-scene-ready', this);
     }
@@ -111,13 +123,25 @@ export class Game extends Scene
                 if(this.currentInteraction != null && this.cursors.space.isDown)
                 {
                     EventBus.emit('interaction-started', this.currentInteraction);
-                    this.state = State.INTERACTING;
+                    this.interactionStarted ();
                 }
                 break;
             case State.INTERACTING:
                 this.player.idle();
                 break;
         }
+
+        //To avoid error on hot reload for some reason
+        if(!this.inputStarted)
+        {
+            if(this.cursors.up.isDown || this.cursors.down.isDown || this.cursors.left.isDown || this.cursors.right.isDown)
+            {
+                this.inputStarted = true;
+            }
+        }
+
+        if(this.startedUI && this.inputStarted)
+            eventsCenter.emit('cursors', this.cursors);
     }
 
     checkColliders ()
