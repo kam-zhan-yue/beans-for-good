@@ -1,7 +1,7 @@
 import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem'
-import {Grid} from "@material-ui/core";
+import { Grid } from "@material-ui/core";
 
 const Overlay = styled.div`
     position: fixed;
@@ -21,8 +21,6 @@ const Inventory = styled.div`
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
 `
-
-const assetsURL = './assets/'
 
 const InventoryContainer = styled.div`
   display: flex;
@@ -50,7 +48,7 @@ const CloseButton = styled.img`
 
 export const InventoryPanel = ({ interactionOver }) => {
     const [inventoryData, setInventoryData] = useState([]);
-    const [itemList, setItemList] = useState({})
+    const [itemList, setItemList] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     const closeButtonClicked = () => {
@@ -106,7 +104,7 @@ export const InventoryPanel = ({ interactionOver }) => {
                     </Grid>
                 </Grid>
             </Inventory>
-            <CloseButton src='./assets/ui/close-button.png' onClick={()=>closeButtonClicked()}></CloseButton>
+            <CloseButton src='./assets/ui/close-button.png' onClick={() => closeButtonClicked()}></CloseButton>
         </Overlay>
     );
 };
