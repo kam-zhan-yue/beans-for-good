@@ -56,21 +56,21 @@ export const InventoryPanel = ({ interactionOver }) => {
     }
 
     useEffect(() => {
-        const fetchInventory = async (setInventory) => {
+        const fetchInventory = async () => {
             const items = await fetch(assetsURL + 'dummy_inventory.json')
             const response = await items.json();
-            setInventory(response.items);
+            setInventoryData(response.items);
         }
 
-        const fetchItemList = async (setItemList) => {
+        const fetchItemList = async () => {
             const response = await fetch('./assets/items/item_list.json');
             const itemList = await response.json();
             setItemList(itemList);
         }
 
 
-        fetchItemList(setItemList);
-        fetchInventory(setInventoryData);
+        fetchItemList();
+        fetchInventory();
     }, []);
 
     const inventoryItems = inventoryData.map(item => {
@@ -79,7 +79,6 @@ export const InventoryPanel = ({ interactionOver }) => {
         return itemData;
     });
     const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} />);
-    console.log(itemList);
 
     return (
         <Overlay>

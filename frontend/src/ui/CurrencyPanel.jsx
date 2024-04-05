@@ -43,23 +43,15 @@ const Inventory = styled.div`
 export const CurrencyPanel = ({ interactionOver }) => {
 
     const closeButtonClicked = () => {
-        if(interactionOver instanceof(Function))
-        {
-        interactionOver();
+        if (interactionOver instanceof (Function)) {
+            interactionOver();
         }
     }
-  
-    // Generate InventoryItem components
-    const inventoryItems = Array.from({ length: 15 }, (_, index) => (
-        <InventoryItem/>
-    ));
 
     return (
-    <Overlay>
-        <Inventory>
-            {inventoryItems}
-        </Inventory>
-        <button className="button" onClick={closeButtonClicked}>Close Panel</button>
-    </Overlay>
+        <Overlay>
+            <span>One billion!!!!</span>
+            <button className="button" onClick={closeButtonClicked}>Close Panel</button>
+        </Overlay>
     );
 };

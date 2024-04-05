@@ -1,6 +1,6 @@
-import React, { forwardRef, useState, useImperativeHandle } from 'react';
+import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
-import { InventoryItem } from './InventoryItem';
+import { StoreItem } from './StoreItem';
 
 const Overlay = styled.div`
     position: fixed;
@@ -41,19 +41,50 @@ const Store = styled.div`
 `
 
 export const StorePanel = ({ data, interactionOver }) => {
+    const [storeData, setStoreData] = useState([]);
+    const [itemList, setItemList] = useState({})
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchStoreItems = async () => {
+            const items = await fetch(`./assets/dummy_${data.facilityID}.json`);
+            const response = await items.json();
+            console.log(response);
+            setStoreData(response.items);
+        }
+
+        const fetchItemList = async () => {
+            const response = await fetch('./assets/items/item_list.json');
+            const itemList = await response.json();
+            setItemList(itemList);
+        }
+
+
+        fetchItemList();
+        fetchStoreItems();
+    }, []);
 
     const closeButtonClicked = () => {
-        if(interactionOver instanceof(Function))
-        {
+        if (interactionOver instanceof (Function)) {
             interactionOver();
         }
     }
-  
+
+    const storeItems = storeData.map(item => {
+        const itemData = itemList[item.id];
+        itemData.price = item.price;
+        return itemData;
+    });
+    const storeComponents = storeItems.map(item => <StoreItem itemData={item} />);
+    console.log(storeItems);
+
+
     return (
-    <Overlay>
-        <Store>
-        </Store>
-        <button className="button" onClick={closeButtonClicked}>Close Panel</button>
-    </Overlay>
+        <Overlay>
+            <Store>
+                {storeComponents}
+            </Store>
+            <button className="button" onClick={closeButtonClicked}>Close Panel</button>
+        </Overlay>
     );
 };

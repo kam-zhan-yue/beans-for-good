@@ -2,5 +2,9 @@
     "0": {
         "name": "Bread",
         "sprite": "bread.png"
+    },
+    "1": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
     }
 }
