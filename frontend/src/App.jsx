@@ -1,15 +1,18 @@
 import { useRef, useState } from 'react';
 
+// Game and UI
 import { PhaserGame } from './game/PhaserGame';
 import { FacilityPanel } from './ui/FacilityPanel';
 import { GamePanel } from './ui/GamePanel';
+import { InventoryPanel } from './ui/InventoryPanel';
 
-
+// Server Components
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import HomePage from './user/Home';
 import SignUpPage from './user/SignUpPage';
 import LogInPage from './user/LogInPage';
 
+// State Machine
 const AppState = {
     GAME: 'GAME',
     INVENTORY: 'INVENTORY',
@@ -24,26 +27,32 @@ function App() {
     const interactionStarted = (interaction) => {
         setState(AppState.FACILITY);
         setInteraction(interaction);
-        // facilityPanelRef.current.handleInteractionStart(interaction);
     };
     
     const interactionOver = () => {
         setState(AppState.GAME);
+        resumeGame();
+    }
+
+    const inventoryClicked = () => {
+        setState(AppState.INVENTORY);
+        pauseGame();
+    }
+
+    const pauseGame = () => {
+        const scene = phaserRef.current.scene;
+        if (scene)
+        {
+            scene.interactionStarted();
+        }
+    }
+
+    const resumeGame = () => {
         const scene = phaserRef.current.scene;
         if (scene)
         {
             scene.interactionOver();
         }
-    }
-
-    const inventoryClicked = () => {
-        console.log("inventory clicked");
-        setState(AppState.INVENTORY);
-        // const scene = phaserRef.current.scene;
-        // if (scene)
-        // {
-        //     scene.interactionStarted();
-        // }
     }
 
     const mode = 1; // Change this to 0 to see the login/signup pages
@@ -71,6 +80,9 @@ function App() {
                         {state === AppState.FACILITY &&
                             <FacilityPanel 
                             facility={interaction}
+                            interactionOver={interactionOver}/>}
+                        {state === AppState.INVENTORY &&
+                            <InventoryPanel 
                             interactionOver={interactionOver}/>}
                     </>
                 }
