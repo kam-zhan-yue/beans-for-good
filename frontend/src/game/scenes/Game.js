@@ -72,7 +72,7 @@ export class Game extends Scene
         const spawnPoint = map.getObjectLayer('Spawn Points');
         spawnPoint.objects.forEach(spawnPoint => {
             const id = spawnPoint.properties[0].value;
-            if(id === 'player')
+            if(id === constants.SpawnPoint)
             {
                 centerX = spawnPoint.x;
                 centerY = spawnPoint.y;

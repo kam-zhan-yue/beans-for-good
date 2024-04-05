@@ -35,7 +35,9 @@ const constants = {
         "down-arrow",
         "left-arrow",
         "right-arrow",
-    ]
+    ],
+
+    SpawnPoint: "housing"
 }
 
 export default { ...constants };

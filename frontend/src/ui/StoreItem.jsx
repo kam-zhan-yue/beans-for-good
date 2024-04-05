@@ -36,7 +36,7 @@
 
   const ItemName = styled.h1`
     font-family: "VT323", monospace;
-    font-size: 20px; /* Adjust font size as needed */
+    font-size: 50px; /* Adjust font size as needed */
     font-weight: 400;
     margin: 0; /* Remove default margin */
     text-align: left; /* Align text to the right */
@@ -46,7 +46,7 @@
 
   const ItemPrice = styled.h1`
     font-family: "VT323", monospace;
-    font-size: 20px; /* Adjust font size as needed */
+    font-size: 50px; /* Adjust font size as needed */
     font-weight: 400;
     margin: 0; /* Remove default margin */
     text-align: right; /* Align text to the right */

@@ -15,10 +15,6 @@ const Overlay = styled.div`
     text-align: center;
 `
 
-const StoreGrid = styled(Grid)`
-
-`
-
 const Store = styled.div`
     padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
@@ -31,6 +27,7 @@ const Store = styled.div`
 
 const StoreListingContainer = styled.div`
     width: 100%;
+    height: 40vh;
     max-height: 400px;
     overflow: auto; // Add overflow for scrolling if needed
 
