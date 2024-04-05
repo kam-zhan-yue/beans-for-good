@@ -1,6 +1,9 @@
 import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem';
+import Container from 'react-bootstrap/Container';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 
 const Overlay = styled.div`
     position: fixed;
@@ -10,34 +13,19 @@ const Overlay = styled.div`
     text-align: center;
 `
 
+
 const Inventory = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 2vw; // Adjust gap between items here
-  
-    padding: 10px;
-
-    background-color: rgba(0, 0, 0, 0); 
-
-    box-sizing: border-box;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-
-    -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition:         all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-
-    z-index: 0;
-
-    // max-width: 500px;
-    // min-height: 330px;
-    margin: 7px;
-
-    position: relative;
-
+    padding: 1vw; // Adjust padding here
+    // background-color: rgba(0, 0, 0, 0);
+    min-width: 50vw;
+    max-width: 50vw; // Adjust max width here
+    max-height: 50vh; // Adjust max height here
+    overflow: auto; // Add overflow for scrolling if needed
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
+    // display: grid;
+    // grid-template-columns: repeat(5, 1fr);
+    // gap: 2vw; // Adjust gap between items here
 `
 
 const assetsURL = './assets/'
@@ -80,10 +68,28 @@ export const InventoryPanel = ({ interactionOver }) => {
     });
     const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} />);
 
+    // Splitting items into groups of 5 for each row
+    const rows = [];
+    for (let i = 0; i < inventoryComponents.length; i += 5) {
+        const rowItems = inventoryComponents.slice(i, i + 5);
+        rows.push(rowItems);
+    }
+
     return (
         <Overlay>
             <Inventory>
-                {inventoryComponents}
+                <Container>
+                    {/* {inventoryComponents} */}
+                    {rows.map((row, index) => (
+                        <Row key={index}>
+                            {row.map((item, colIndex) => (
+                                <Col key={colIndex} xs={12} sm={6} md={4} lg={3} xl={2}>
+                                    {item}
+                                </Col>
+                            ))}
+                        </Row>
+                    ))}
+                </Container>
             </Inventory>
             <button className="button" onClick={closeButtonClicked}>Close Panel</button>
         </Overlay>

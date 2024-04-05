@@ -6,5 +6,61 @@
     "1": {
         "name": "Trinket",
         "sprite": "trinket.png"
+    },
+    "2": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "3": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "4": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "5": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "6": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "7": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "8": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "9": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "10": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "11": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "12": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "13": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "14": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
+    },
+    "15": {
+        "name": "Trinket",
+        "sprite": "trinket.png"
     }
 }

@@ -25,9 +25,12 @@
         "build": "vite build --config vite/config.prod.mjs"
     },
     "dependencies": {
+        "@material-ui/core": "^4.12.4",
         "axios": "^1.6.8",
+        "bootstrap": "^5.3.3",
         "phaser": "^3.80.1",
         "react": "^18.2.0",
+        "react-bootstrap": "^2.10.2",
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.22.3",
         "styled-components": "^6.1.8"
