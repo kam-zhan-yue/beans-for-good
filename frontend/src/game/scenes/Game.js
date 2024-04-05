@@ -32,7 +32,7 @@ export class Game extends Scene
         this.cursors = this.input.keyboard.createCursorKeys();
     }
 
-    init ()
+    setupGame ()
     {
         //Init the map
         const map = this.make.tilemap({key: 'main_tiles'});
@@ -81,18 +81,24 @@ export class Game extends Scene
     interactionStarted ()
     {
         this.state = State.INTERACTING;
+        this.interactions.forEach(interaction => {
+            interaction.setActive(false);
+        });
     }
 
     interactionOver ()
     {
         this.state = State.IDLE;
+        this.interactions.forEach(interaction => {
+            interaction.setActive(true);
+        });
     }
 
     create ()
     {
         this.cameras.main.setBackgroundColor(0x00ff00);
 
-        this.init();
+        this.setupGame();
     
         EventBus.emit('current-scene-ready', this);
     }
@@ -111,7 +117,7 @@ export class Game extends Scene
                 if(this.currentInteraction != null && this.cursors.space.isDown)
                 {
                     EventBus.emit('interaction-started', this.currentInteraction);
-                    this.state = State.INTERACTING;
+                    this.interactionStarted ();
                 }
                 break;
             case State.INTERACTING:

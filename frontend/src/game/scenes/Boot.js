@@ -19,12 +19,13 @@ export class Boot extends Scene
         });
 
         this.load.atlas('player', 'assets/atlas/character.png', 'assets/atlas/character.json');
-
+        
         this.load.image('background', 'assets/bg.png');
+        this.load.image('spacebar', 'assets/ui/spacebar.png');
     }
 
     create ()
     {
-        this.scene.start('Preloader');
+        this.scene.start('Game');
     }
 }
