@@ -1,6 +1,11 @@
 import Phaser from 'phaser';
+import constants from '../GameConstants';
 
 const debugDraw = (layers, scene) => {
+    if(!constants.Debug)
+    {
+        return;
+    }
     const debugGraphics = scene.add.graphics().setAlpha(1);
     layers.forEach((tileLayer) => {
         tileLayer.renderDebug(debugGraphics, {

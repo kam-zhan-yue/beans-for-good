@@ -1,3 +1,5 @@
+import constants from '../GameConstants';
+
 export default class Interaction {
     constructor(scene, interaction, facilityID, facilityType) {
         this.scene = scene;
@@ -10,9 +12,12 @@ export default class Interaction {
         this.facilityType = facilityType;
 
         // Create a graphics object to represent the rectangle visually (optional)
-        this.graphics = this.scene.add.graphics();
-        this.graphics.fillStyle(0x00ff00, 0.5); // Green color with 50% opacity
-        this.graphics.fillRect(this.x, this.y, this.width, this.height);
+        if(constants.Debug)
+        {
+            this.graphics = this.scene.add.graphics();
+            this.graphics.fillStyle(0x00ff00, 0.5); // Green color with 50% opacity
+            this.graphics.fillRect(this.x, this.y, this.width, this.height);   
+        }
 
         // Create a tooltip sprite
         this.tooltip = this.scene.add.image(0, 0, 'spacebar');

@@ -61,12 +61,23 @@ export class Game extends Scene
             }
         });
 
-        debugDraw(tileLayers, this);
+        if(constants.Debug)
+            debugDraw(tileLayers, this);
 
         // Init the player
         this.cameras.main.zoom = 4;
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
+
+        const spawnPoint = map.getObjectLayer('Spawn Points');
+        spawnPoint.objects.forEach(spawnPoint => {
+            const id = spawnPoint.properties[0].value;
+            if(id === 'player')
+            {
+                centerX = spawnPoint.x;
+                centerY = spawnPoint.y;
+            }
+        });
         // this.player.body = this.physics.add.sprite(centerX, centerY, 'player', 'down_idle_1.png');
         this.player = new Player(this.physics, centerX, centerY, 'player');
         createCharacterAnims(this.anims);

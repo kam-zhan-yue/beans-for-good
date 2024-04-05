@@ -1,11 +1,14 @@
 const constants = {
-    Debug: true,
+    Debug: false,
     TilemapImages: [
         "alice",
         "bob",
         "buildings",
+        "city-props",
+        "city-terrain",
         "frank",
         "garage",
+        "garden",
         "modular-buildings",
         "school",
         "teacher",
@@ -13,12 +16,18 @@ const constants = {
     ],
 
     TilemapLayers: [
+        "Background",
+        "Trees4",
+        "Trees3",
         "Ground",
+        "Trees",
+        "Trees2",
         "Buildings",
         "Characters",
         "Foreground",
         "Foreground 2",
         "Top",
+        "Trees10",
     ],
 
     ArrowKeys: [

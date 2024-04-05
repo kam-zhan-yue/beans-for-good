@@ -5,6 +5,7 @@ import { MainMenu } from './scenes/MainMenu';
 import Phaser from 'phaser';
 import { Preloader } from './scenes/Preloader';
 import { GameUI } from './scenes/GameUI';
+import constants from './GameConstants';
 
 // Find out more information about the Game Config at:
 // https://newdocs.phaser.io/docs/3.70.0/Phaser.Types.Core.GameConfig
@@ -35,7 +36,7 @@ const config = {
         default: 'arcade', // or other physics system like 'matter' or 'impact'
         arcade: {
             gravity: { y: 0 }, // Example: set the gravity
-            debug: true // Set to true if you want to see physics bodies
+            debug: constants.Debug // Set to true if you want to see physics bodies
         }
     },
 };
