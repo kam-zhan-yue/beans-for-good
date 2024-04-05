@@ -1,5 +1,7 @@
 import React, { forwardRef, useState, useImperativeHandle } from 'react';
 import styled from 'styled-components';
+import { StorePanel } from './StorePanel';
+import { CentrePanel } from './CentrePanel';
 
 const Overlay = styled.div`
   position: fixed;
@@ -28,10 +30,16 @@ export const FacilityPanel = ({ facility, interactionOver }) => {
 
   return (
       <Overlay>
-        {facility && <div>
-          <Header>{facility.facilityType} - {facility.facilityID}</Header>
-          <button className="button" onClick={closeButtonClicked}>Close Panel</button>
-          </div>}
+        {facility && facility.facilityType === 'store' &&
+          <StorePanel
+            data={facility}
+            interactionOver={interactionOver}>
+          </StorePanel>}
+        {facility && facility.facilityType === 'centre' &&
+          <CentrePanel
+            data={facility}
+            interactionOver={interactionOver}>
+          </CentrePanel>}
       </Overlay>
     );
 };

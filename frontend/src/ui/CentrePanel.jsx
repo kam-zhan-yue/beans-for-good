@@ -10,7 +10,7 @@ const Overlay = styled.div`
     text-align: center;
 `
 
-const Inventory = styled.div`
+const Store = styled.div`
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(3, 1fr);
@@ -40,25 +40,19 @@ const Inventory = styled.div`
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
 `
 
-export const InventoryPanel = ({ interactionOver }) => {
+export const CentrePanel = ({ data, interactionOver }) => {
 
     const closeButtonClicked = () => {
         if(interactionOver instanceof(Function))
         {
-        interactionOver();
+            interactionOver();
         }
     }
   
-    // Generate InventoryItem components
-    const inventoryItems = Array.from({ length: 15 }, (_, index) => (
-        <InventoryItem/>
-    ));
-
     return (
     <Overlay>
-        <Inventory>
-            {inventoryItems}
-        </Inventory>
+        <Store>
+        </Store>
         <button className="button" onClick={closeButtonClicked}>Close Panel</button>
     </Overlay>
     );
