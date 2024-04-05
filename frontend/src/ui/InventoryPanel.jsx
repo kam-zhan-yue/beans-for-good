@@ -73,7 +73,11 @@ export const InventoryPanel = ({ interactionOver }) => {
         fetchInventory(setInventoryData);
     }, []);
 
-    const inventoryItems = inventoryData.map(item => itemList[item.id]);
+    const inventoryItems = inventoryData.map(item => {
+        const itemData = itemList[item.id];
+        itemData.quantity = item.quantity;
+        return itemData;
+    });
     const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} />);
     console.log(itemList);
 

@@ -23,6 +23,8 @@ export const InventoryItem = ({ itemData }) => {
   return (
     <ItemBackground>
       <img src={assetURL + itemData.sprite} />
+      <span>{itemData.name}</span>
+      <span>{itemData.quantity}</span>
     </ItemBackground>
   );
 };
