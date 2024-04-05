@@ -1,4 +1,20 @@
 import React, { forwardRef, useState, useImperativeHandle } from 'react';
+import styled from 'styled-components';
+
+const Overlay = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+`
+
+const Header = styled.h1`
+  font-family: "VT323", monospace;
+  font-weight: 400;
+  font-style: normal;
+
+`
 
 export const FacilityPanel = forwardRef(function FacilityPanel ({ interactionOver }, ref)
 {
@@ -15,34 +31,19 @@ export const FacilityPanel = forwardRef(function FacilityPanel ({ interactionOve
   }));
 
   const handleInteraction = () => {
-    console.log("Close")
     setCurrentInteraction(null);
-
     if(interactionOver instanceof(Function))
     {
       interactionOver();
     }
-    
-    // const scene = ref.current.scene;
-
-    // if (scene)
-    // {
-    //     scene.changeScene();
-    // }
   }
 
   return (
-      <div style={overlayStyle}>
+      <Overlay>
         {currentInteraction && <div>
-          <button className="button" onClick={handleInteraction}>Change Scene</button>
+          <Header>{currentInteraction.facilityType} - {currentInteraction.facilityID}</Header>
+          <button className="button" onClick={handleInteraction}>Close Panel</button>
           </div>}
-      </div>
+      </Overlay>
     );
   });
-  
-  const overlayStyle = {
-    position: 'fixed',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-  }

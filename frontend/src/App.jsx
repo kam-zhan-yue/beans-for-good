@@ -15,9 +15,7 @@ function App() {
     const facilityPanelRef = useRef();
 
     const interactionStarted = (interaction) => {
-        console.log(`Frontend Detected Interaction Started with ${interaction.facilityID} of type ${interaction.facilityType}`);
         facilityPanelRef.current.handleInteractionStart(interaction);
-
     };
     
     const interactionOver = () => {
