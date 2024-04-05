@@ -32,6 +32,16 @@ function App() {
         }
     }
 
+    const changeScene = () => {
+
+        console.log('change scene');
+        const scene = phaserRef.current.scene;
+
+        if (scene)
+        {
+            scene.changeScene();
+        }
+    }
     const mode = 1; // Change this to 0 to see the login/signup pages
     
     return (
@@ -55,6 +65,11 @@ function App() {
                             interactionOver={interactionOver}/>
                     </>
                 }
+                <div>
+                    <div>
+                        <button className="button" onClick={changeScene}>Change Scene</button>
+                    </div>
+                </div>
             </div>
         </Router>
     );

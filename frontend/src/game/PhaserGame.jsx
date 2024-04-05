@@ -45,5 +45,5 @@ export const PhaserGame = forwardRef(function PhaserGame ({interactionStarted}, 
 
 // Props definitions
 PhaserGame.propTypes = {
-    currentActiveScene: PropTypes.func 
+    interactionStarted: PropTypes.func 
 }
