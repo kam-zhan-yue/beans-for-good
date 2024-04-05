@@ -1,16 +1,7 @@
 import React, { forwardRef, useState, useImperativeHandle } from 'react';
 import styled from 'styled-components';
-import { InventoryItem } from './InventoryItem';
 
-const Overlay = styled.div`
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-`
-
-const Inventory = styled.div`
+const ItemBackground = styled.div`
     background-color: rgba(0, 0, 0, 0); 
 
     box-sizing: border-box;
@@ -30,10 +21,10 @@ const Inventory = styled.div`
     position: relative;
 
     border: 16px solid transparent;
-    border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
+    border-image: url(./assets/ui/inventory-item-background.png) 7.5 fill repeat;
 `
 
-export const InventoryPanel = ({ interactionOver }) => {
+export const InventoryItem = ({ interactionOver }) => {
 
     const closeButtonClicked = () => {
       if(interactionOver instanceof(Function))
@@ -43,13 +34,6 @@ export const InventoryPanel = ({ interactionOver }) => {
     }
   
   return (
-    <Overlay>
-        <Inventory>
-            <InventoryItem></InventoryItem>
-            <InventoryItem></InventoryItem>
-            <InventoryItem></InventoryItem>
-        </Inventory>
-        <button className="button" onClick={closeButtonClicked}>Close Panel</button>
-    </Overlay>
+    <ItemBackground></ItemBackground>
   );
 };
