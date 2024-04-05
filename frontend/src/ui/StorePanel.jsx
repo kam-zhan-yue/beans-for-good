@@ -38,12 +38,29 @@ const StoreListingContainer = styled.div`
     border-image: url(./assets/ui/panel-background.png) 3 fill repeat;
 `
 
-const ItemDisplay = styled.div`
+const ItemDisplayContainer = styled.div`
     width: 100%;
     height: 60%;
     min-height: 200px;
     border: 16px solid transparent;
     border-image: url(./assets/ui/inventory-item-background.png) 3 fill repeat;
+    margin-bottom: 10%;;
+`
+
+const ItemDisplay = styled.img`
+`
+
+const PurchaseButton = styled.div`
+    width: 100%;
+    height: 30%;
+    min-height: 100px;
+    border: 16px solid transparent;
+    border-image: url(./assets/ui/inventory-item-background.png) 3 fill repeat;
+
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+      }
 `
 
 const CloseButton = styled.img`
@@ -60,11 +77,13 @@ const CloseButton = styled.img`
     transform: translateY(-5px);
     }
 `
+const assetURL = './assets/items/';
 
 export const StorePanel = ({ data, interactionOver }) => {
     const [storeData, setStoreData] = useState([]);
     const [itemList, setItemList] = useState({})
     const [isLoading, setIsLoading] = useState(true);
+    const [currentItem, setCurrentItem] = useState(null);
 
     useEffect(() => {
         const fetchStoreItems = async () => {
@@ -91,12 +110,20 @@ export const StorePanel = ({ data, interactionOver }) => {
         }
     }
 
+    const onItemClicked = (itemData) => {
+        setCurrentItem(itemData);
+    }
+    
+    const handlePurchase = () => {
+
+    }
+
     const storeItems = storeData.map(item => {
         const itemData = itemList[item.id];
         itemData.price = item.price;
         return itemData;
     });
-    const storeComponents = storeItems.map(item => <StoreItem itemData={item} />);
+    const storeComponents = storeItems.map(item => <StoreItem onItemClicked={onItemClicked} itemData={item} />);
     console.log(storeItems);
 
 
@@ -111,9 +138,13 @@ export const StorePanel = ({ data, interactionOver }) => {
                             </StoreListingContainer>
                         </Col>
                         <Col xs={4} lg={4}>
-                            <ItemDisplay>
-
-                            </ItemDisplay>
+                            <ItemDisplayContainer>
+                                {currentItem && 
+                                    <ItemDisplay src={assetURL + currentItem.sprite}/>}
+                            </ItemDisplayContainer>
+                            <PurchaseButton onClick={handlePurchase}>
+                                {currentItem && currentItem.price}
+                            </PurchaseButton>
                         </Col>
                     </Row>
                 </Container>
