@@ -23,7 +23,7 @@ export default class Player {
         // Set up player animations, physics, etc.
         // Add more initialization code as needed
     }
-
+    
     checkInputs (cursors) 
     {
         const speed = 100;

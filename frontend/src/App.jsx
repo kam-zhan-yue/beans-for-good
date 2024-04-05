@@ -17,31 +17,18 @@ function App() {
     const interactionStarted = (interaction) => {
         console.log(`Frontend Detected Interaction Started with ${interaction.facilityID} of type ${interaction.facilityType}`);
         facilityPanelRef.current.handleInteractionStart(interaction);
+
     };
     
     const interactionOver = () => {
-        // phaserRef.current.interactionOver();
-
         console.log("interaction over");
-        console.log(`phaserRef: ${phaserRef} current: ${phaserRef.current} scene: ${phaserRef.current.scene}`);
         const scene = phaserRef.current.scene;
-
         if (scene)
         {
-            scene.changeScene();
+            scene.interactionOver();
         }
     }
 
-    const changeScene = () => {
-
-        console.log('change scene');
-        const scene = phaserRef.current.scene;
-
-        if (scene)
-        {
-            scene.changeScene();
-        }
-    }
     const mode = 1; // Change this to 0 to see the login/signup pages
     
     return (
@@ -65,11 +52,6 @@ function App() {
                             interactionOver={interactionOver}/>
                     </>
                 }
-                <div>
-                    <div>
-                        <button className="button" onClick={changeScene}>Change Scene</button>
-                    </div>
-                </div>
             </div>
         </Router>
     );

@@ -74,6 +74,16 @@ export class Game extends Scene
         this.cameras.main.startFollow(this.player.body, true);
     }
     
+    changeScene ()
+    {
+        this.scene.start('GameOver');
+    }
+
+    interactionOver ()
+    {
+        this.state = State.IDLE;
+    }
+
     create ()
     {
         this.cameras.main.setBackgroundColor(0x00ff00);
