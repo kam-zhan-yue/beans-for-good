@@ -7,6 +7,7 @@ export class GameUI extends Scene {
     {
         super('GameUI');
         
+        this.ready = false;
         this.upArrow = null
         this.downArrow = null;
         this.leftArrow = null;
@@ -37,6 +38,7 @@ export class GameUI extends Scene {
         eventsCenter.on('interacting', this.hideArrows, this);
         eventsCenter.on('idle', this.showArrows, this);
         eventsCenter.on('cursors', this.updateArrows, this);
+        this.ready = true;
     }
 
     showArrows ()
@@ -56,15 +58,30 @@ export class GameUI extends Scene {
     }
 
     updateArrows(cursors) {
+        if(!this.ready)
+            return;
         // Update the active/inactive state of arrow images
         const up = cursors.up.isDown;
         const down = cursors.down.isDown;
         const left = cursors.left.isDown;
         const right = cursors.right.isDown;
-        this.upArrow.setTexture(`${constants.ArrowKeys[0]}-${up ? 'active' : 'inactive'}`);
-        this.downArrow.setTexture(`${constants.ArrowKeys[1]}-${down ? 'active' : 'inactive'}`);
-        this.leftArrow.setTexture(`${constants.ArrowKeys[2]}-${left ? 'active' : 'inactive'}`);
-        this.rightArrow.setTexture(`${constants.ArrowKeys[3]}-${right ? 'active' : 'inactive'}`);
+    
+        if(this.upArrow)
+        {
+            this.upArrow.setTexture(`${constants.ArrowKeys[0]}-${up ? 'active' : 'inactive'}`);
+        }
+        if(this.downArrow)
+        {
+            this.downArrow.setTexture(`${constants.ArrowKeys[1]}-${down ? 'active' : 'inactive'}`);
+        }
+        if(this.leftArrow)
+        {
+            this.leftArrow.setTexture(`${constants.ArrowKeys[2]}-${left ? 'active' : 'inactive'}`);
+        }
+        if(this.rightArrow)
+        {
+            this.rightArrow.setTexture(`${constants.ArrowKeys[3]}-${right ? 'active' : 'inactive'}`);
+        }
     }
 
     updateArrowPositions() {

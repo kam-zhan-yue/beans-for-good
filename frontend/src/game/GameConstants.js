@@ -1,4 +1,5 @@
 const constants = {
+    Debug: true,
     TilemapImages: [
         "alice",
         "bob",

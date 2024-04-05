@@ -23,7 +23,9 @@ export class Game extends Scene
         this.cursors = null;
         this.state = State.IDLE;
         this.interactions = [];
-        this.currentInteraction = null
+        this.currentInteraction = null;
+        this.startedUI = false;
+        this.inputStarted = false;
     }
 
     preload()
@@ -98,6 +100,7 @@ export class Game extends Scene
     create ()
     {
         this.scene.run('GameUI');
+        this.startedUI = true;
 
         this.cameras.main.setBackgroundColor(0x00ff00);
 
@@ -127,7 +130,18 @@ export class Game extends Scene
                 this.player.idle();
                 break;
         }
-        eventsCenter.emit('cursors', this.cursors);
+
+        //To avoid error on hot reload for some reason
+        if(!this.inputStarted)
+        {
+            if(this.cursors.up.isDown || this.cursors.down.isDown || this.cursors.left.isDown || this.cursors.right.isDown)
+            {
+                this.inputStarted = true;
+            }
+        }
+
+        if(this.startedUI && this.inputStarted)
+            eventsCenter.emit('cursors', this.cursors);
     }
 
     checkColliders ()

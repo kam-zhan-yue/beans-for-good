@@ -26,7 +26,6 @@ export class Boot extends Scene
         constants.ArrowKeys.forEach((arrowKey) => {
             const activeKey = `${arrowKey}-active`;
             const inactiveKey = `${arrowKey}-inactive`;
-            console.log(`loading ${activeKey}`)
             this.load.image(activeKey, `assets/ui/${activeKey}.png`);
             this.load.image(inactiveKey, `assets/ui/${inactiveKey}.png`);
         });
