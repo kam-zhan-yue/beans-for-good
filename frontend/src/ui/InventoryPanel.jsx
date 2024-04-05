@@ -4,6 +4,7 @@ import { InventoryItem } from './InventoryItem';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
+import {Grid} from "@material-ui/core";
 
 const Overlay = styled.div`
     position: fixed;
@@ -12,7 +13,6 @@ const Overlay = styled.div`
     transform: translate(-50%, -50%);
     text-align: center;
 `
-
 
 const Inventory = styled.div`
     padding: 1vw; // Adjust padding here
@@ -23,12 +23,17 @@ const Inventory = styled.div`
     overflow: auto; // Add overflow for scrolling if needed
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
-    // display: grid;
-    // grid-template-columns: repeat(5, 1fr);
-    // gap: 2vw; // Adjust gap between items here
 `
 
 const assetsURL = './assets/'
+
+const InventoryContainer = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 10px;
+`
 
 
 
@@ -78,18 +83,17 @@ export const InventoryPanel = ({ interactionOver }) => {
     return (
         <Overlay>
             <Inventory>
-                <Container>
-                    {/* {inventoryComponents} */}
-                    {rows.map((row, index) => (
-                        <Row key={index}>
-                            {row.map((item, colIndex) => (
-                                <Col key={colIndex} xs={12} sm={6} md={4} lg={3} xl={2}>
-                                    {item}
-                                </Col>
-                            ))}
-                        </Row>
-                    ))}
-                </Container>
+                <Grid
+                    container
+                    direction="column"
+                    alignItems="center"
+                >
+                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                        <InventoryContainer>
+                            {inventoryComponents}
+                        </InventoryContainer>
+                    </Grid>
+                </Grid>
             </Inventory>
             <button className="button" onClick={closeButtonClicked}>Close Panel</button>
         </Overlay>
