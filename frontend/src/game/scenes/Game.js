@@ -65,7 +65,7 @@ export class Game extends Scene
             debugDraw(tileLayers, this);
 
         // Init the player
-        this.cameras.main.zoom = 4;
+        this.cameras.main.zoom = 3;
         var centerX = this.cameras.main.width / 2;
         var centerY = this.cameras.main.height / 2;
 
