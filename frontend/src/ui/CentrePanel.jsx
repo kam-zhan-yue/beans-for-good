@@ -52,7 +52,7 @@ const InventoryContainer = styled.div`
 export const CentrePanel = ({ data, interactionOver }) => {
     const [inventoryData, setInventoryData] = useState([]);
     const [itemList, setItemList] = useState({});
-    const [itemsToDonate, setItemsToDonate] = useState([]);
+    const [itemsToDonate, setItemsToDonate] = useState({});
 
     useEffect(() => {
         const fetchInventory = async () => {
@@ -79,16 +79,20 @@ export const CentrePanel = ({ data, interactionOver }) => {
     };
 
     const addToItemsToDonate = (item) => {
-        const newArr = [...itemsToDonate];
-        console.log(item);
-        newArr.push(<InventoryItem itemData={item} />);
-        console.log(newArr);
-        setItemsToDonate(newArr);
+        const newObj = { ...itemsToDonate }
+        if (newObj.hasOwnProperty(item.id)) {
+            newObj[item.id].quantity += 1;
+        } else {
+            newObj[item.id] = { "quantity": 1 };
+        }
+        console.log(newObj);
+        setItemsToDonate(newObj);
     };
 
     const inventoryItems = inventoryData.map(item => {
         const itemData = itemList[item.id];
         itemData.quantity = item.quantity;
+        itemData.id = item.id;
         return itemData;
     });
     const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
@@ -126,7 +130,13 @@ export const CentrePanel = ({ data, interactionOver }) => {
                                 </Grid>
                             </Row>
                             <Row>
-                                {itemsToDonate}
+                                {Object.keys(itemsToDonate).map(
+                                    itemId => <InventoryItem itemData={{
+                                        "id": itemId,
+                                        "sprite": itemList[itemId].sprite,
+                                        "quantity": itemsToDonate[itemId].quantity
+                                    }} />
+                                )}
                             </Row>
                         </Col>
                     </Row>
