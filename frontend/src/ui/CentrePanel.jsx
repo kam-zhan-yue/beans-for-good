@@ -231,7 +231,13 @@ export const CentrePanel = ({ data, interactionOver }) => {
                                 >
                                     <Grid item lg={12} md={12} sm={12} xs={12}>
                                         <InventoryContainer>
-                                            <RequestPanel data={data} />
+                                        {Object.keys(itemsToDonate).map(
+                                            itemId => <InventoryItem itemData={{
+                                                "id": itemId,
+                                                "sprite": itemList[itemId].sprite,
+                                                "quantity": itemsToDonate[itemId].quantity
+                                            }} />
+                                        )}
                                         </InventoryContainer>
                                     </Grid>
                                 </Grid>
