@@ -2,6 +2,7 @@ import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'rea
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem'
 import { Grid } from "@material-ui/core";
+import { CookiesProvider, useCookies } from 'react-cookie'
 
 const Overlay = styled.div`
     position: fixed;
@@ -49,7 +50,8 @@ const CloseButton = styled.img`
 export const InventoryPanel = ({ interactionOver }) => {
     const [inventoryData, setInventoryData] = useState([]);
     const [itemList, setItemList] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [cookies, setCookie] = useCookies(['inventory']);
+
 
     const closeButtonClicked = () => {
         if (interactionOver instanceof (Function)) {
@@ -59,9 +61,14 @@ export const InventoryPanel = ({ interactionOver }) => {
 
     useEffect(() => {
         const fetchInventory = async () => {
-            const items = await fetch('http://localhost:3000/inventory/evan');
-            const response = await items.json();
-            setInventoryData(response.items);
+            // const items = await fetch('http://localhost:3000/inventory/evan');
+            // const response = await items.json();
+            // setInventoryData(response.items);
+            console.log(cookies.inventory);
+            if (!cookies.inventory) {
+                setCookie('inventory', [], { path: '/' });
+            }
+            setInventoryData(cookies.inventory);
         }
 
         const fetchItemList = async () => {
