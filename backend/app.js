@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
@@ -121,9 +122,10 @@ app.get('/store/:name', async (req, res) => {
 
 async function replaceUserItems(username, newItems) {
   try {
+    console.log(newItems);
     const updatedUser = await User.findOneAndUpdate(
-      { username: username },
-      { $set: { items: newItems } }, // replace the entire items array
+      { "username": username },
+      { $set: { "items": newItems } }, // replace the entire items array
     );
 
     if (updatedUser) {
@@ -137,8 +139,10 @@ async function replaceUserItems(username, newItems) {
 }
 
 app.post('/inventory/:username/purchase', asyncHandler(async (req, res) => {
-  const { username } = req.params;
-  const { newItems } = req.body;
+  const username = req.params.username;
+  const newItems = req.body;
+  console.log(username);
+  console.log(newItems);
 
   try {
     await replaceUserItems(username, newItems);

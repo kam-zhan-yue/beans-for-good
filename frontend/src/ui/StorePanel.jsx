@@ -140,6 +140,7 @@ export const StorePanel = ({ data, interactionOver }) => {
     const [itemList, setItemList] = useState({});
     const [facilityData, setFacilityData] = useState({});
     const [currentItem, setCurrentItem] = useState(null);
+    const [inventoryData, setInventoryData] = useState([]);
 
     const [purchaseButtonDisabled, setPurchaseButtonDisabled] = useState(false);
     const [purchaseComplete, setPurchaseComplete] = useState(false);
@@ -166,9 +167,20 @@ export const StorePanel = ({ data, interactionOver }) => {
             setFacilityData(facilityData);
         }
 
+        const fetchInventory = async () => {
+            const items = await fetch('http://localhost:3000/inventory/evan');
+            const response = await items.json();
+            setInventoryData(response.items);
+            // if (!cookies.inventory) {
+            //     setCookie('inventory', [], { path: '/' });
+            // }
+            // setInventoryData(cookies.inventory);
+        }
+
         fetchItemList();
         fetchFacilityList();
         fetchStoreItems();
+        fetchInventory();
     }, []);
 
     const handleCompleteConfirmed = () => {
@@ -204,7 +216,7 @@ export const StorePanel = ({ data, interactionOver }) => {
 
             setCookie('amount', currentBeans - currentItem.price, { "path": '/' });
 
-            const newInventory = [...cookies.inventory];
+            const newInventory = [...inventoryData];
             var inInventory = false;
 
             for (const item of newInventory) {
@@ -221,9 +233,24 @@ export const StorePanel = ({ data, interactionOver }) => {
                 newInventory.push(newItem);
             }
 
-            console.log(newInventory);
+            // clean inventory to match database
+            const cleanInventory = newInventory.map(item => {
+                return {
+                    "id": item.id,
+                    "quantity": item.quantity
+                };
+            });
 
-            setCookie("inventory", newInventory, { path: "/" });
+            console.log(JSON.stringify(cleanInventory));
+            await fetch("http://localhost:3000/inventory/evan/purchase", {
+                "method": "POST",
+                "body": JSON.stringify(cleanInventory),
+                "headers": {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
+
+            // setCookie("inventory", newInventory, { path: "/" });
 
             // Enable the purchase button and show the purchase complete panel
             setPurchaseButtonDisabled(false);
