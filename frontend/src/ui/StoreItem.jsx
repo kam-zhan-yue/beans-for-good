@@ -18,8 +18,8 @@
     position: relative;
     border: 16px solid transparent;
     border-image: url(./assets/ui/inventory-item-background.png) 7.5 fill repeat;
+
     margin:10px;
-    
     width: 90%;
     height: 100px;
     max-height: 70px;
@@ -31,8 +31,9 @@
   `
 
   const ItemImage = styled.img`
-    width: 100%; /* Adjust width to make it a square */
+    width: 90%; /* Adjust width to make it a square */
     height: auto; /* Maintain aspect ratio */
+    margin-left:-20px;
   `
 
   const ItemName = styled.h1`
@@ -55,7 +56,8 @@
   `
 
   const Coin = styled.img`
-  width: 80%; /* Adjust width to make it a square */
+  margin-right: -40px;
+  width: 70%; /* Adjust width to make it a square */
   height: auto; /* Maintain aspect ratio */
 
   image-rendering: pixelated; /* Preserve image quality when scaled up */

@@ -1,0 +1,18 @@
+{
+    "garage": {
+        "name": "Test Garage",
+        "url": "https://kam-zhan-yue.github.io/"
+    },
+    "bakery": {
+        "name": "Test Bakery",
+        "url": "https://kam-zhan-yue.github.io/"
+    },
+    "housing": {
+        "name": "Test Housing",
+        "url": "https://kam-zhan-yue.github.io/"
+    },
+    "school": {
+        "name": "Test School",
+        "url": "https://kam-zhan-yue.github.io/"
+    }
+}
