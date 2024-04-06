@@ -118,3 +118,33 @@ app.get('/store/:name', async (req, res) => {
     res.status(500).json({ message: 'Error fetching store items' });
   }
 });
+
+async function replaceUserItems(username, newItems) {
+  try {
+    const updatedUser = await User.findOneAndUpdate(
+      { username: username }, 
+      { $set: { items: newItems } }, // replace the entire items array
+    );
+
+    if (updatedUser) {
+      console.log('Items list updated successfully:', updatedUser);
+    } else {
+      console.log('User not found');
+    }
+  } catch (error) {
+    console.error('Error updating items list:', error);
+  }
+}
+
+app.post('/inventory/:username/purchase', asyncHandler(async (req, res) => {
+  const { username } = req.params; 
+  const { newItems } = req.body; 
+
+  try {
+    await replaceUserItems(username, newItems);
+    res.status(200).send('Items purchased successfully');
+  } catch (error) {
+    console.error('Error during purchase:', error);
+    res.status(500).json({ message: error.message });
+  }
+}));
