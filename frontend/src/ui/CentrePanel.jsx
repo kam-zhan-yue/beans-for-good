@@ -137,13 +137,13 @@ export const CentrePanel = ({ data, interactionOver }) => {
 
     useEffect(() => {
         const fetchInventory = async () => {
-            // const items = await fetch('http://localhost:3000/inventory/evan');
-            // const response = await items.json();
-            // setInventoryData(response.items);
-            if (!cookies.inventory) {
-                setCookie('inventory', [], { path: '/' });
-            }
-            setInventoryData(cookies.inventory);
+            const items = await fetch('http://localhost:3000/inventory/evan');
+            const response = await items.json();
+            setInventoryData(response.items);
+            // if (!cookies.inventory) {
+            //     setCookie('inventory', [], { path: '/' });
+            // }
+            // setInventoryData(cookies.inventory);
         }
 
         const fetchItemList = async () => {
@@ -208,8 +208,23 @@ export const CentrePanel = ({ data, interactionOver }) => {
         setInventoryData(newInventory);
     };
 
-    const donateItems = () => {
-        setCookie('inventory', inventoryData, { "path": '/' });
+    const donateItems = async () => {
+        // clean inventory to match database
+        const cleanInventory = inventoryData.map(item => {
+            return {
+                "id": item.id,
+                "quantity": item.quantity
+            };
+        });
+
+        await fetch("http://localhost:3000/inventory/evan/purchase", {
+            "method": "POST",
+            "body": JSON.stringify(cleanInventory),
+            "headers": {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        });
+        // setCookie('inventory', inventoryData, { "path": '/' });
         setItemsToDonate({});
     };
 
