@@ -24,6 +24,9 @@
     height: 100px;
     max-height: 70px;
 
+    /* Add transition for smooth animation */
+    transition: transform 0.3s;
+  
     &:hover {
       cursor: pointer;
       transform: translateY(-5px);
