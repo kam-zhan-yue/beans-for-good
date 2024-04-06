@@ -1,4 +1,4 @@
-import React from 'react';
+import {React, useState} from 'react';
 import styled from 'styled-components';
 import constants from '../Constants';
 import CurrencyPurchaseButton from './CurrencyPurchaseButton';
@@ -6,6 +6,7 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
+import { CurrencyPurchaseCompletePanel } from './CurrencyPurchaseCompletePanel';
 
 const Overlay = styled.div`
     position: fixed;
@@ -44,12 +45,42 @@ const CloseButton = styled.img`
 
 export const CurrencyPanel = ({ interactionOver }) => {
 
-    const handlePurchase = ((amount) => {
-        console.log("purchase amount");
-    });
+    const [currentAmount, setCurrentAmount] = useState(0);
+    const [closeButtonDisabled, setClosedButtonDisabled] = useState(false);
+    const [purchaseComplete, setPurchaseComplete] = useState(false);
 
+    const handlePurchase = async (amount) => {
+        // Disable the purchase button
+        setClosedButtonDisabled(true);
+        setCurrentAmount(amount);
+
+        console.log(`try purchase ${amount}`);
+        try {
+            // Simulate delay of 100ms
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Enable the purchase button and show the purchase complete panel
+            setClosedButtonDisabled(false);
+            setPurchaseComplete(true);
+        } catch (error) {
+            // If there's an error, enable the purchase button and display an error message
+            console.error('Error purchasing item:', error);
+            setClosedButtonDisabled(false);
+        }
+    }
+
+    const handleCompleteConfirmed = () => {
+        setPurchaseComplete(false);
+    }
   return (
     <Overlay>
+        {purchaseComplete && 
+        <CurrencyPurchaseCompletePanel
+            onConfirmed={handleCompleteConfirmed}
+            amount={currentAmount}
+        />}
+
+        {!purchaseComplete &&
         <Panel>
             <Container>
                 <Row>
@@ -71,9 +102,11 @@ export const CurrencyPanel = ({ interactionOver }) => {
 
                 </Row>
             </Container>
-        </Panel>
-            <CloseButton src='./assets/ui/close-button.png' 
-            onClick={()=>interactionOver()}></CloseButton>
+        </Panel>}
+       
+        {!closeButtonDisabled && !purchaseComplete && 
+        <CloseButton src='./assets/ui/close-button.png' 
+        onClick={()=>interactionOver()}></CloseButton>}
     </Overlay>
   );
 };

@@ -42,12 +42,12 @@ const CloseButton = styled.img`
     }
 `
 
-export const PurchaseCompletePanel = ({ onConfirmed, itemData }) => {
+export const CurrencyPurchaseCompletePanel = ({ onConfirmed, amount }) => {
   return (
     <div>
         <Complete>
             <PurchaseText>
-                Purchased {itemData.name}
+                Purchased {amount} beans
             </PurchaseText>
         </Complete>
             <CloseButton src='./assets/ui/close-button.png' 
