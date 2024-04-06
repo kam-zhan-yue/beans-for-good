@@ -52,6 +52,16 @@ const CentreName = styled.h1`
     color: ${constants.primary};
 `
 
+const DataContainer = styled.div`
+width: 100%;
+height: 40vh;
+max-height: 400px;
+overflow: auto; // Add overflow for scrolling if needed
+min-height: 230px;
+
+border: 16px solid transparent;
+border-image: url(./assets/ui/panel-background.png) 3 fill repeat;
+`
 
 const CloseButton = styled.img`
     width: 80px;
@@ -192,6 +202,40 @@ export const CentrePanel = ({ data, interactionOver }) => {
                             <CentreNameContainer onClick={handleCentreClicked}>
                                 <CentreName>{facilityData && facilityData.name}</CentreName>
                             </CentreNameContainer>
+                        </Col>
+                    </Row>
+
+                    <Row>
+                        <Col xs={6} lg={6}>
+                            <DataContainer>
+                            <Grid
+                                container
+                                direction="column"
+                                alignItems="center"
+                            >
+                                <Grid item lg={12} md={12} sm={12} xs={12}>
+                                    <InventoryContainer>
+                                        {inventoryComponents}
+                                    </InventoryContainer>
+                                </Grid>
+                            </Grid>
+                            </DataContainer>
+                        </Col>
+
+                        <Col xs={6} lg={6}>
+                            <DataContainer>
+                                <Grid
+                                    container
+                                    direction="column"
+                                    alignItems="center"
+                                >
+                                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                                        <InventoryContainer>
+                                            <RequestPanel data={data} />
+                                        </InventoryContainer>
+                                    </Grid>
+                                </Grid>
+                            </DataContainer>
                         </Col>
                     </Row>
                 </Container>
