@@ -143,7 +143,7 @@ export const StorePanel = ({ data, interactionOver }) => {
     const [purchaseButtonDisabled, setPurchaseButtonDisabled] = useState(false);
     const [purchaseComplete, setPurchaseComplete] = useState(false);
 
-    const [cookies, setCookie] = useCookies(['inventory']);
+    const [cookies, setCookie] = useCookies(['inventory', 'amount']);
 
     useEffect(() => {
         const fetchStoreItems = async () => {
@@ -196,6 +196,13 @@ export const StorePanel = ({ data, interactionOver }) => {
         try {
             // Simulate delay of 100ms
             // await new Promise(resolve => setTimeout(resolve, 500));
+            const currentBeans = cookies.amount;
+
+            if (currentBeans < currentItem.price) {
+                throw new Error('Not enough beans');
+            }
+
+            setCookie('amount', currentBeans - currentItem.price, { "path": '/' });
 
             const newInventory = [...cookies.inventory];
             var inInventory = false;
