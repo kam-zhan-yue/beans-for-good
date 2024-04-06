@@ -1,9 +1,10 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
-const User = require('./models/User'); 
+const User = require('./models/User');
 const Store = require('./models/Store');
 
 
@@ -27,7 +28,7 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log(error)
   })
 
-  // Root route
+// Root route
 app.get('/', (req, res) => {
   res.send('Welcome to the Backend!');
 });
@@ -45,7 +46,7 @@ app.get('/stores', async (req, res) => {
 app.post('/signup', asyncHandler(async (req, res) => {
   const { username, password } = req.body;
   const userExists = await User.findOne({ username });
- 
+
   if (userExists) {
     return res.status(400).send('User already exists');
   }
@@ -83,15 +84,15 @@ app.get('/inventory/:username', asyncHandler(async (req, res) => {
     if (!user) {
       return res.status(404).send('User not found');
     }
-    
+
     const transformedItems = user.items.map(item => ({
       id: item.id,
-      quantity: item.quantity 
+      quantity: item.quantity
     }));
 
     res.status(200).json({ items: transformedItems });
   } catch (error) {
-    console.error(error); 
+    console.error(error);
     res.status(500).send('Error fetching user inventory');
   }
 }));
@@ -121,9 +122,10 @@ app.get('/store/:name', async (req, res) => {
 
 async function replaceUserItems(username, newItems) {
   try {
+    console.log(newItems);
     const updatedUser = await User.findOneAndUpdate(
-      { username: username }, 
-      { $set: { items: newItems } }, // replace the entire items array
+      { "username": username },
+      { $set: { "items": newItems } }, // replace the entire items array
     );
 
     if (updatedUser) {
@@ -136,9 +138,27 @@ async function replaceUserItems(username, newItems) {
   }
 }
 
+async function replaceUserBeans(username, newBeans) {
+  try {
+    console.log(newBeans);
+    const updatedUser = await User.findOneAndUpdate(
+      { "username": username },
+      { $set: { "beans": newBeans } }, // replace the entire beans
+    );
+
+    if (updatedUser) {
+      console.log('Beans updated successfully:', updatedUser);
+    } else {
+      console.log('User not found');
+    }
+  } catch (error) {
+    console.error('Error updating items list:', error);
+  }
+}
+
 app.post('/inventory/:username/purchase', asyncHandler(async (req, res) => {
-  const { username } = req.params; 
-  const { newItems } = req.body; 
+  const username = req.params.username;
+  const newItems = req.body;
 
   try {
     await replaceUserItems(username, newItems);
@@ -146,5 +166,36 @@ app.post('/inventory/:username/purchase', asyncHandler(async (req, res) => {
   } catch (error) {
     console.error('Error during purchase:', error);
     res.status(500).json({ message: error.message });
+  }
+}));
+
+app.post('/beans/:username', asyncHandler(async (req, res) => {
+  const username = req.params.username;
+  const newBeans = parseInt(req.body.beans);
+
+  try {
+    await replaceUserBeans(username, newBeans);
+    res.status(200).send('Beans beaned successfully');
+  } catch (error) {
+    console.error('Error during beans update:', error);
+    res.status(500).json({ message: error.message });
+  }
+}));
+
+app.get('/beans/:username', asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const beans = user.beans;
+
+    res.status(200).json({ beans: beans });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error fetching user inventory');
   }
 }));

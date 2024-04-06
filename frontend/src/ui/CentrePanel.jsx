@@ -140,13 +140,13 @@ export const CentrePanel = ({ data, interactionOver }) => {
 
     useEffect(() => {
         const fetchInventory = async () => {
-            // const items = await fetch('http://localhost:3000/inventory/evan');
-            // const response = await items.json();
-            // setInventoryData(response.items);
-            if (!cookies.inventory) {
-                setCookie('inventory', [], { path: '/' });
-            }
-            setInventoryData(cookies.inventory);
+            const items = await fetch('http://localhost:3000/inventory/evan');
+            const response = await items.json();
+            setInventoryData(response.items);
+            // if (!cookies.inventory) {
+            //     setCookie('inventory', [], { path: '/' });
+            // }
+            // setInventoryData(cookies.inventory);
         }
 
         const fetchItemList = async () => {
@@ -211,18 +211,24 @@ export const CentrePanel = ({ data, interactionOver }) => {
         setInventoryData(newInventory);
     };
 
-    const donateItems = () => {
-        try {
-            // Simulate delay of 100ms
-            // await new Promise(resolve => setTimeout(resolve, 500));
-            setCookie('inventory', inventoryData, { "path": '/' });
-            setItemsToDonate({});
-            setDonateCompleted(true);
-        } catch (error) {
-            // If there's an error, enable the purchase button and display an error message
-            console.error('Error donating:', error);
-            // setDonateCompleted(false);
-        }
+    const donateItems = async () => {
+        // clean inventory to match database
+        const cleanInventory = inventoryData.map(item => {
+            return {
+                "id": item.id,
+                "quantity": item.quantity
+            };
+        });
+
+        await fetch("http://localhost:3000/inventory/evan/purchase", {
+            "method": "POST",
+            "body": JSON.stringify(cleanInventory),
+            "headers": {
+                "Content-type": "application/json; charset=UTF-8"
+            }
+        });
+        // setCookie('inventory', inventoryData, { "path": '/' });
+        setItemsToDonate({});
     };
 
     var inventoryItems;
