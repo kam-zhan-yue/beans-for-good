@@ -194,7 +194,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         console.log(`try purchase ${currentItem}`);
         try {
             // Simulate delay of 100ms
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 500));
 
             // Enable the purchase button and show the purchase complete panel
             setPurchaseButtonDisabled(false);
