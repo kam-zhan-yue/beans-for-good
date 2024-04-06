@@ -112,7 +112,8 @@ const Price = styled.h1`
 `
 
 const Coin = styled.img`
-    width: 80%; /* Adjust width to make it a square */
+    min-width: 10px;
+    width: 50%; /* Adjust width to make it a square */
     height: auto; /* Maintain aspect ratio */
 
     image-rendering: pixelated; /* Preserve image quality when scaled up */
@@ -286,13 +287,13 @@ export const StorePanel = ({ data, interactionOver }) => {
                                     {!purchaseButtonDisabled &&
                                         <PurchaseButton onClick={handlePurchase}>
                                             <Row className="align-items-center">
-                                                <Col xs={10}>
+                                                <Col xs={8}>
                                                     <Price>
                                                         {currentItem && currentItem.price}
                                                         {currentItem === null && 0}
                                                     </Price>
                                                 </Col>
-                                                <Col xs={2}>
+                                                <Col xs={4}>
                                                     <Coin src='./assets/ui/coin.png' />
                                                 </Col>
                                             </Row>

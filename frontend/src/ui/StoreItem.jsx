@@ -35,34 +35,44 @@
 
   const ItemImage = styled.img`
     width: 90%; /* Adjust width to make it a square */
+    min-width:40px;
     height: auto; /* Maintain aspect ratio */
     margin-left:-20px;
   `
 
+  const PriceHolder = styled.div`
+  display: flex;
+  align-items: center; /* Align items vertically */
+  justify-content: flex-end;
+  // margin-right:30px;
+  `
+
   const ItemName = styled.h1`
     font-family: "VT323", monospace;
-    font-size: 50px; /* Adjust font size as needed */
+    font-size: 40px; /* Adjust font size as needed */
     font-weight: 400;
     margin: 0; /* Remove default margin */
     text-align: left; /* Align text to the right */
+
+    white-space: nowrap; /* Prevent text from wrapping */
+    overflow: hidden; /* Hide any overflow text */
+    text-overflow: ellipsis; /* Display ellipsis for truncated text */
     color: ${constants.primary}
   `
 
 
   const ItemPrice = styled.h1`
     font-family: "VT323", monospace;
-    font-size: 50px; /* Adjust font size as needed */
+    font-size: 30px; /* Adjust font size as needed */
     font-weight: 400;
-    margin: 0; /* Remove default margin */
+    margin-right: 10px;
     text-align: right; /* Align text to the right */
+    margin-top: 5px;
     color: ${constants.primary}
   `
 
   const Coin = styled.img`
-  margin-right: -40px;
-  width: 70%; /* Adjust width to make it a square */
-  height: auto; /* Maintain aspect ratio */
-
+  min-width: 30px;
   image-rendering: pixelated; /* Preserve image quality when scaled up */
 `
 
@@ -80,14 +90,17 @@
                 <Col xs={2}>
                     <ItemImage src={assetURL + itemData.sprite} />
                 </Col>
-                <Col xs={6}>
+                <Col xs={8}>
                     <ItemName>{itemData && itemData.name}</ItemName>
                 </Col>
-                <Col xs={2}>
+                {/* <Col xs={2}>
                     <ItemPrice>{itemData && itemData.price}</ItemPrice>
-                </Col>
+                </Col> */}
                 <Col xs={2}>
-                    <Coin src='./assets/ui/coin.png' />
+                  <PriceHolder>
+                      <ItemPrice>{itemData && itemData.price}</ItemPrice>
+                      <Coin src='./assets/ui/coin.png' />
+                  </PriceHolder>
                 </Col>
           </Row>
           </ItemBackground>
