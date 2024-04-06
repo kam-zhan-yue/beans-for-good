@@ -2,7 +2,7 @@ import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'rea
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem'
 import { Grid } from "@material-ui/core";
-import { CookiesProvider, useCookies } from 'react-cookie'
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 const Overlay = styled.div`
     position: fixed;

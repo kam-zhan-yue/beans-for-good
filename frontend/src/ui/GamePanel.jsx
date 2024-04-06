@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useImperativeHandle } from 'react';
 import styled from 'styled-components';
 import constants from '../Constants';
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 const GameOverlay = styled.div`
 `
@@ -75,27 +76,36 @@ const Coin = styled.img`
   -webkit-transition: 0.3s;
 `
 
-export const GamePanel = ({ inventoryClicked, currencyClicked}) => {
+export const GamePanel = ({ inventoryClicked, currencyClicked }) => {
   const [coins, setCoins] = useState(0);
+  const [cookies, setCookie] = useCookies(['amount']);
 
   useEffect(() => {
     const fetchUserData = async () => {
-        // const items = await fetch('http://localhost:3000/inventory/evan');
-        // const response = await items.json();
-        // // console.log(response);
-        // setStoreData(response.items);
-    }
+      // const items = await fetch('http://localhost:3000/inventory/evan');
+      // const response = await items.json();
+      // // console.log(response);
+      // setStoreData(response.items);
+    };
+
+    const fetchCoins = async () => {
+      if (!cookies.amount) {
+        setCookie('amount', 0, { path: '/' });
+      }
+      setCoins(cookies.amount);
+    };
 
     fetchUserData();
+    fetchCoins();
   });
-  
+
   return (
     <GameOverlay>
       <BackpackOverlay>
-        <Backpack src='./assets/ui/backpack.png' onClick={()=>inventoryClicked()}></Backpack>
+        <Backpack src='./assets/ui/backpack.png' onClick={() => inventoryClicked()}></Backpack>
       </BackpackOverlay>
 
-      <CurrencyOverlay onClick={()=>currencyClicked()}>
+      <CurrencyOverlay onClick={() => currencyClicked()}>
         <CurrencyText>{coins}</CurrencyText>
         <Coin src='./assets/ui/coin.png'></Coin>
       </CurrencyOverlay>
