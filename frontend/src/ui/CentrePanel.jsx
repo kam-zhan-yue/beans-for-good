@@ -22,10 +22,10 @@ const Centre = styled.div`
     padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
-    height: 57vh;
+    height: 70vh;
     min-width: 60vw;
     max-width: 60vw; // Adjust max width here
-    max-height: 600px; // Adjust max height here
+    max-height: 800px; // Adjust max height here
     min-height: 450px;
 `
 
@@ -53,14 +53,48 @@ const CentreName = styled.h1`
 `
 
 const DataContainer = styled.div`
-width: 100%;
-height: 40vh;
-max-height: 400px;
-overflow: auto; // Add overflow for scrolling if needed
-min-height: 230px;
+    width: 100%;
+    height: 40vh;
+    max-height: 400px;
+    overflow: auto; // Add overflow for scrolling if needed
+    min-height: 230px;
 
-border: 16px solid transparent;
-border-image: url(./assets/ui/panel-background.png) 3 fill repeat;
+    border: 16px solid transparent;
+    border-image: url(./assets/ui/panel-background.png) 3 fill repeat;
+`
+
+const DonateContainer = styled.div`
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    width: 100%;
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+`
+
+const DonateBox = styled.div`
+    width: 20%;
+    height: 8vh;
+    border: 8px solid transparent;
+    border-image: url(./assets/ui/inventory-item-background.png) 3 fill repeat;
+    min-height: 75px;
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    margin: 0; /* Reset margin */
+    padding: 0; /* Reset padding */
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+    }
+`
+
+const DonateText = styled.h1`
+    font-family: "VT323", monospace;
+    font-size: 50px; /* Adjust font size as needed */
+    font-weight: 400;
+    margin: 0; /* Remove default margin */
+    text-align: center; /* Align text to the right */
+    color: ${constants.primary};
 `
 
 const CloseButton = styled.img`
@@ -72,8 +106,8 @@ const CloseButton = styled.img`
     transition: 0.3s;
     -webkit-transition: 0.3s;
     &:hover {
-    cursor: pointer;
-    transform: translateY(-5px);
+        cursor: pointer;
+        transform: translateY(-5px);
     }
 `
 
@@ -242,6 +276,19 @@ export const CentrePanel = ({ data, interactionOver }) => {
                                     </Grid>
                                 </Grid>
                             </DataContainer>
+                        </Col>
+
+                    </Row>
+
+                    <Row>
+                        <Col>
+                            <DonateContainer onClick={donateItems}>
+                                <DonateBox>
+                                    <DonateText>
+                                        Donate!
+                                    </DonateText>
+                                </DonateBox>
+                            </DonateContainer>
                         </Col>
                     </Row>
                 </Container>
