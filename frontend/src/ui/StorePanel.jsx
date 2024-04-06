@@ -211,7 +211,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         console.log(`try purchase ${currentItem}`);
         try {
             // Simulate delay of 100ms
-            // await new Promise(resolve => setTimeout(resolve, 500));
+            await new Promise(resolve => setTimeout(resolve, 200));
             const currentBeans = cookies.amount;
 
             if (currentBeans < currentItem.price) {

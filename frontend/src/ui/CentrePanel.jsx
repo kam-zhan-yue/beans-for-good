@@ -10,6 +10,7 @@ import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import { DonationConfirmationPanel } from './DonationConfirmationPanel';
 
 const Overlay = styled.div`
     position: fixed;
@@ -134,6 +135,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
     const [itemList, setItemList] = useState({});
     const [itemsToDonate, setItemsToDonate] = useState({});
     const [facilityData, setFacilityData] = useState({});
+    const [donateCompleted, setDonateCompleted] = useState(false);
     const [cookies, setCookie] = useCookies(['inventory']);
 
     useEffect(() => {
@@ -210,8 +212,17 @@ export const CentrePanel = ({ data, interactionOver }) => {
     };
 
     const donateItems = () => {
-        setCookie('inventory', inventoryData, { "path": '/' });
-        setItemsToDonate({});
+        try {
+            // Simulate delay of 100ms
+            // await new Promise(resolve => setTimeout(resolve, 500));
+            setCookie('inventory', inventoryData, { "path": '/' });
+            setItemsToDonate({});
+            setDonateCompleted(true);
+        } catch (error) {
+            // If there's an error, enable the purchase button and display an error message
+            console.error('Error donating:', error);
+            // setDonateCompleted(false);
+        }
     };
 
     var inventoryItems;
@@ -227,9 +238,17 @@ export const CentrePanel = ({ data, interactionOver }) => {
     }
     const inventoryComponents = inventoryItems.map(item => <SubInventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
 
+    const handleConfirmed = (() => {
+        setDonateCompleted(false);
+    });
+
     return (
         <Overlay>
-            <Centre>
+            {donateCompleted && 
+            <DonationConfirmationPanel
+                onConfirmed={handleConfirmed}/>}
+                {!donateCompleted &&
+                <Centre>
                 <Container>
                     <Row>
                         <Col>
@@ -302,51 +321,12 @@ export const CentrePanel = ({ data, interactionOver }) => {
                     </Row>
                 </Container>
             </Centre>
-            {/* <Store>
-                <Container>
-                    <Row>
-                        <Col xs={6} lg={6}>
-                            <Grid
-                                container
-                                direction="column"
-                                alignItems="center"
-                            >
-                                <Grid item lg={12} md={12} sm={12} xs={12}>
-                                    <InventoryContainer>
-                                        {inventoryComponents}
-                                    </InventoryContainer>
-                                </Grid>
-                            </Grid>
-                        </Col>
-                        <Col xs={6} lg={6}>
-                            <Row>
-                                <Grid
-                                    container
-                                    direction="column"
-                                    alignItems="center"
-                                >
-                                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                                        <InventoryContainer>
-                                            <RequestPanel data={data} />
-                                        </InventoryContainer>
-                                    </Grid>
-                                </Grid>
-                            </Row>
-                            <Row>
-                                {Object.keys(itemsToDonate).map(
-                                    itemId => <InventoryItem itemData={{
-                                        "id": itemId,
-                                        "sprite": itemList[itemId].sprite,
-                                        "quantity": itemsToDonate[itemId].quantity
-                                    }} />
-                                )}
-                                <DonateButton onClick={donateItems}>Donate</DonateButton>
-                            </Row>
-                        </Col>
-                    </Row>
-                </Container>
-            </Store> */}
+            }
 
-            <CloseButton src='./assets/ui/close-button.png' onClick={() => closeButtonClicked()}></CloseButton>        </Overlay>
+            {!donateCompleted && 
+            <CloseButton 
+                src='./assets/ui/close-button.png' 
+                onClick={() => closeButtonClicked()}/>}
+        </Overlay>
     );
 };
