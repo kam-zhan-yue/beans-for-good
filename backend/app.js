@@ -3,7 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
 const asyncHandler = require('express-async-handler');
-const User = require('./models/User'); 
+const User = require('./models/User');
 const Store = require('./models/Store');
 
 
@@ -27,7 +27,7 @@ mongoose.connect(process.env.MONGODB_URI)
     console.log(error)
   })
 
-  // Root route
+// Root route
 app.get('/', (req, res) => {
   res.send('Welcome to the Backend!');
 });
@@ -45,7 +45,7 @@ app.get('/stores', async (req, res) => {
 app.post('/signup', asyncHandler(async (req, res) => {
   const { username, password } = req.body;
   const userExists = await User.findOne({ username });
- 
+
   if (userExists) {
     return res.status(400).send('User already exists');
   }
@@ -83,15 +83,15 @@ app.get('/inventory/:username', asyncHandler(async (req, res) => {
     if (!user) {
       return res.status(404).send('User not found');
     }
-    
+
     const transformedItems = user.items.map(item => ({
       id: item.id,
-      quantity: item.quantity 
+      quantity: item.quantity
     }));
 
     res.status(200).json({ items: transformedItems });
   } catch (error) {
-    console.error(error); 
+    console.error(error);
     res.status(500).send('Error fetching user inventory');
   }
 }));
@@ -122,7 +122,7 @@ app.get('/store/:name', async (req, res) => {
 async function replaceUserItems(username, newItems) {
   try {
     const updatedUser = await User.findOneAndUpdate(
-      { username: username }, 
+      { username: username },
       { $set: { items: newItems } }, // replace the entire items array
     );
 
@@ -137,8 +137,8 @@ async function replaceUserItems(username, newItems) {
 }
 
 app.post('/inventory/:username/purchase', asyncHandler(async (req, res) => {
-  const { username } = req.params; 
-  const { newItems } = req.body; 
+  const { username } = req.params;
+  const { newItems } = req.body;
 
   try {
     await replaceUserItems(username, newItems);
