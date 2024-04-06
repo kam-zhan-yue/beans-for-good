@@ -31,6 +31,10 @@ const StoreNameContainer = styled.div`
     border: 16px solid transparent;
     border-image: url(./assets/ui/name-panel.png) 7.5 fill repeat;
     margin-bottom: 10px;
+
+    /* Add transition for smooth animation */
+    transition: transform 0.3s;
+  
     &:hover {
         cursor: pointer;
         transform: translateY(-5px);
@@ -88,6 +92,9 @@ const PurchaseButton = styled.div`
     border-image: url(./assets/ui/inventory-item-background.png) 3 fill repeat;
     min-height: 75px;
 
+    /* Add transition for smooth animation */
+    transition: transform 0.3s;
+
     &:hover {
         cursor: pointer;
         transform: translateY(-5px);
@@ -123,6 +130,7 @@ const CloseButton = styled.img`
     transform: translateY(-5px);
     }
 `
+
 const assetURL = './assets/items/';
 
 export const StorePanel = ({ data, interactionOver }) => {
@@ -186,7 +194,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         console.log(`try purchase ${currentItem}`);
         try {
             // Simulate delay of 100ms
-            await new Promise(resolve => setTimeout(resolve, 1000));
+            await new Promise(resolve => setTimeout(resolve, 500));
 
             // Enable the purchase button and show the purchase complete panel
             setPurchaseButtonDisabled(false);

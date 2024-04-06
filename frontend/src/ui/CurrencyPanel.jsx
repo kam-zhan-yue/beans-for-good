@@ -1,6 +1,12 @@
-import React, { forwardRef, useState, useImperativeHandle } from 'react';
+import {React, useState} from 'react';
 import styled from 'styled-components';
-import { InventoryItem } from './InventoryItem';
+import constants from '../Constants';
+import CurrencyPurchaseButton from './CurrencyPurchaseButton';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
+import Container from "react-bootstrap/Container";
+import 'bootstrap/dist/css/bootstrap.css';
+import { CurrencyPurchaseCompletePanel } from './CurrencyPurchaseCompletePanel';
 
 const Overlay = styled.div`
     position: fixed;
@@ -10,48 +16,97 @@ const Overlay = styled.div`
     text-align: center;
 `
 
-const Inventory = styled.div`
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    gap: 2vw; // Adjust gap between items here
-  
-    padding: 10px;
-
-    background-color: rgba(0, 0, 0, 0); 
-
-    box-sizing: border-box;
-    image-rendering: pixelated;
-    image-rendering: -moz-crisp-edges;
-    image-rendering: crisp-edges;
-
-    -webkit-transition: all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-    transition:         all 600ms cubic-bezier(0.215, 0.61, 0.355, 1);
-
-    z-index: 0;
-
-    // max-width: 500px;
-    // min-height: 330px;
-    margin: 7px;
-
-    position: relative;
-
+const Panel = styled.div`
+    padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
+    height: 20vh;
+    min-width: 60vw;
+    max-width: 60vw; // Adjust max width here
+    max-height: 600px; // Adjust max height here
+    display: flex;
+    justify-content: center; /* Center content vertically */
+    align-items: center; /* Center content horizontally */
+`
+
+const CloseButton = styled.img`
+    width: 80px;
+    height: 80px;
+
+    image-rendering: pixelated; /* Preserve image quality when scaled up */
+
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    &:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    }
 `
 
 export const CurrencyPanel = ({ interactionOver }) => {
 
-    const closeButtonClicked = () => {
-        if (interactionOver instanceof (Function)) {
-            interactionOver();
+    const [currentAmount, setCurrentAmount] = useState(0);
+    const [closeButtonDisabled, setClosedButtonDisabled] = useState(false);
+    const [purchaseComplete, setPurchaseComplete] = useState(false);
+
+    const handlePurchase = async (amount) => {
+        // Disable the purchase button
+        setClosedButtonDisabled(true);
+        setCurrentAmount(amount);
+
+        console.log(`try purchase ${amount}`);
+        try {
+            // Simulate delay of 100ms
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Enable the purchase button and show the purchase complete panel
+            setClosedButtonDisabled(false);
+            setPurchaseComplete(true);
+        } catch (error) {
+            // If there's an error, enable the purchase button and display an error message
+            console.error('Error purchasing item:', error);
+            setClosedButtonDisabled(false);
         }
     }
 
-    return (
-        <Overlay>
-            <span>One billion!!!!</span>
-            <button className="button" onClick={closeButtonClicked}>Close Panel</button>
-        </Overlay>
-    );
+    const handleCompleteConfirmed = () => {
+        setPurchaseComplete(false);
+    }
+  return (
+    <Overlay>
+        {purchaseComplete && 
+        <CurrencyPurchaseCompletePanel
+            onConfirmed={handleCompleteConfirmed}
+            amount={currentAmount}
+        />}
+
+        {!purchaseComplete &&
+        <Panel>
+            <Container>
+                <Row>
+                    <Col>
+                        <CurrencyPurchaseButton
+                        amount ={100}
+                        onClick={handlePurchase}/>
+                    </Col>
+                    <Col>
+                        <CurrencyPurchaseButton
+                        amount ={500}
+                        onClick={handlePurchase}/>
+                    </Col>
+                    <Col>
+                        <CurrencyPurchaseButton
+                        amount ={1000}
+                        onClick={handlePurchase}/>
+                    </Col>
+
+                </Row>
+            </Container>
+        </Panel>}
+       
+        {!closeButtonDisabled && !purchaseComplete && 
+        <CloseButton src='./assets/ui/close-button.png' 
+        onClick={()=>interactionOver()}></CloseButton>}
+    </Overlay>
+  );
 };

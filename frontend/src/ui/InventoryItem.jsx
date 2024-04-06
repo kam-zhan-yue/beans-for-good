@@ -19,6 +19,14 @@ const ItemBackground = styled.div`
   /* Maintain aspect ratio for square item */
   width: 8vw;
   height: 8vw;
+  
+  /* Add transition for smooth animation */
+  transition: transform 0.3s;
+
+  &:hover {
+      cursor: pointer;
+      transform: translateY(-5px);
+    }
 `
 
 const ItemImage = styled.img`
