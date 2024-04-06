@@ -37,7 +37,7 @@ const gameConstants = {
         "right-arrow",
     ],
 
-    SpawnPoint: "housing"
+    SpawnPoint: "player"
 }
 
 export default { ...gameConstants };
