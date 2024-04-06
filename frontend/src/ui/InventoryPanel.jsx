@@ -64,7 +64,6 @@ export const InventoryPanel = ({ interactionOver }) => {
             // const items = await fetch('http://localhost:3000/inventory/evan');
             // const response = await items.json();
             // setInventoryData(response.items);
-            console.log(cookies.inventory);
             if (!cookies.inventory) {
                 setCookie('inventory', [], { path: '/' });
             }
@@ -74,19 +73,25 @@ export const InventoryPanel = ({ interactionOver }) => {
         const fetchItemList = async () => {
             const response = await fetch('./assets/items/item_list.json');
             const itemList = await response.json();
+            console.log('fetching');
             setItemList(itemList);
         }
-
 
         fetchItemList();
         fetchInventory();
     }, []);
 
-    const inventoryItems = inventoryData.map(item => {
-        const itemData = itemList[item.id];
-        itemData.quantity = item.quantity;
-        return itemData;
-    });
+    var inventoryItems;
+    if (Object.keys(itemList).length === 0) {
+        inventoryItems = [];
+    } else {
+        inventoryItems = inventoryData.map(item => {
+            const itemData = itemList[item.id];
+            console.log(itemList);
+            itemData.quantity = item.quantity;
+            return itemData;
+        });
+    }
     const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} />);
 
     // Splitting items into groups of 5 for each row

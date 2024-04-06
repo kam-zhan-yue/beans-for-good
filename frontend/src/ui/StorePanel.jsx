@@ -7,6 +7,7 @@ import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
 import { PurchaseCompletePanel } from './PurchaseCompletePanel';
+import { CookiesProvider, useCookies } from 'react-cookie'
 
 const Overlay = styled.div`
     position: fixed;
@@ -137,12 +138,12 @@ export const StorePanel = ({ data, interactionOver }) => {
     const [storeData, setStoreData] = useState([]);
     const [itemList, setItemList] = useState({});
     const [facilityData, setFacilityData] = useState({});
-    const [isLoading, setIsLoading] = useState(true);
     const [currentItem, setCurrentItem] = useState(null);
 
     const [purchaseButtonDisabled, setPurchaseButtonDisabled] = useState(false);
     const [purchaseComplete, setPurchaseComplete] = useState(false);
 
+    const [cookies, setCookie] = useCookies(['inventory']);
 
     useEffect(() => {
         const fetchStoreItems = async () => {
@@ -183,9 +184,9 @@ export const StorePanel = ({ data, interactionOver }) => {
     const onItemClicked = (itemData) => {
         setCurrentItem(itemData);
     }
-    
+
     const handlePurchase = async () => {
-        if(currentItem == null)
+        if (currentItem == null)
             return;
 
         // Disable the purchase button
@@ -194,7 +195,28 @@ export const StorePanel = ({ data, interactionOver }) => {
         console.log(`try purchase ${currentItem}`);
         try {
             // Simulate delay of 100ms
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // await new Promise(resolve => setTimeout(resolve, 500));
+
+            const newInventory = [...cookies.inventory];
+            var inInventory = false;
+
+            for (const item of newInventory) {
+                if (item.id === currentItem.id) {
+                    inInventory = true;
+                    item.quantity += 1;
+                    break;
+                }
+            }
+
+            if (!inInventory) {
+                const newItem = { ...currentItem };
+                newItem.quantity = 1;
+                newInventory.push(newItem);
+            }
+
+            console.log(newInventory);
+
+            setCookie("inventory", newInventory, { path: "/" });
 
             // Enable the purchase button and show the purchase complete panel
             setPurchaseButtonDisabled(false);
@@ -207,8 +229,7 @@ export const StorePanel = ({ data, interactionOver }) => {
     }
 
     const handleStoreClicked = () => {
-        if(facilityData)
-        {
+        if (facilityData) {
             window.open(facilityData.url, '_blank');
         }
     }
@@ -216,65 +237,66 @@ export const StorePanel = ({ data, interactionOver }) => {
     const storeItems = storeData.map(item => {
         const itemData = itemList[item.id];
         itemData.price = item.price;
+        itemData.id = item.id;
         return itemData;
     });
     const storeComponents = storeItems.map(item => <StoreItem onItemClicked={onItemClicked} itemData={item} />);
 
     return (
         <Overlay>
-            {purchaseComplete && 
-            <PurchaseCompletePanel
-                onConfirmed={handleCompleteConfirmed}
-                itemData={currentItem}
-            />}
+            {purchaseComplete &&
+                <PurchaseCompletePanel
+                    onConfirmed={handleCompleteConfirmed}
+                    itemData={currentItem}
+                />}
             {!purchaseComplete &&
-            <>
-            <Store>
-                <Container>
-                    <Row>
-                        <Col>
-                            <StoreNameContainer onClick={handleStoreClicked}>
-                                <StoreName>{facilityData && facilityData.name}</StoreName>
-                            </StoreNameContainer>
-                        </Col>
-                    </Row>
-                    <Row>
-                        <Col xs={8} lg={8}>
-                            <StoreListingContainer>
-                                {storeComponents}
-                            </StoreListingContainer>
-                        </Col>
-                        <Col xs={4} lg={4}>
-                            <ItemDisplayContainer>
-                                <Row className="align-items-center">
-                                    <Col>
-                                {currentItem && 
-                                    <ItemDisplay src={assetURL + currentItem.sprite}/>}
-                                    </Col>
-                                </Row>
-                            </ItemDisplayContainer>
+                <>
+                    <Store>
+                        <Container>
+                            <Row>
+                                <Col>
+                                    <StoreNameContainer onClick={handleStoreClicked}>
+                                        <StoreName>{facilityData && facilityData.name}</StoreName>
+                                    </StoreNameContainer>
+                                </Col>
+                            </Row>
+                            <Row>
+                                <Col xs={8} lg={8}>
+                                    <StoreListingContainer>
+                                        {storeComponents}
+                                    </StoreListingContainer>
+                                </Col>
+                                <Col xs={4} lg={4}>
+                                    <ItemDisplayContainer>
+                                        <Row className="align-items-center">
+                                            <Col>
+                                                {currentItem &&
+                                                    <ItemDisplay src={assetURL + currentItem.sprite} />}
+                                            </Col>
+                                        </Row>
+                                    </ItemDisplayContainer>
 
-                            {!purchaseButtonDisabled && 
-                            <PurchaseButton onClick={handlePurchase}>
-                                <Row className="align-items-center">
-                                    <Col xs={10}>
-                                        <Price>
-                                            {currentItem && currentItem.price}
-                                            {currentItem === null && 0}
-                                        </Price>
-                                    </Col>
-                                    <Col xs={2}>
-                                        <Coin src='./assets/ui/coin.png'/>
-                                    </Col>
-                                </Row>
-                                </PurchaseButton>
-                            }
-                        </Col>
-                    </Row>
-                </Container>
-            </Store>
-            <CloseButton src='./assets/ui/close-button.png' onClick={()=>closeButtonClicked()}></CloseButton>
-            </>}
+                                    {!purchaseButtonDisabled &&
+                                        <PurchaseButton onClick={handlePurchase}>
+                                            <Row className="align-items-center">
+                                                <Col xs={10}>
+                                                    <Price>
+                                                        {currentItem && currentItem.price}
+                                                        {currentItem === null && 0}
+                                                    </Price>
+                                                </Col>
+                                                <Col xs={2}>
+                                                    <Coin src='./assets/ui/coin.png' />
+                                                </Col>
+                                            </Row>
+                                        </PurchaseButton>
+                                    }
+                                </Col>
+                            </Row>
+                        </Container>
+                    </Store>
+                    <CloseButton src='./assets/ui/close-button.png' onClick={() => closeButtonClicked()}></CloseButton>
+                </>}
         </Overlay>
     );
 };
