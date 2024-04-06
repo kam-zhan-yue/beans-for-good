@@ -141,6 +141,7 @@ export const StorePanel = ({ data, interactionOver }) => {
     const [facilityData, setFacilityData] = useState({});
     const [currentItem, setCurrentItem] = useState(null);
     const [inventoryData, setInventoryData] = useState([]);
+    const [currentBeans, setCurrentBeans] = useState(0);
 
     const [purchaseButtonDisabled, setPurchaseButtonDisabled] = useState(false);
     const [purchaseComplete, setPurchaseComplete] = useState(false);
@@ -177,6 +178,13 @@ export const StorePanel = ({ data, interactionOver }) => {
             // setInventoryData(cookies.inventory);
         }
 
+        const fetchCurrentBeans = async () => {
+            const items = await fetch('http://localhost:3000/beans/evan');
+            const response = await items.json();
+            setCurrentBeans(response.beans);
+        }
+
+        fetchCurrentBeans();
         fetchItemList();
         fetchFacilityList();
         fetchStoreItems();
@@ -207,14 +215,20 @@ export const StorePanel = ({ data, interactionOver }) => {
         console.log(`try purchase ${currentItem}`);
         try {
             // Simulate delay of 100ms
-            // await new Promise(resolve => setTimeout(resolve, 500));
-            const currentBeans = cookies.amount;
+            // await new Promise(resolve => setTimeout(resolve, 500))
 
             if (currentBeans < currentItem.price) {
                 throw new Error('Not enough beans');
             }
 
-            setCookie('amount', currentBeans - currentItem.price, { "path": '/' });
+            await fetch("http://localhost:3000/beans/evan", {
+                "method": "POST",
+                "body": JSON.stringify({ "beans": currentBeans - currentItem.price }),
+                "headers": {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
+            // setCookie('amount', currentBeans - currentItem.price, { "path": '/' });
 
             const newInventory = [...inventoryData];
             var inInventory = false;
