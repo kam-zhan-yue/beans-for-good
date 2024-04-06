@@ -204,13 +204,12 @@ export const CentrePanel = ({ data, interactionOver }) => {
             newInventory.splice(inventoryIndex, 1);
         }
 
-        console.log(newObj);
         setItemsToDonate(newObj);
         setInventoryData(newInventory);
-        console.log(newInventory);
     };
 
     const donateItems = () => {
+        setCookie('inventory', inventoryData, { "path": '/' });
         setItemsToDonate({});
     };
 
