@@ -49,6 +49,19 @@ const InventoryContainer = styled.div`
   overflow: auto;
 `
 
+const DonateButton = styled.div`
+    width: 100%;
+    height: 8vh;
+    border: 8px solid transparent;
+    border-image: url(./assets/ui/inventory-item-background.png) 3 fill repeat;
+    min-height: 75px;
+
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+      }
+`
+
 export const CentrePanel = ({ data, interactionOver }) => {
     const [inventoryData, setInventoryData] = useState([]);
     const [itemList, setItemList] = useState({});
@@ -87,6 +100,10 @@ export const CentrePanel = ({ data, interactionOver }) => {
         }
         console.log(newObj);
         setItemsToDonate(newObj);
+    };
+
+    const donateItems = () => {
+        setItemsToDonate({});
     };
 
     const inventoryItems = inventoryData.map(item => {
@@ -137,6 +154,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
                                         "quantity": itemsToDonate[itemId].quantity
                                     }} />
                                 )}
+                                <DonateButton onClick={donateItems}>Donate</DonateButton>
                             </Row>
                         </Col>
                     </Row>
