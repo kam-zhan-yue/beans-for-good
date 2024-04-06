@@ -189,6 +189,7 @@ export const StorePanel = ({ data, interactionOver }) => {
             setCoins(response.beans);
         }
 
+        fetchInventory();
         fetchItemList();
         fetchFacilityList();
         fetchStoreItems();
@@ -213,7 +214,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         if (currentItem == null)
             return;
 
-        if(canPurchase() === false)
+        if (canPurchase() === false)
             return;
         // Disable the purchase button
         setPurchaseButtonDisabled(true);
@@ -227,7 +228,7 @@ export const StorePanel = ({ data, interactionOver }) => {
             if (currentBeans < currentItem.price) {
                 throw new Error('Not enough beans');
             }
-          
+
             const newAmount = currentBeans - currentItem.price;
             await fetch("http://localhost:3000/beans/evan", {
                 "method": "POST",
@@ -240,6 +241,7 @@ export const StorePanel = ({ data, interactionOver }) => {
             setCoins(newAmount);
 
             const newInventory = [...inventoryData];
+            console.log(newInventory);
             var inInventory = false;
 
             for (const item of newInventory) {
@@ -285,7 +287,7 @@ export const StorePanel = ({ data, interactionOver }) => {
     }
 
     const canPurchase = () => {
-        if(!currentItem)
+        if (!currentItem)
             return false;
         console.log(`Coins: ${coins} Price: ${currentItem.price} Can Purchase: ${coins >= currentItem.price}`)
         return coins >= currentItem.price;
@@ -339,7 +341,7 @@ export const StorePanel = ({ data, interactionOver }) => {
                                         </Row>
                                     </ItemDisplayContainer>
 
-                                    {!purchaseButtonDisabled && 
+                                    {!purchaseButtonDisabled &&
                                         <PurchaseButton onClick={handlePurchase}>
                                             <Row className="align-items-center">
                                                 <Col>
@@ -362,7 +364,7 @@ export const StorePanel = ({ data, interactionOver }) => {
                 </>}
             {!purchaseComplete && <CurrencyOverlayPanel
                 coins={coins}
-                />}
+            />}
         </Overlay>
     );
 };
