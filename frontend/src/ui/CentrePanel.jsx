@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem';
+import { SubInventoryItem } from './SubInventoryItem';
 import { RequestPanel } from './RequestPanel';
 import { Grid } from "@material-ui/core";
 import Row from 'react-bootstrap/Row';
@@ -224,7 +225,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
             return itemData;
         });
     }
-    const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
+    const inventoryComponents = inventoryItems.map(item => <SubInventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
 
     return (
         <Overlay>
@@ -273,7 +274,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
                                     <Grid item lg={12} md={12} sm={12} xs={12}>
                                         <InventoryContainer>
                                             {Object.keys(itemsToDonate).map(
-                                                itemId => <InventoryItem itemData={{
+                                                itemId => <SubInventoryItem itemData={{
                                                     "id": itemId,
                                                     "sprite": itemList[itemId].sprite,
                                                     "quantity": itemsToDonate[itemId].quantity

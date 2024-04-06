@@ -18,6 +18,21 @@ const BackpackOverlay = styled.div`
   text-align: center;
 `
 
+const Backpack = styled.img`
+  width: 80px;
+  height: 80px;
+
+  image-rendering: pixelated; /* Preserve image quality when scaled up */
+
+  transition: 0.3s;
+  -webkit-transition: 0.3s;
+
+  &:hover {
+    cursor: pointer;
+    transform: translateY(-10px);
+  }
+`
+
 const CurrencyOverlay = styled.div`
   padding-right: 10px; // Adjust padding here
   padding-left: 10px; // Adjust padding here
@@ -39,21 +54,6 @@ const CurrencyOverlay = styled.div`
   &:hover {
     cursor: pointer;
     transform: translate(-50%, 10%); /* Adjust the translateY value */
-  }
-`
-
-const Backpack = styled.img`
-  width: 80px;
-  height: 80px;
-
-  image-rendering: pixelated; /* Preserve image quality when scaled up */
-
-  transition: 0.3s;
-  -webkit-transition: 0.3s;
-
-  &:hover {
-    cursor: pointer;
-    transform: translateY(-10px);
   }
 `
 

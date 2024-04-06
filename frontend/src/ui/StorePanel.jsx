@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
 import { PurchaseCompletePanel } from './PurchaseCompletePanel';
 import { CookiesProvider, useCookies } from 'react-cookie'
+import { CurrencyOverlayPanel } from './CurrencyOverlayPanel';
 
 const Overlay = styled.div`
     position: fixed;
@@ -95,27 +96,30 @@ const PurchaseButton = styled.div`
 
     /* Add transition for smooth animation */
     transition: transform 0.3s;
-
     &:hover {
         cursor: pointer;
         transform: translateY(-5px);
-      }
+    }
+`
+
+const PriceHolder = styled.div`
+    display: flex;
+    align-items: center; /* Align items vertically */
+    justify-content: flex-end;
 `
 
 const Price = styled.h1`
     font-family: "VT323", monospace;
     font-size: 50px; /* Adjust font size as needed */
     font-weight: 400;
-    margin: 0; /* Remove default margin */
+    margin-right: 10px;
     text-align: right; /* Align text to the right */
     color: ${constants.primary};
 `
 
 const Coin = styled.img`
-    min-width: 10px;
-    width: 50%; /* Adjust width to make it a square */
+    min-width: 40px;
     height: auto; /* Maintain aspect ratio */
-
     image-rendering: pixelated; /* Preserve image quality when scaled up */
 `
 
@@ -128,8 +132,8 @@ const CloseButton = styled.img`
     transition: 0.3s;
     -webkit-transition: 0.3s;
     &:hover {
-    cursor: pointer;
-    transform: translateY(-5px);
+        cursor: pointer;
+        transform: translateY(-5px);
     }
 `
 
@@ -145,6 +149,7 @@ export const StorePanel = ({ data, interactionOver }) => {
     const [purchaseComplete, setPurchaseComplete] = useState(false);
 
     const [cookies, setCookie] = useCookies(['inventory', 'amount']);
+    const [coins, setCoins] = useState(0);
 
     useEffect(() => {
         const fetchStoreItems = async () => {
@@ -167,10 +172,18 @@ export const StorePanel = ({ data, interactionOver }) => {
             setFacilityData(facilityData);
         }
 
+        const fetchCoins = async () => {
+          if (!cookies.amount) {
+            setCookie('amount', 0, { path: '/' });
+          }
+          setCoins(cookies.amount);
+        };
+
         fetchItemList();
         fetchFacilityList();
         fetchStoreItems();
-    }, [data.facilityID]);
+        fetchCoins();
+    }, []);
 
     const handleCompleteConfirmed = () => {
         setPurchaseComplete(false);
@@ -190,6 +203,8 @@ export const StorePanel = ({ data, interactionOver }) => {
         if (currentItem == null)
             return;
 
+        if(canPurchase() === false)
+            return;
         // Disable the purchase button
         setPurchaseButtonDisabled(true);
 
@@ -203,7 +218,10 @@ export const StorePanel = ({ data, interactionOver }) => {
                 throw new Error('Not enough beans');
             }
 
-            setCookie('amount', currentBeans - currentItem.price, { "path": '/' });
+            const newAmount = currentBeans - currentItem.price;
+            setCookie('amount', newAmount, { "path": '/' });
+            setCoins(newAmount);
+
 
             const newInventory = [...cookies.inventory];
             var inInventory = false;
@@ -234,6 +252,13 @@ export const StorePanel = ({ data, interactionOver }) => {
             console.error('Error purchasing item:', error);
             setPurchaseButtonDisabled(false);
         }
+    }
+
+    const canPurchase = () => {
+        if(!currentItem)
+            return false;
+        console.log(`Coins: ${coins} Price: ${currentItem.price} Can Purchase: ${coins >= currentItem.price}`)
+        return coins >= currentItem.price;
     }
 
     const handleStoreClicked = () => {
@@ -284,17 +309,17 @@ export const StorePanel = ({ data, interactionOver }) => {
                                         </Row>
                                     </ItemDisplayContainer>
 
-                                    {!purchaseButtonDisabled &&
+                                    {!purchaseButtonDisabled && 
                                         <PurchaseButton onClick={handlePurchase}>
                                             <Row className="align-items-center">
-                                                <Col xs={8}>
-                                                    <Price>
-                                                        {currentItem && currentItem.price}
-                                                        {currentItem === null && 0}
-                                                    </Price>
-                                                </Col>
-                                                <Col xs={4}>
-                                                    <Coin src='./assets/ui/coin.png' />
+                                                <Col>
+                                                    <PriceHolder>
+                                                        <Price>
+                                                            {currentItem && currentItem.price}
+                                                            {currentItem === null && 0}
+                                                        </Price>
+                                                        <Coin src='./assets/ui/coin.png' />
+                                                    </PriceHolder>
                                                 </Col>
                                             </Row>
                                         </PurchaseButton>
@@ -305,6 +330,9 @@ export const StorePanel = ({ data, interactionOver }) => {
                     </Store>
                     <CloseButton src='./assets/ui/close-button.png' onClick={() => closeButtonClicked()}></CloseButton>
                 </>}
+            {!purchaseComplete && <CurrencyOverlayPanel
+                coins={coins}
+                />}
         </Overlay>
     );
 };
