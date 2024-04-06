@@ -8,7 +8,7 @@ import Col from 'react-bootstrap/Col';
 import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
-
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 const Overlay = styled.div`
     position: fixed;
@@ -133,12 +133,17 @@ export const CentrePanel = ({ data, interactionOver }) => {
     const [itemList, setItemList] = useState({});
     const [itemsToDonate, setItemsToDonate] = useState({});
     const [facilityData, setFacilityData] = useState({});
+    const [cookies, setCookie] = useCookies(['inventory']);
 
     useEffect(() => {
         const fetchInventory = async () => {
-            const items = await fetch('http://localhost:3000/inventory/evan');
-            const response = await items.json();
-            setInventoryData(response.items);
+            // const items = await fetch('http://localhost:3000/inventory/evan');
+            // const response = await items.json();
+            // setInventoryData(response.items);
+            if (!cookies.inventory) {
+                setCookie('inventory', [], { path: '/' });
+            }
+            setInventoryData(cookies.inventory);
         }
 
         const fetchItemList = async () => {
@@ -161,8 +166,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
 
     //New functions
     const handleCentreClicked = () => {
-        if(facilityData)
-        {
+        if (facilityData) {
             window.open(facilityData.url, '_blank');
         }
     }
@@ -176,26 +180,51 @@ export const CentrePanel = ({ data, interactionOver }) => {
     };
 
     const addToItemsToDonate = (item) => {
+        console.log(item);
         const newObj = { ...itemsToDonate }
+        const newInventory = [...inventoryData]
+        var inventoryIndex = 0;
+
+        for (var i = 0; i < newInventory.length; i++) {
+            if (newInventory[i].id === item.id) {
+                inventoryIndex = i;
+                break;
+            }
+        }
+
         if (newObj.hasOwnProperty(item.id)) {
             newObj[item.id].quantity += 1;
         } else {
             newObj[item.id] = { "quantity": 1 };
         }
-        console.log("Items to Donate: "+itemsToDonate.Length)
+
+        newInventory[inventoryIndex].quantity -= 1;
+
+        if (newInventory[inventoryIndex].quantity === 0) {
+            newInventory.splice(inventoryIndex, 1);
+        }
+
+        console.log(newObj);
         setItemsToDonate(newObj);
+        setInventoryData(newInventory);
+        console.log(newInventory);
     };
 
     const donateItems = () => {
         setItemsToDonate({});
     };
 
-    const inventoryItems = inventoryData.map(item => {
-        const itemData = itemList[item.id];
-        itemData.quantity = item.quantity;
-        itemData.id = item.id;
-        return itemData;
-    });
+    var inventoryItems;
+    if (Object.keys(itemList).length === 0) {
+        inventoryItems = [];
+    } else {
+        inventoryItems = inventoryData.map(item => {
+            const itemData = itemList[item.id];
+            itemData.quantity = item.quantity;
+            itemData.id = item.id;
+            return itemData;
+        });
+    }
     const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
 
     return (
@@ -217,21 +246,21 @@ export const CentrePanel = ({ data, interactionOver }) => {
                             </RequestContainer>
                         </Col>
                     </Row>
-                    
+
                     <Row>
                         <Col xs={6} lg={6}>
                             <DataContainer>
-                            <Grid
-                                container
-                                direction="column"
-                                alignItems="center"
-                            >
-                                <Grid item lg={12} md={12} sm={12} xs={12}>
-                                    <InventoryContainer>
-                                        {inventoryComponents}
-                                    </InventoryContainer>
+                                <Grid
+                                    container
+                                    direction="column"
+                                    alignItems="center"
+                                >
+                                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                                        <InventoryContainer>
+                                            {inventoryComponents}
+                                        </InventoryContainer>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
                             </DataContainer>
                         </Col>
 
@@ -244,13 +273,13 @@ export const CentrePanel = ({ data, interactionOver }) => {
                                 >
                                     <Grid item lg={12} md={12} sm={12} xs={12}>
                                         <InventoryContainer>
-                                        {Object.keys(itemsToDonate).map(
-                                            itemId => <InventoryItem itemData={{
-                                                "id": itemId,
-                                                "sprite": itemList[itemId].sprite,
-                                                "quantity": itemsToDonate[itemId].quantity
-                                            }} />
-                                        )}
+                                            {Object.keys(itemsToDonate).map(
+                                                itemId => <InventoryItem itemData={{
+                                                    "id": itemId,
+                                                    "sprite": itemList[itemId].sprite,
+                                                    "quantity": itemsToDonate[itemId].quantity
+                                                }} />
+                                            )}
                                         </InventoryContainer>
                                     </Grid>
                                 </Grid>
@@ -261,14 +290,14 @@ export const CentrePanel = ({ data, interactionOver }) => {
 
                     <Row>
                         <Col>
-                            {Object.keys(itemsToDonate).length > 0 &&  
-                            <DonateContainer>
-                                <DonateBox onClick={donateItems}>
-                                    <DonateText>
-                                        Donate!
-                                    </DonateText>
-                                </DonateBox>
-                            </DonateContainer>}   
+                            {Object.keys(itemsToDonate).length > 0 &&
+                                <DonateContainer>
+                                    <DonateBox onClick={donateItems}>
+                                        <DonateText>
+                                            Donate!
+                                        </DonateText>
+                                    </DonateBox>
+                                </DonateContainer>}
                         </Col>
                     </Row>
                 </Container>
@@ -318,6 +347,6 @@ export const CentrePanel = ({ data, interactionOver }) => {
                 </Container>
             </Store> */}
 
-<CloseButton src='./assets/ui/close-button.png' onClick={()=>closeButtonClicked()}></CloseButton>        </Overlay>
+            <CloseButton src='./assets/ui/close-button.png' onClick={() => closeButtonClicked()}></CloseButton>        </Overlay>
     );
 };

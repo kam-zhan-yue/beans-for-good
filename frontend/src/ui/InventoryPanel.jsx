@@ -87,7 +87,6 @@ export const InventoryPanel = ({ interactionOver }) => {
     } else {
         inventoryItems = inventoryData.map(item => {
             const itemData = itemList[item.id];
-            console.log(itemList);
             itemData.quantity = item.quantity;
             return itemData;
         });
