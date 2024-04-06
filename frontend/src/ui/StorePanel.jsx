@@ -6,6 +6,7 @@ import Col from 'react-bootstrap/Col';
 import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
+import { PurchaseCompletePanel } from './PurchaseCompletePanel';
 
 const Overlay = styled.div`
     position: fixed;
@@ -131,6 +132,10 @@ export const StorePanel = ({ data, interactionOver }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [currentItem, setCurrentItem] = useState(null);
 
+    const [purchaseButtonDisabled, setPurchaseButtonDisabled] = useState(false);
+    const [purchaseComplete, setPurchaseComplete] = useState(false);
+
+
     useEffect(() => {
         const fetchStoreItems = async () => {
             const items = await fetch(`./assets/dummy_${data.facilityID}.json`);
@@ -157,6 +162,10 @@ export const StorePanel = ({ data, interactionOver }) => {
         fetchStoreItems();
     }, [data.facilityID]);
 
+    const handleCompleteConfirmed = () => {
+        setPurchaseComplete(false);
+    }
+
     const closeButtonClicked = () => {
         if (interactionOver instanceof (Function)) {
             interactionOver();
@@ -167,10 +176,26 @@ export const StorePanel = ({ data, interactionOver }) => {
         setCurrentItem(itemData);
     }
     
-    const handlePurchase = () => {
+    const handlePurchase = async () => {
         if(currentItem == null)
             return;
+
+        // Disable the purchase button
+        setPurchaseButtonDisabled(true);
+
         console.log(`try purchase ${currentItem}`);
+        try {
+            // Simulate delay of 100ms
+            await new Promise(resolve => setTimeout(resolve, 1000));
+
+            // Enable the purchase button and show the purchase complete panel
+            setPurchaseButtonDisabled(false);
+            setPurchaseComplete(true);
+        } catch (error) {
+            // If there's an error, enable the purchase button and display an error message
+            console.error('Error purchasing item:', error);
+            setPurchaseButtonDisabled(false);
+        }
     }
 
     const handleStoreClicked = () => {
@@ -189,6 +214,13 @@ export const StorePanel = ({ data, interactionOver }) => {
 
     return (
         <Overlay>
+            {purchaseComplete && 
+            <PurchaseCompletePanel
+                onConfirmed={handleCompleteConfirmed}
+                itemData={currentItem}
+            />}
+            {!purchaseComplete &&
+            <>
             <Store>
                 <Container>
                     <Row>
@@ -213,25 +245,28 @@ export const StorePanel = ({ data, interactionOver }) => {
                                     </Col>
                                 </Row>
                             </ItemDisplayContainer>
-                            <PurchaseButton onClick={handlePurchase}>
 
-                            <Row className="align-items-center">
-                                <Col xs={10}>
-                                    <Price>
-                                        {currentItem && currentItem.price}
-                                        {currentItem === null && 0}
-                                    </Price>
-                                </Col>
-                                <Col xs={2}>
-                                    <Coin src='./assets/ui/coin.png'/>
-                                </Col>
-                            </Row>
-                            </PurchaseButton>
+                            {!purchaseButtonDisabled && 
+                            <PurchaseButton onClick={handlePurchase}>
+                                <Row className="align-items-center">
+                                    <Col xs={10}>
+                                        <Price>
+                                            {currentItem && currentItem.price}
+                                            {currentItem === null && 0}
+                                        </Price>
+                                    </Col>
+                                    <Col xs={2}>
+                                        <Coin src='./assets/ui/coin.png'/>
+                                    </Col>
+                                </Row>
+                                </PurchaseButton>
+                            }
                         </Col>
                     </Row>
                 </Container>
             </Store>
             <CloseButton src='./assets/ui/close-button.png' onClick={()=>closeButtonClicked()}></CloseButton>
+            </>}
         </Overlay>
     );
 };
