@@ -18,6 +18,57 @@ const Overlay = styled.div`
     text-align: center;
 `
 
+const Centre = styled.div`
+    padding: 1vw; // Adjust padding here
+    border: 16px solid transparent;
+    border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
+    height: 57vh;
+    min-width: 60vw;
+    max-width: 60vw; // Adjust max width here
+    max-height: 600px; // Adjust max height here
+    min-height: 450px;
+`
+
+const CentreNameContainer = styled.div`
+    border: 16px solid transparent;
+    border-image: url(./assets/ui/name-panel.png) 7.5 fill repeat;
+    margin-bottom: 10px;
+
+    /* Add transition for smooth animation */
+    transition: transform 0.3s;
+  
+    &:hover {
+        cursor: pointer;
+        transform: translateY(-5px);
+      }
+`
+
+const CentreName = styled.h1`
+    font-family: "VT323", monospace;
+    font-size: 50px; /* Adjust font size as needed */
+    font-weight: 400;
+    margin: 0; /* Remove default margin */
+    text-align: center; /* Align text to the right */
+    color: ${constants.primary};
+`
+
+
+const CloseButton = styled.img`
+    width: 80px;
+    height: 80px;
+
+    image-rendering: pixelated; /* Preserve image quality when scaled up */
+
+    transition: 0.3s;
+    -webkit-transition: 0.3s;
+    &:hover {
+    cursor: pointer;
+    transform: translateY(-5px);
+    }
+`
+
+//EVAN'S STUFF
+
 const Store = styled.div`
     padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
@@ -66,6 +117,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
     const [inventoryData, setInventoryData] = useState([]);
     const [itemList, setItemList] = useState({});
     const [itemsToDonate, setItemsToDonate] = useState({});
+    const [facilityData, setFacilityData] = useState({});
 
     useEffect(() => {
         const fetchInventory = async () => {
@@ -80,10 +132,27 @@ export const CentrePanel = ({ data, interactionOver }) => {
             setItemList(itemList);
         }
 
+        const fetchFacilityList = async () => {
+            const response = await fetch('./assets/config/facility_list.json');
+            const facilityList = await response.json();
+            const facilityData = facilityList[data.facilityID];
+            setFacilityData(facilityData);
+        }
 
         fetchItemList();
+        fetchFacilityList();
         fetchInventory();
-    }, []);
+    }, [data.facilityID]);
+
+    //New functions
+    const handleCentreClicked = () => {
+        if(facilityData)
+        {
+            window.open(facilityData.url, '_blank');
+        }
+    }
+
+    //Evan's functions
 
     const closeButtonClicked = () => {
         if (interactionOver instanceof (Function)) {
@@ -116,7 +185,18 @@ export const CentrePanel = ({ data, interactionOver }) => {
 
     return (
         <Overlay>
-            <Store>
+            <Centre>
+                <Container>
+                    <Row>
+                        <Col>
+                            <CentreNameContainer onClick={handleCentreClicked}>
+                                <CentreName>{facilityData && facilityData.name}</CentreName>
+                            </CentreNameContainer>
+                        </Col>
+                    </Row>
+                </Container>
+            </Centre>
+            {/* <Store>
                 <Container>
                     <Row>
                         <Col xs={6} lg={6}>
@@ -159,8 +239,8 @@ export const CentrePanel = ({ data, interactionOver }) => {
                         </Col>
                     </Row>
                 </Container>
-            </Store>
-            <button className="button" onClick={closeButtonClicked}>Close Panel</button>
-        </Overlay>
+            </Store> */}
+
+<CloseButton src='./assets/ui/close-button.png' onClick={()=>closeButtonClicked()}></CloseButton>        </Overlay>
     );
 };
