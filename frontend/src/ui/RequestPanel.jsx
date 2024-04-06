@@ -21,18 +21,14 @@ export const RequestPanel = ({ data }) => {
         const fetchItemList = async () => {
             const response = await fetch('./assets/items/item_list.json');
             const items = await response.json();
-            console.log(items);
             setItemList(items);
         }
 
         fetchItemList();
         fetchRequestedItems();
-        console.log(itemList);
     }, []);
 
     const requestedItems = requestedItemData.map(item => itemList[item]);
-    console.log(itemList);
-    console.log(requestedItems);
     const requestedItemComponents = requestedItems.map(item => <RequestItem itemData={item} />)
 
     return (

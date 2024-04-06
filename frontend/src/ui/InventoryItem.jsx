@@ -45,12 +45,18 @@ const ItemQuantity = styled.div`
 
 const assetURL = './assets/items/'
 
-export const InventoryItem = ({ itemData }) => {
+export const InventoryItem = ({ itemData, onItemClicked }) => {
+  const handleClick = () => {
+    if (onItemClicked) {
+      onItemClicked(itemData); // Pass the itemData to the callback function
+    }
+  };
+
   return (
     <div>
-      <ItemBackground>
+      <ItemBackground onClick={handleClick}>
         <ItemImage src={assetURL + itemData.sprite} />
-      {itemData.quantity > 0 && <ItemQuantity>{itemData.quantity}</ItemQuantity>}
+        {itemData.quantity > 0 && <ItemQuantity>{itemData.quantity}</ItemQuantity>}
       </ItemBackground>
     </div>
   );

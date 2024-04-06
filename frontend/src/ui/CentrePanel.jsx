@@ -52,6 +52,7 @@ const InventoryContainer = styled.div`
 export const CentrePanel = ({ data, interactionOver }) => {
     const [inventoryData, setInventoryData] = useState([]);
     const [itemList, setItemList] = useState({});
+    const [itemsToDonate, setItemsToDonate] = useState([]);
 
     useEffect(() => {
         const fetchInventory = async () => {
@@ -75,14 +76,22 @@ export const CentrePanel = ({ data, interactionOver }) => {
         if (interactionOver instanceof (Function)) {
             interactionOver();
         }
-    }
+    };
+
+    const addToItemsToDonate = (item) => {
+        const newArr = [...itemsToDonate];
+        console.log(item);
+        newArr.push(<InventoryItem itemData={item} />);
+        console.log(newArr);
+        setItemsToDonate(newArr);
+    };
 
     const inventoryItems = inventoryData.map(item => {
         const itemData = itemList[item.id];
         itemData.quantity = item.quantity;
         return itemData;
     });
-    const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} />);
+    const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
 
     return (
         <Overlay>
@@ -103,17 +112,22 @@ export const CentrePanel = ({ data, interactionOver }) => {
                             </Grid>
                         </Col>
                         <Col xs={6} lg={6}>
-                            <Grid
-                                container
-                                direction="column"
-                                alignItems="center"
-                            >
-                                <Grid item lg={12} md={12} sm={12} xs={12}>
-                                    <InventoryContainer>
-                                        <RequestPanel data={data} />
-                                    </InventoryContainer>
+                            <Row>
+                                <Grid
+                                    container
+                                    direction="column"
+                                    alignItems="center"
+                                >
+                                    <Grid item lg={12} md={12} sm={12} xs={12}>
+                                        <InventoryContainer>
+                                            <RequestPanel data={data} />
+                                        </InventoryContainer>
+                                    </Grid>
                                 </Grid>
-                            </Grid>
+                            </Row>
+                            <Row>
+                                {itemsToDonate}
+                            </Row>
                         </Col>
                     </Row>
                 </Container>
