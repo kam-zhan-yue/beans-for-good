@@ -148,9 +148,8 @@ export const StorePanel = ({ data, interactionOver }) => {
 
     useEffect(() => {
         const fetchStoreItems = async () => {
-            const items = await fetch(`./assets/dummy_${data.facilityID}.json`);
+            const items = await fetch(`http://localhost:3000/store/${data.facilityID}`);
             const response = await items.json();
-            // console.log(response);
             setStoreData(response.items);
         }
 
@@ -170,7 +169,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         fetchItemList();
         fetchFacilityList();
         fetchStoreItems();
-    }, [data.facilityID]);
+    }, []);
 
     const handleCompleteConfirmed = () => {
         setPurchaseComplete(false);

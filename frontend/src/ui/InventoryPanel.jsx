@@ -61,13 +61,13 @@ export const InventoryPanel = ({ interactionOver }) => {
 
     useEffect(() => {
         const fetchInventory = async () => {
-            // const items = await fetch('http://localhost:3000/inventory/evan');
-            // const response = await items.json();
-            // setInventoryData(response.items);
-            if (!cookies.inventory) {
-                setCookie('inventory', [], { path: '/' });
-            }
-            setInventoryData(cookies.inventory);
+            const items = await fetch('http://localhost:3000/inventory/evan');
+            const response = await items.json();
+            setInventoryData(response.items);
+            // if (!cookies.inventory) {
+            //     setCookie('inventory', [], { path: '/' });
+            // }
+            // setInventoryData(cookies.inventory);
         }
 
         const fetchItemList = async () => {
