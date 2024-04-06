@@ -9,9 +9,9 @@ const itemSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     required: true,
-    min: 0 
+    min: 0
   }
-}, { _id: false }); 
+}, { _id: false });
 
 const userSchema = new mongoose.Schema({
   username: {
@@ -23,7 +23,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  items: [itemSchema]
+  items: [itemSchema],
+  beans: {
+    type: Number,
+    required: true
+  }
 });
 
 const User = mongoose.model('User', userSchema);

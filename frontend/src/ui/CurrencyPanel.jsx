@@ -55,10 +55,9 @@ export const CurrencyPanel = ({ interactionOver }) => {
 
     useEffect(() => {
         const fetchAmount = async () => {
-            if (!cookies.amount) {
-                setCookie('amount', 0, { path: '/' });
-            }
-            setCurrentAmount(cookies.amount);
+            const items = await fetch('http://localhost:3000/beans/evan');
+            const response = await items.json();
+            setCurrentAmount(response.beans);
         }
 
         fetchAmount();
@@ -72,7 +71,14 @@ export const CurrencyPanel = ({ interactionOver }) => {
         try {
             // Simulate delay of 100ms
             // await new Promise(resolve => setTimeout(resolve, 500));
-            setCookie('amount', currentAmount + amount, { "path": '/' });
+            await fetch("http://localhost:3000/beans/evan", {
+                "method": "POST",
+                "body": JSON.stringify({ "beans": currentAmount + amount }),
+                "headers": {
+                    "Content-type": "application/json; charset=UTF-8"
+                }
+            });
+            // setCookie('amount', currentAmount + amount, { "path": '/' });
             setCurrentAmount(currentAmount + amount);
             setPurchaseAmount(amount);
 

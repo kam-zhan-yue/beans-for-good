@@ -241,7 +241,6 @@ export const StorePanel = ({ data, interactionOver }) => {
                 };
             });
 
-            console.log(JSON.stringify(cleanInventory));
             await fetch("http://localhost:3000/inventory/evan/purchase", {
                 "method": "POST",
                 "body": JSON.stringify(cleanInventory),

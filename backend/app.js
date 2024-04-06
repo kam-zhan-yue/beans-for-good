@@ -138,11 +138,27 @@ async function replaceUserItems(username, newItems) {
   }
 }
 
+async function replaceUserBeans(username, newBeans) {
+  try {
+    console.log(newBeans);
+    const updatedUser = await User.findOneAndUpdate(
+      { "username": username },
+      { $set: { "beans": newBeans } }, // replace the entire beans
+    );
+
+    if (updatedUser) {
+      console.log('Beans updated successfully:', updatedUser);
+    } else {
+      console.log('User not found');
+    }
+  } catch (error) {
+    console.error('Error updating items list:', error);
+  }
+}
+
 app.post('/inventory/:username/purchase', asyncHandler(async (req, res) => {
   const username = req.params.username;
   const newItems = req.body;
-  console.log(username);
-  console.log(newItems);
 
   try {
     await replaceUserItems(username, newItems);
@@ -150,5 +166,36 @@ app.post('/inventory/:username/purchase', asyncHandler(async (req, res) => {
   } catch (error) {
     console.error('Error during purchase:', error);
     res.status(500).json({ message: error.message });
+  }
+}));
+
+app.post('/beans/:username', asyncHandler(async (req, res) => {
+  const username = req.params.username;
+  const newBeans = parseInt(req.body.beans);
+
+  try {
+    await replaceUserBeans(username, newBeans);
+    res.status(200).send('Beans beaned successfully');
+  } catch (error) {
+    console.error('Error during beans update:', error);
+    res.status(500).json({ message: error.message });
+  }
+}));
+
+app.get('/beans/:username', asyncHandler(async (req, res) => {
+  const { username } = req.params;
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(404).send('User not found');
+    }
+
+    const beans = user.beans;
+
+    res.status(200).json({ beans: beans });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error fetching user inventory');
   }
 }));

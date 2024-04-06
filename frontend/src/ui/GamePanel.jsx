@@ -89,10 +89,9 @@ export const GamePanel = ({ inventoryClicked, currencyClicked }) => {
     };
 
     const fetchCoins = async () => {
-      if (!cookies.amount) {
-        setCookie('amount', 0, { path: '/' });
-      }
-      setCoins(cookies.amount);
+      const items = await fetch('http://localhost:3000/beans/evan');
+      const response = await items.json();
+      setCoins(response.beans);
     };
 
     fetchUserData();
