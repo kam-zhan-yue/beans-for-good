@@ -58,5 +58,17 @@
     "14": {
         "name": "Yellow Jar",
         "sprite": "yellow-jar.png"
+    },
+    "15": {
+        "name": "Pumpkin Pie",
+        "sprite": "pumpkin-pie.png"
+    },
+    "16": {
+        "name": "Lemon Pie",
+        "sprite": "lemon-pie.png"
+    },
+    "17": {
+        "name": "Apple Pie",
+        "sprite": "apple-pie.png"
     }
 }
