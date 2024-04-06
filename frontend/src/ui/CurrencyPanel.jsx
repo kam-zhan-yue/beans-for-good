@@ -1,4 +1,4 @@
-import {React, useState} from 'react';
+import { React, useState, useEffect } from 'react';
 import styled from 'styled-components';
 import constants from '../Constants';
 import CurrencyPurchaseButton from './CurrencyPurchaseButton';
@@ -7,6 +7,7 @@ import Col from 'react-bootstrap/Col';
 import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import { CurrencyPurchaseCompletePanel } from './CurrencyPurchaseCompletePanel';
+import { CookiesProvider, useCookies } from 'react-cookie';
 
 const Overlay = styled.div`
     position: fixed;
@@ -47,17 +48,33 @@ export const CurrencyPanel = ({ interactionOver }) => {
 
     const [currentAmount, setCurrentAmount] = useState(0);
     const [closeButtonDisabled, setClosedButtonDisabled] = useState(false);
+    const [purchaseAmount, setPurchaseAmount] = useState(0);
     const [purchaseComplete, setPurchaseComplete] = useState(false);
+
+    const [cookies, setCookie] = useCookies(['amount']);
+
+    useEffect(() => {
+        const fetchAmount = async () => {
+            if (!cookies.amount) {
+                setCookie('amount', 0, { path: '/' });
+            }
+            setCurrentAmount(cookies.amount);
+        }
+
+        fetchAmount();
+    }, []);
 
     const handlePurchase = async (amount) => {
         // Disable the purchase button
         setClosedButtonDisabled(true);
-        setCurrentAmount(amount);
 
         console.log(`try purchase ${amount}`);
         try {
             // Simulate delay of 100ms
-            await new Promise(resolve => setTimeout(resolve, 500));
+            // await new Promise(resolve => setTimeout(resolve, 500));
+            setCookie('amount', currentAmount + amount, { "path": '/' });
+            setCurrentAmount(currentAmount + amount);
+            setPurchaseAmount(amount);
 
             // Enable the purchase button and show the purchase complete panel
             setClosedButtonDisabled(false);
@@ -72,41 +89,41 @@ export const CurrencyPanel = ({ interactionOver }) => {
     const handleCompleteConfirmed = () => {
         setPurchaseComplete(false);
     }
-  return (
-    <Overlay>
-        {purchaseComplete && 
-        <CurrencyPurchaseCompletePanel
-            onConfirmed={handleCompleteConfirmed}
-            amount={currentAmount}
-        />}
+    return (
+        <Overlay>
+            {purchaseComplete &&
+                <CurrencyPurchaseCompletePanel
+                    onConfirmed={handleCompleteConfirmed}
+                    amount={purchaseAmount}
+                />}
 
-        {!purchaseComplete &&
-        <Panel>
-            <Container>
-                <Row>
-                    <Col>
-                        <CurrencyPurchaseButton
-                        amount ={100}
-                        onClick={handlePurchase}/>
-                    </Col>
-                    <Col>
-                        <CurrencyPurchaseButton
-                        amount ={500}
-                        onClick={handlePurchase}/>
-                    </Col>
-                    <Col>
-                        <CurrencyPurchaseButton
-                        amount ={1000}
-                        onClick={handlePurchase}/>
-                    </Col>
+            {!purchaseComplete &&
+                <Panel>
+                    <Container>
+                        <Row>
+                            <Col>
+                                <CurrencyPurchaseButton
+                                    amount={100}
+                                    onClick={handlePurchase} />
+                            </Col>
+                            <Col>
+                                <CurrencyPurchaseButton
+                                    amount={500}
+                                    onClick={handlePurchase} />
+                            </Col>
+                            <Col>
+                                <CurrencyPurchaseButton
+                                    amount={1000}
+                                    onClick={handlePurchase} />
+                            </Col>
 
-                </Row>
-            </Container>
-        </Panel>}
-       
-        {!closeButtonDisabled && !purchaseComplete && 
-        <CloseButton src='./assets/ui/close-button.png' 
-        onClick={()=>interactionOver()}></CloseButton>}
-    </Overlay>
-  );
+                        </Row>
+                    </Container>
+                </Panel>}
+
+            {!closeButtonDisabled && !purchaseComplete &&
+                <CloseButton src='./assets/ui/close-button.png'
+                    onClick={() => interactionOver()}></CloseButton>}
+        </Overlay>
+    );
 };
