@@ -84,16 +84,37 @@ app.get('/inventory/:username', asyncHandler(async (req, res) => {
       return res.status(404).send('User not found');
     }
     
-    // Transform the items into the desired structure
     const transformedItems = user.items.map(item => ({
       id: item.id,
-      quantity: item.quantity // Assuming quantity is already the format you want
+      quantity: item.quantity 
     }));
 
-    // Wrap the transformed items in an object under the "items" key
     res.status(200).json({ items: transformedItems });
   } catch (error) {
     console.error(error); 
     res.status(500).send('Error fetching user inventory');
   }
 }));
+
+
+app.get('/store/:name', async (req, res) => {
+  const { name } = req.params;
+
+  try {
+
+    const store = await Store.findOne({ name });
+    if (!store) {
+      return res.status(404).json({ message: 'Store not found' });
+    }
+
+    const itemsWithParsedPrice = store.items.map(item => ({
+      id: item.id,
+      price: item.price.$numberInt ? parseInt(item.price.$numberInt, 10) : item.price
+    }));
+
+    res.json({ items: itemsWithParsedPrice });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Error fetching store items' });
+  }
+});
