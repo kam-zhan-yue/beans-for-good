@@ -18,8 +18,8 @@ const ItemBackground = styled.div`
   border-image: url(./assets/ui/inventory-item-background.png) 7.5 fill repeat;
   margin:10px;
   /* Maintain aspect ratio for square item */
-  width: 8vw;
-  height: 8vw;
+  width: 6vw;
+  height: 6vw;
   
   /* Add transition for smooth animation */
   transition: transform 0.3s;
@@ -45,7 +45,7 @@ background-color: #00000090;
 
 const ItemQuantity = styled.div`
   font-family: "VT323", monospace;
-  font-size: 32px;
+  font-size: 16px;
   font-weight: 400;
   // position: absolute;
   // bottom: -10px;
@@ -62,7 +62,7 @@ const ItemQuantity = styled.div`
 
 const assetURL = './assets/items/'
 
-export const InventoryItem = ({ itemData, onItemClicked }) => {
+export const SubInventoryItem = ({ itemData, onItemClicked }) => {
   const handleClick = () => {
     if (onItemClicked) {
       onItemClicked(itemData); // Pass the itemData to the callback function

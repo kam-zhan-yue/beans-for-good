@@ -1,18 +1,18 @@
 {
     "garage": {
         "name": "Test Garage",
-        "url": "https://kam-zhan-yue.github.io/"
+        "url": "https://www.doitforcancer.com.au/ways-to-do-it/sell-something"
     },
     "bakery": {
         "name": "Test Bakery",
-        "url": "https://kam-zhan-yue.github.io/"
+        "url": "https://www.bakersdelight.com.au/company/community/"
     },
     "housing": {
         "name": "Test Housing",
-        "url": "https://kam-zhan-yue.github.io/"
+        "url": "https://www.vichomelessfund.org.au"
     },
     "school": {
         "name": "Test School",
-        "url": "https://kam-zhan-yue.github.io/"
+        "url": "https://www.embrace-education.org/donate"
     }
 }

@@ -14,7 +14,7 @@ const config = {
     width: 800,
     height: 600,
     parent: 'game-container',
-    backgroundColor: '#028af8',
+    backgroundColor: '#a29177',
   // Allows Phaser canvas to be responsive to browser sizing
   scale: {
     mode: Phaser.Scale.RESIZE,

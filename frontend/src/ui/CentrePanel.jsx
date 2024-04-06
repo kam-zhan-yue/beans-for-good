@@ -1,6 +1,7 @@
 import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem';
+import { SubInventoryItem } from './SubInventoryItem';
 import { RequestPanel } from './RequestPanel';
 import { Grid } from "@material-ui/core";
 import Row from 'react-bootstrap/Row';
@@ -9,6 +10,7 @@ import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import { DonationConfirmationPanel } from './DonationConfirmationPanel';
 
 const Overlay = styled.div`
     position: fixed;
@@ -133,6 +135,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
     const [itemList, setItemList] = useState({});
     const [itemsToDonate, setItemsToDonate] = useState({});
     const [facilityData, setFacilityData] = useState({});
+    const [donateCompleted, setDonateCompleted] = useState(false);
     const [cookies, setCookie] = useCookies(['inventory']);
 
     useEffect(() => {
@@ -239,11 +242,19 @@ export const CentrePanel = ({ data, interactionOver }) => {
             return itemData;
         });
     }
-    const inventoryComponents = inventoryItems.map(item => <InventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
+    const inventoryComponents = inventoryItems.map(item => <SubInventoryItem itemData={item} onItemClicked={addToItemsToDonate} />);
+
+    const handleConfirmed = (() => {
+        setDonateCompleted(false);
+    });
 
     return (
         <Overlay>
-            <Centre>
+            {donateCompleted && 
+            <DonationConfirmationPanel
+                onConfirmed={handleConfirmed}/>}
+                {!donateCompleted &&
+                <Centre>
                 <Container>
                     <Row>
                         <Col>
@@ -288,7 +299,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
                                     <Grid item lg={12} md={12} sm={12} xs={12}>
                                         <InventoryContainer>
                                             {Object.keys(itemsToDonate).map(
-                                                itemId => <InventoryItem itemData={{
+                                                itemId => <SubInventoryItem itemData={{
                                                     "id": itemId,
                                                     "sprite": itemList[itemId].sprite,
                                                     "quantity": itemsToDonate[itemId].quantity
@@ -316,51 +327,12 @@ export const CentrePanel = ({ data, interactionOver }) => {
                     </Row>
                 </Container>
             </Centre>
-            {/* <Store>
-                <Container>
-                    <Row>
-                        <Col xs={6} lg={6}>
-                            <Grid
-                                container
-                                direction="column"
-                                alignItems="center"
-                            >
-                                <Grid item lg={12} md={12} sm={12} xs={12}>
-                                    <InventoryContainer>
-                                        {inventoryComponents}
-                                    </InventoryContainer>
-                                </Grid>
-                            </Grid>
-                        </Col>
-                        <Col xs={6} lg={6}>
-                            <Row>
-                                <Grid
-                                    container
-                                    direction="column"
-                                    alignItems="center"
-                                >
-                                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                                        <InventoryContainer>
-                                            <RequestPanel data={data} />
-                                        </InventoryContainer>
-                                    </Grid>
-                                </Grid>
-                            </Row>
-                            <Row>
-                                {Object.keys(itemsToDonate).map(
-                                    itemId => <InventoryItem itemData={{
-                                        "id": itemId,
-                                        "sprite": itemList[itemId].sprite,
-                                        "quantity": itemsToDonate[itemId].quantity
-                                    }} />
-                                )}
-                                <DonateButton onClick={donateItems}>Donate</DonateButton>
-                            </Row>
-                        </Col>
-                    </Row>
-                </Container>
-            </Store> */}
+            }
 
-            <CloseButton src='./assets/ui/close-button.png' onClick={() => closeButtonClicked()}></CloseButton>        </Overlay>
+            {!donateCompleted && 
+            <CloseButton 
+                src='./assets/ui/close-button.png' 
+                onClick={() => closeButtonClicked()}/>}
+        </Overlay>
     );
 };
