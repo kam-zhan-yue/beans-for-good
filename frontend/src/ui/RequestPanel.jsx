@@ -7,6 +7,15 @@ import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
 
+const RequestTitle = styled.h1`
+    font-family: "VT323", monospace;
+    font-size: 30px; /* Adjust font size as needed */
+    font-weight: 400;
+    margin: 0; /* Remove default margin */
+    text-align: center; /* Align text to the right */
+    color: ${constants.primary};
+`
+
 export const RequestPanel = ({ data }) => {
     const [requestedItemData, setRequestedItemData] = useState([]);
     const [itemList, setItemList] = useState({});
@@ -33,6 +42,7 @@ export const RequestPanel = ({ data }) => {
 
     return (
         <>
+            <RequestTitle>Items Requested: </RequestTitle>
             {requestedItemComponents}
         </>
     );

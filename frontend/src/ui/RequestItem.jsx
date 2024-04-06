@@ -13,35 +13,19 @@ const ItemBackground = styled.div`
   image-rendering: -moz-crisp-edges;
   image-rendering: crisp-edges;
   position: relative;
-  border: 16px solid transparent;
+  border: 8px solid transparent;
   border-image: url(./assets/ui/inventory-item-background.png) 7.5 fill repeat;
-  margin:10px;
+  margin-right: 2.5px;
+  margin-left: 2.5px;
   /* Maintain aspect ratio for square item */
-  width: 8vw;
-  height: 8vw;
+  width: 2.5vw;
+  height: 2.5vw;
 `
 
 const ItemImage = styled.img`
-
+width: 100%;
+height: auto;
 `
-
-const ItemQuantity = styled.div`
-  font-family: "VT323", monospace;
-  font-size: 30px;
-  font-weight: 400;
-  position: absolute;
-  bottom: -10px;
-  right: -10px;
-  z-index: 3;
-
-  background-color: #00000090;
-
-  padding: 5px;
-  border-radius: 3px;
-
-  color: rgb(219, 219, 219);
-`
-
 
 const assetURL = './assets/items/'
 

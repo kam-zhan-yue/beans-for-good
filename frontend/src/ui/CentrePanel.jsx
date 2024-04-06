@@ -22,11 +22,11 @@ const Centre = styled.div`
     padding: 1vw; // Adjust padding here
     border: 16px solid transparent;
     border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
-    height: 70vh;
+    height: 75vh;
     min-width: 60vw;
     max-width: 60vw; // Adjust max width here
     max-height: 800px; // Adjust max height here
-    min-height: 450px;
+    min-height: 600px;
 `
 
 const CentreNameContainer = styled.div`
@@ -52,9 +52,18 @@ const CentreName = styled.h1`
     color: ${constants.primary};
 `
 
+const RequestContainer = styled.div`
+    display: flex;
+    justify-content: center; /* Center content horizontally */
+    align-items: center; /* Center content vertically */
+    width: 100%;
+    margin-top:10px;
+    margin-bottom:10px;
+`
+
 const DataContainer = styled.div`
     width: 100%;
-    height: 40vh;
+    height: 50vh;
     max-height: 400px;
     overflow: auto; // Add overflow for scrolling if needed
     min-height: 230px;
@@ -68,8 +77,7 @@ const DonateContainer = styled.div`
     justify-content: center; /* Center content horizontally */
     align-items: center; /* Center content vertically */
     width: 100%;
-    margin: 0; /* Reset margin */
-    padding: 0; /* Reset padding */
+    margin-top:10px;
 `
 
 const DonateBox = styled.div`
@@ -111,30 +119,6 @@ const CloseButton = styled.img`
     }
 `
 
-//EVAN'S STUFF
-
-const Store = styled.div`
-    padding: 1vw; // Adjust padding here
-    border: 16px solid transparent;
-    border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
-    height: 50vh;
-    min-width: 60vw;
-    max-width: 60vw; // Adjust max width here
-    max-height: 500px; // Adjust max height here
-    min-height: 300px;
-`
-
-const Inventory = styled.div`
-    padding: 1vw; // Adjust padding here
-    // background-color: rgba(0, 0, 0, 0);
-    min-width: 50vw;
-    max-width: 50vw; // Adjust max width here
-    max-height: 50vh; // Adjust max height here
-    overflow: auto; // Add overflow for scrolling if needed
-    border: 16px solid transparent;
-    border-image: url(./assets/ui/panel.png) 7.5 fill repeat;
-`
-
 const InventoryContainer = styled.div`
   display: flex;
   flex-direction: row;
@@ -142,19 +126,6 @@ const InventoryContainer = styled.div`
   justify-content: center;
   margin-top: 10px;
   overflow: auto;
-`
-
-const DonateButton = styled.div`
-    width: 100%;
-    height: 8vh;
-    border: 8px solid transparent;
-    border-image: url(./assets/ui/inventory-item-background.png) 3 fill repeat;
-    min-height: 75px;
-
-    &:hover {
-        cursor: pointer;
-        transform: translateY(-5px);
-      }
 `
 
 export const CentrePanel = ({ data, interactionOver }) => {
@@ -211,7 +182,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
         } else {
             newObj[item.id] = { "quantity": 1 };
         }
-        console.log(newObj);
+        console.log("Items to Donate: "+itemsToDonate.Length)
         setItemsToDonate(newObj);
     };
 
@@ -239,6 +210,14 @@ export const CentrePanel = ({ data, interactionOver }) => {
                         </Col>
                     </Row>
 
+                    <Row>
+                        <Col>
+                            <RequestContainer>
+                                <RequestPanel data={data} />
+                            </RequestContainer>
+                        </Col>
+                    </Row>
+                    
                     <Row>
                         <Col xs={6} lg={6}>
                             <DataContainer>
@@ -282,13 +261,14 @@ export const CentrePanel = ({ data, interactionOver }) => {
 
                     <Row>
                         <Col>
-                            <DonateContainer onClick={donateItems}>
-                                <DonateBox>
+                            {Object.keys(itemsToDonate).length > 0 &&  
+                            <DonateContainer>
+                                <DonateBox onClick={donateItems}>
                                     <DonateText>
                                         Donate!
                                     </DonateText>
                                 </DonateBox>
-                            </DonateContainer>
+                            </DonateContainer>}   
                         </Col>
                     </Row>
                 </Container>
