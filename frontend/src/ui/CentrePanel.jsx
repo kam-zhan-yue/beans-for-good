@@ -10,6 +10,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import constants from '../Constants';
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { DonationConfirmationPanel } from './DonationConfirmationPanel';
+import StaticHelper from '../StaticHelper';
 
 const Overlay = styled.div`
     position: fixed;
