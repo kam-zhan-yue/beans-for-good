@@ -8,6 +8,7 @@ import Container from "react-bootstrap/Container";
 import 'bootstrap/dist/css/bootstrap.css';
 import { CurrencyPurchaseCompletePanel } from './CurrencyPurchaseCompletePanel';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import StaticHelper from '../StaticHelper';
 
 const Overlay = styled.div`
     position: fixed;
@@ -55,7 +56,7 @@ export const CurrencyPanel = ({ interactionOver }) => {
 
     useEffect(() => {
         const fetchAmount = async () => {
-            const items = await fetch('http://localhost:3000/beans/evan');
+            const items = await fetch(`${StaticHelper.getApi()}beans/evan`);
             const response = await items.json();
             setCurrentAmount(response.beans);
         }
@@ -71,7 +72,7 @@ export const CurrencyPanel = ({ interactionOver }) => {
         try {
             // Simulate delay of 100ms
             // await new Promise(resolve => setTimeout(resolve, 500));
-            await fetch("http://localhost:3000/beans/evan", {
+            await fetch(`${StaticHelper.getApi()}beans/evan`, {
                 "method": "POST",
                 "body": JSON.stringify({ "beans": currentAmount + amount }),
                 "headers": {

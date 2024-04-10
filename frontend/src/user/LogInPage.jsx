@@ -12,7 +12,7 @@ const LoginPage = () => {
     setErrorMessage(''); // Reset the error message on new submission
 
     try {
-      const response = await fetch('http://localhost:3000/login', {
+      const response = await fetch(`${StaticHelper.getApi()}login`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
