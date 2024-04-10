@@ -9,6 +9,7 @@ import constants from '../Constants';
 import { PurchaseCompletePanel } from './PurchaseCompletePanel';
 import { CookiesProvider, useCookies } from 'react-cookie'
 import { CurrencyOverlayPanel } from './CurrencyOverlayPanel';
+import StaticHelper from '../StaticHelper';
 
 const Overlay = styled.div`
     position: fixed;
@@ -155,7 +156,7 @@ export const StorePanel = ({ data, interactionOver }) => {
 
     useEffect(() => {
         const fetchStoreItems = async () => {
-            const items = await fetch(`http://localhost:3000/store/${data.facilityID}`);
+            const items = await fetch(`${StaticHelper.getApi()}store/${data.facilityID}`);
             const response = await items.json();
             setStoreData(response.items);
         }
@@ -174,7 +175,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         }
 
         const fetchInventory = async () => {
-            const items = await fetch('http://localhost:3000/inventory/evan');
+            const items = await fetch(`${StaticHelper.getApi()}inventory/evan`);
             const response = await items.json();
             setInventoryData(response.items);
             // if (!cookies.inventory) {
@@ -184,7 +185,7 @@ export const StorePanel = ({ data, interactionOver }) => {
         }
 
         const fetchCoins = async () => {
-            const items = await fetch('http://localhost:3000/beans/evan');
+            const items = await fetch(`${StaticHelper.getApi()}beans/evan`);
             const response = await items.json();
             setCoins(response.beans);
         }
@@ -230,7 +231,7 @@ export const StorePanel = ({ data, interactionOver }) => {
             }
 
             const newAmount = currentBeans - currentItem.price;
-            await fetch("http://localhost:3000/beans/evan", {
+            await fetch(`${StaticHelper.getApi()}beans/evan`, {
                 "method": "POST",
                 "body": JSON.stringify({ "beans": newAmount }),
                 "headers": {
@@ -266,7 +267,7 @@ export const StorePanel = ({ data, interactionOver }) => {
                 };
             });
 
-            await fetch("http://localhost:3000/inventory/evan/purchase", {
+            await fetch(`${StaticHelper.getApi()}inventory/evan/purchase`, {
                 "method": "POST",
                 "body": JSON.stringify(cleanInventory),
                 "headers": {

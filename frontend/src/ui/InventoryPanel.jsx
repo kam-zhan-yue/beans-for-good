@@ -2,6 +2,7 @@ import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'rea
 import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import StaticHelper from '../StaticHelper';
 
 const Overlay = styled.div`
     position: fixed;
@@ -60,7 +61,7 @@ export const InventoryPanel = ({ interactionOver }) => {
 
     useEffect(() => {
         const fetchInventory = async () => {
-            const items = await fetch('http://localhost:3000/inventory/evan');
+            const items = await fetch(`${StaticHelper.getApi()}inventory/evan`);
             const response = await items.json();
             setInventoryData(response.items);
             // if (!cookies.inventory) {

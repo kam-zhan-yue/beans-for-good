@@ -139,7 +139,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
 
     useEffect(() => {
         const fetchInventory = async () => {
-            const items = await fetch('http://localhost:3000/inventory/evan');
+            const items = await fetch(`${StaticHelper.getApi()}inventory/evan`);
             const response = await items.json();
             setInventoryData(response.items);
             // if (!cookies.inventory) {
@@ -219,7 +219,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
             };
         });
 
-        await fetch("http://localhost:3000/inventory/evan/purchase", {
+        await fetch(`${StaticHelper.getApi()}inventory/evan/purchase`, {
             "method": "POST",
             "body": JSON.stringify(cleanInventory),
             "headers": {
