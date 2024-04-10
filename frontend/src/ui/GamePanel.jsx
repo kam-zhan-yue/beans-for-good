@@ -2,6 +2,7 @@ import React, { useEffect, useState, useImperativeHandle } from 'react';
 import styled from 'styled-components';
 import constants from '../Constants';
 import { CookiesProvider, useCookies } from 'react-cookie';
+import StaticHelper from '../StaticHelper';
 
 const GameOverlay = styled.div`
 `
@@ -81,20 +82,13 @@ export const GamePanel = ({ inventoryClicked, currencyClicked }) => {
   const [cookies, setCookie] = useCookies(['amount']);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      // const items = await fetch('http://localhost:3000/inventory/evan');
-      // const response = await items.json();
-      // // console.log(response);
-      // setStoreData(response.items);
-    };
-
     const fetchCoins = async () => {
-      const items = await fetch('http://localhost:3000/beans/evan');
+      console.log(`${StaticHelper.getApi()}beans/evan`);
+      const items = await fetch(`${StaticHelper.getApi()}beans/evan`);
       const response = await items.json();
       setCoins(response.beans);
     };
 
-    fetchUserData();
     fetchCoins();
   });
 
