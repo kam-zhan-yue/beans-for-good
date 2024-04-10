@@ -1,18 +1,18 @@
 {
     "garage": {
-        "name": "Test Garage",
-        "url": "https://www.doitforcancer.com.au/ways-to-do-it/sell-something"
+        "name": "Green Collect",
+        "url": "https://www.greencollect.org/"
     },
     "bakery": {
-        "name": "Test Bakery",
+        "name": "Bakers Delight",
         "url": "https://www.bakersdelight.com.au/company/community/"
     },
     "housing": {
-        "name": "Test Housing",
+        "name": "St Mary's House of Welcome",
         "url": "https://www.vichomelessfund.org.au"
     },
     "school": {
-        "name": "Test School",
-        "url": "https://www.givit.org.au/whats-needed?appeals=220"
+        "name": "Berry Street School",
+        "url": "https://www.berrystreet.org.au/what-we-do/education-services/berry-street-school"
     }
 }

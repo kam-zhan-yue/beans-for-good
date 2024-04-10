@@ -1,5 +1,6 @@
 {
-    "name": "template-react",
+    "homepage": "https://kam-zhan-yue.github.io/beans-for-good/",
+    "name": "beans-for-good",
     "description": "A Phaser 3 project template that demonstrates React communication and uses Vite for bundling.",
     "version": "1.0.2",
     "type": "module",
@@ -13,7 +14,6 @@
     "bugs": {
         "url": "https://github.com/phaserjs/template-react/issues"
     },
-    "homepage": "https://github.com/phaserjs/template-react#readme",
     "keywords": [
         "phaser",
         "phaser3",
@@ -21,10 +21,13 @@
         "vite"
     ],
     "scripts": {
+        "predeploy": "npm run build",
+        "deploy": "gh-pages -d dist",
         "dev": "vite --config vite/config.dev.mjs",
         "build": "vite build --config vite/config.prod.mjs"
     },
     "dependencies": {
+        "@fvilers/disable-react-devtools": "^1.3.0",
         "@material-ui/core": "^4.12.4",
         "axios": "^1.6.8",
         "bootstrap": "^5.3.3",

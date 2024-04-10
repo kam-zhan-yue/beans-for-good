@@ -18,7 +18,7 @@ const phasermsg = () => {
 }
 
 export default defineConfig({
-    base: './',
+    base: './beans-for-good/',
     plugins: [
         react(),
         phasermsg()

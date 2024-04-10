@@ -44,7 +44,6 @@
   display: flex;
   align-items: center; /* Align items vertically */
   justify-content: flex-end;
-  // margin-right:30px;
   `
 
   const ItemName = styled.h1`
@@ -72,8 +71,8 @@
   `
 
   const Coin = styled.img`
-  min-width: 30px;
-  image-rendering: pixelated; /* Preserve image quality when scaled up */
+    min-width: 30px;
+    image-rendering: pixelated; /* Preserve image quality when scaled up */
 `
 
   const assetURL = './assets/items/'

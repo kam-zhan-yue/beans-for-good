@@ -1,6 +1,6 @@
 const constants = {
-    primary: '#F8E4E9',
-    secondary: '#ED008B',
+    primary: 'black',
+    secondary: 'black',
     tertiary: '#EBE63F',
 }
 

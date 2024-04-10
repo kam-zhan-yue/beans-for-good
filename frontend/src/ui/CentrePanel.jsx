@@ -227,6 +227,7 @@ export const CentrePanel = ({ data, interactionOver }) => {
                 "Content-type": "application/json; charset=UTF-8"
             }
         });
+        setDonateCompleted(true);
         // setCookie('inventory', inventoryData, { "path": '/' });
         setItemsToDonate({});
     };

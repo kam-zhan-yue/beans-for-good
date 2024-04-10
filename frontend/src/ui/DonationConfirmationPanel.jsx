@@ -21,7 +21,7 @@ const ConfirmationText = styled.h1`
     font-weight: 400;
     margin: 0; /* Remove default margin */
     text-align: center; /* Align text to the center */
-    color: ${constants.primary};
+    color: ${constants.secondary};
     display: flex;
     justify-content: center;
     align-items: center;
