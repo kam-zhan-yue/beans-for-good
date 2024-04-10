@@ -20,6 +20,8 @@ const ItemBackground = styled.div`
   /* Maintain aspect ratio for square item */
   width: 8vw;
   height: 8vw;
+  min-width: 100px;
+  min-height: 100px;
   
   /* Add transition for smooth animation */
   transition: transform 0.3s;

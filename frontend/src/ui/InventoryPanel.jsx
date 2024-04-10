@@ -1,7 +1,6 @@
 import React, { forwardRef, useState, useImperativeHandle, useEffect } from 'react';
 import styled from 'styled-components';
-import { InventoryItem } from './InventoryItem'
-import { Grid } from "@material-ui/core";
+import { InventoryItem } from './InventoryItem';
 import { CookiesProvider, useCookies } from 'react-cookie';
 
 const Overlay = styled.div`
@@ -103,17 +102,9 @@ export const InventoryPanel = ({ interactionOver }) => {
     return (
         <Overlay>
             <Inventory>
-                <Grid
-                    container
-                    direction="column"
-                    alignItems="center"
-                >
-                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                        <InventoryContainer>
-                            {inventoryComponents}
-                        </InventoryContainer>
-                    </Grid>
-                </Grid>
+                <InventoryContainer>
+                    {inventoryComponents}
+                </InventoryContainer>
             </Inventory>
             <CloseButton src='./assets/ui/close-button.png' onClick={() => closeButtonClicked()}></CloseButton>
         </Overlay>

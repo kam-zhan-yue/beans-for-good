@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import { InventoryItem } from './InventoryItem';
 import { SubInventoryItem } from './SubInventoryItem';
 import { RequestPanel } from './RequestPanel';
-import { Grid } from "@material-ui/core";
 import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Container from "react-bootstrap/Container";
@@ -276,39 +275,23 @@ export const CentrePanel = ({ data, interactionOver }) => {
                     <Row>
                         <Col xs={6} lg={6}>
                             <DataContainer>
-                                <Grid
-                                    container
-                                    direction="column"
-                                    alignItems="center"
-                                >
-                                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                                        <InventoryContainer>
-                                            {inventoryComponents}
-                                        </InventoryContainer>
-                                    </Grid>
-                                </Grid>
+                                <InventoryContainer>
+                                    {inventoryComponents}
+                                </InventoryContainer>
                             </DataContainer>
                         </Col>
 
                         <Col xs={6} lg={6}>
                             <DataContainer>
-                                <Grid
-                                    container
-                                    direction="column"
-                                    alignItems="center"
-                                >
-                                    <Grid item lg={12} md={12} sm={12} xs={12}>
-                                        <InventoryContainer>
-                                            {Object.keys(itemsToDonate).map(
-                                                itemId => <SubInventoryItem itemData={{
-                                                    "id": itemId,
-                                                    "sprite": itemList[itemId].sprite,
-                                                    "quantity": itemsToDonate[itemId].quantity
-                                                }} />
-                                            )}
-                                        </InventoryContainer>
-                                    </Grid>
-                                </Grid>
+                                <InventoryContainer>
+                                    {Object.keys(itemsToDonate).map(
+                                        itemId => <SubInventoryItem itemData={{
+                                            "id": itemId,
+                                            "sprite": itemList[itemId].sprite,
+                                            "quantity": itemsToDonate[itemId].quantity
+                                        }} />
+                                    )}
+                                </InventoryContainer>
                             </DataContainer>
                         </Col>
 
